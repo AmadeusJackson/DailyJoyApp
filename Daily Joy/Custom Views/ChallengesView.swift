@@ -90,6 +90,8 @@ struct ChallengesView: View {
                             .font(.caption.bold())
                             .foregroundStyle(.green)
                     }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Completed")
                 } else {
                     HStack(spacing: 4) {
                         Image(systemName: "circle")
@@ -98,6 +100,8 @@ struct ChallengesView: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Not completed")
                 }
             }
             
@@ -125,6 +129,9 @@ struct ChallengesView: View {
                     lineWidth: 2
                 )
         )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title): \(prompt). \(isCompleted ? "Completed" : "Not completed")")
+        .accessibilityHint(isCompleted ? "" : "Create a moment describing this activity to complete the challenge")
     }
     
     private var instructionsSection: some View {

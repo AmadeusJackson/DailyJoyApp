@@ -44,6 +44,8 @@ struct MomentsView: View {
                     } label: {
                         Image(systemName: "plus")
                     }
+                    .accessibilityLabel("Add new moment")
+                    .accessibilityHint("Opens form to create a new grateful moment")
                     .sheet(isPresented: $showCreateMoment) {
                         MomentEntryView()
                     }
@@ -57,7 +59,8 @@ struct MomentsView: View {
             .defaultScrollAnchor(.top, for: .alignment)
             .navigationTitle("Grateful Moments")
         }
-        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+        // Remove the dynamic type size limit to support all accessibility sizes
+        // .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 
     private var pathItems: some View {
@@ -72,11 +75,28 @@ struct MomentsView: View {
         } label: {
             momentHexagonWithOverlay(moment: moment, index: index)
         }
+        .accessibilityLabel(accessibilityLabelFor(moment: moment))
+        .accessibilityHint(moment.isLocked ? "Double tap to unlock and view this moment" : "Double tap to view details")
+        .accessibilityAddTraits(.isButton)
         .scrollTransition { content, phase in
             content
                 .opacity(phase.isIdentity ? 1 : 0)
                 .scaleEffect(phase.isIdentity ? 1 : 0.8)
         }
+    }
+    
+    private func accessibilityLabelFor(moment: Moment) -> String {
+        var label = "Moment: \(moment.title)"
+        if moment.isLocked {
+            label += ", locked"
+        }
+        if moment.image != nil {
+            label += ", has photo"
+        }
+        if !moment.note.isEmpty {
+            label += ", has note"
+        }
+        return label
     }
     
     @ViewBuilder
@@ -145,6 +165,7 @@ struct MomentsView: View {
             HStack {
                 Text(verbatim: "\(streak)")
                     .font(.subheadline)
+                    .accessibilityLabel("\(streak) day streak")
                 
                 // Only the flame icon is tappable
                 Button {
@@ -159,6 +180,8 @@ struct MomentsView: View {
                     }
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("View streak calendar")
+                .accessibilityHint("Shows your activity heatmap")
                 
                 Spacer()
             }
@@ -177,32 +200,4 @@ struct MomentsView: View {
     MomentsView()
         .modelContainer(for: [Moment.self])
         .environment(DataContainer())
-}
-
-// MARK: - Color Extension for Hex
-extension Color {
-    init(hex: String) {
-        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&int)
-        let a, r, g, b: UInt64
-        switch hex.count {
-        case 3: // RGB (12-bit)
-            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: // RGB (24-bit)
-            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8: // ARGB (32-bit)
-            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
-        default:
-            (a, r, g, b) = (1, 1, 1, 0)
-        }
-
-        self.init(
-            .sRGB,
-            red: Double(r) / 255,
-            green: Double(g) / 255,
-            blue:  Double(b) / 255,
-            opacity: Double(a) / 255
-        )
-    }
 }

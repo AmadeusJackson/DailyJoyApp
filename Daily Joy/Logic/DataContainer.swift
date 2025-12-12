@@ -19,12 +19,17 @@ class DataContainer {
     var context: ModelContext {
         modelContainer.mainContext
     }
+    
+    var challengeManager: ChallengeManager {
+        ChallengeManager(modelContext: context)
+    }
 
 
     init(includeSampleMoments: Bool = false) {
         let schema = Schema([
             Moment.self,
-            Badge.self
+            Badge.self,
+            DailyChallenge.self
         ])
 
 

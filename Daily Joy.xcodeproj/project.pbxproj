@@ -85,6 +85,7 @@
 				MomentEntryView.swift,
 				MomentHexagonView.swift,
 				MomentsView.swift,
+				ReducedMotionHelper.swift,
 			);
 			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;
 		};

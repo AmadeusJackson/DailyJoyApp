@@ -8,7 +8,7 @@ struct MomentEntryView: View {
     @State private var imageData: Data?
     @State private var newImage: PhotosPickerItem?
     @State private var isShowingCancelConfirmation = false
-    @State private var isLocked: Bool = false  // ✅ ADDED
+    @State private var isLocked: Bool = false
     
     @State private var contentType: ContentType = .photo
     @State private var selectedColorName: String = "Ember"
@@ -33,11 +33,15 @@ struct MomentEntryView: View {
                 Section(header: Text("Title (Required)")) {
                     TextField("What made you happy?", text: $title)
                         .font(.headline)
+                        .accessibilityLabel("Moment title")
+                        .accessibilityHint("Enter what made you happy today")
                 }
                 
                 Section(header: Text("Note")) {
                     TextEditor(text: $note)
                         .frame(minHeight: 100)
+                        .accessibilityLabel("Moment note")
+                        .accessibilityHint("Add additional details about this moment")
                 }
                 
                 Section(header: Text("Background Type")) {
@@ -46,6 +50,8 @@ struct MomentEntryView: View {
                         Text("Color").tag(ContentType.color)
                     }
                     .pickerStyle(.segmented)
+                    .accessibilityLabel("Background type")
+                    .accessibilityHint("Choose between photo or color background")
                 }
                 
                 if contentType == .photo {
@@ -58,7 +64,6 @@ struct MomentEntryView: View {
                     }
                 }
                 
-                // ✅ ADDED: Privacy Section
                 Section {
                     Toggle(isOn: $isLocked) {
                         HStack {
@@ -67,6 +72,9 @@ struct MomentEntryView: View {
                             Text("Lock this moment")
                         }
                     }
+                    .accessibilityLabel("Lock moment")
+                    .accessibilityValue(isLocked ? "Locked" : "Unlocked")
+                    .accessibilityHint("Locked moments require Face ID to view")
                 } header: {
                     Text("Privacy")
                 } footer: {
@@ -97,6 +105,8 @@ struct MomentEntryView: View {
                         }
                     }
                     .tint(Color("Ember"))
+                    .accessibilityLabel("Cancel")
+                    .accessibilityHint("Discard this moment")
                     .confirmationDialog("Discard Moment", isPresented: $isShowingCancelConfirmation) {
                         Button("Discard Moment", role: .destructive) {
                             dismiss()
@@ -110,6 +120,8 @@ struct MomentEntryView: View {
                     }
                     .tint(Color("Ember"))
                     .disabled(title.isEmpty)
+                    .accessibilityLabel("Add moment")
+                    .accessibilityHint(title.isEmpty ? "Enter a title first" : "Save this grateful moment")
                 }
             }
         }
@@ -189,12 +201,16 @@ struct MomentEntryView: View {
             note: note,
             imageData: finalImageData,
             timestamp: useCustomDate ? customDate : .now,
-            isLocked: isLocked  // ✅ ADDED
+            isLocked: isLocked
         )
         
         dataContainer.context.insert(newMoment)
         do {
             try dataContainer.badgeManager.unlockBadges(newMoment: newMoment)
+            
+            // ✅ CHECK FOR CHALLENGE COMPLETION
+            dataContainer.challengeManager.checkChallengeCompletion(for: newMoment)
+            
             try dataContainer.context.save()
             dismiss()
         } catch {
