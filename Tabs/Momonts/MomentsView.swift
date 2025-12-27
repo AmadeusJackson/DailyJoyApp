@@ -11,10 +11,28 @@ import SwiftData
 struct MomentsView: View {
     @State private var showCreateMoment = false
     @State private var showHeatmap = false
+    @State private var searchText = ""
     @Query(sort: \Moment.timestamp)
     private var moments: [Moment]
 
     static let offsetAmount: CGFloat = 70.0
+    
+    // Filtered moments based on search
+    var filteredMoments: [Moment] {
+        if searchText.isEmpty {
+            return moments
+        } else {
+            return moments.filter { moment in
+                moment.title.localizedCaseInsensitiveContains(searchText) ||
+                moment.note.localizedCaseInsensitiveContains(searchText)
+            }
+        }
+    }
+    
+    // Show search only when there are 10+ moments
+    var shouldShowSearch: Bool {
+        moments.count >= 10
+    }
 
     var body: some View {
         NavigationStack {
@@ -29,7 +47,9 @@ struct MomentsView: View {
                 }
             }
             .overlay {
-                if moments.isEmpty {
+                if filteredMoments.isEmpty && !searchText.isEmpty {
+                    ContentUnavailableView.search(text: searchText)
+                } else if moments.isEmpty {
                     ContentUnavailableView {
                         Label("No moments yet!", systemImage: "exclamationmark.circle.fill")
                     } description: {
@@ -51,6 +71,8 @@ struct MomentsView: View {
                     }
                 }
             }
+            .searchable(text: $searchText, placement: shouldShowSearch ? .navigationBarDrawer(displayMode: .always) : .navigationBarDrawer(displayMode: .automatic), prompt: "Search moments")
+            .autocorrectionDisabled()
             .sheet(isPresented: $showHeatmap) {
                 HeatmapCalendarView()
             }
@@ -59,12 +81,10 @@ struct MomentsView: View {
             .defaultScrollAnchor(.top, for: .alignment)
             .navigationTitle("Grateful Moments")
         }
-        // Remove the dynamic type size limit to support all accessibility sizes
-        // .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 
     private var pathItems: some View {
-        ForEach(Array(moments.enumerated()), id: \.element.id) { index, moment in
+        ForEach(Array(filteredMoments.enumerated()), id: \.element.id) { index, moment in
             momentNavigationLink(for: moment, at: index)
         }
     }
@@ -201,3 +221,4 @@ struct MomentsView: View {
         .modelContainer(for: [Moment.self])
         .environment(DataContainer())
 }
+

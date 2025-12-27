@@ -6,18 +6,13 @@
 	<dict>
 		<key>Daily Joy.xcscheme_^#shared#^_</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
 		<key>DailyJoyWidgetExtension.xcscheme_^#shared#^_</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
-		<key>Daily_Joy_WidgetExtension.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
@@ -39,7 +34,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>3F67A6DD2ED9D71900D1BB24</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>3F7DFE202EC7A89500D1CEE2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3FF08A2D2ED86FAD001CB6CE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
