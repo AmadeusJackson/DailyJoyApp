@@ -41,6 +41,17 @@
                ReferencedContainer = "container:Daily Joy.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3F18968B2EFF5FC200EE4376"
+               BuildableName = "Daily JoyUITests.xctest"
+               BlueprintName = "Daily JoyUITests"
+               ReferencedContainer = "container:Daily Joy.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

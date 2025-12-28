@@ -52,7 +52,7 @@ struct ChallengeBank {
         // Self-Care Challenges
         Challenge(prompt: "Take a 10-minute walk outside", keywords: ["walk", "walked", "walking", "stroll", "strolled", "outside", "outdoors", "fresh air", "nature", "went for a walk", "took a walk"]),
         Challenge(prompt: "Try a new recipe or food today", keywords: ["recipe", "new recipe", "food", "new food", "cook", "cooked", "cooking", "made", "prepared", "tried", "taste", "tasted", "ate", "dish", "meal"]),
-        Challenge(prompt: "Spend 5 minutes in silence or meditation", keywords: ["meditate", "meditated", "meditation", "silence", "silent", "quiet", "peace", "peaceful", "breathe", "breathing", "calm", "mindful", "mindfulness"]),
+        Challenge(prompt: "Spend 5 minutes in silence or meditation", keywords: ["meditate", "meditated", "meditating", "meditation", "silence", "silent", "slience", "quiet", "quietly", "peace", "peaceful", "breathe", "breathing", "breath", "deep breath", "calm", "calmed", "calming", "mindful", "mindfulness", "sat still", "sit still", "sitting still", "sat quietly", "sat in silence", "just sat", "doing nothing"]),
         Challenge(prompt: "Do something creative (draw, write, sing)", keywords: ["creative", "create", "created", "draw", "drew", "drawing", "paint", "painted", "painting", "write", "wrote", "writing", "sing", "sang", "singing", "art", "sketch", "doodle"]),
         Challenge(prompt: "Watch the sunrise or sunset", keywords: ["sunrise", "sunset", "sun rise", "sun set", "dawn", "dusk", "morning", "evening", "watched the sun", "saw the sun"]),
         Challenge(prompt: "Stretch or do yoga for 10 minutes", keywords: ["stretch", "stretched", "stretching", "yoga", "exercise", "exercised", "movement", "body", "flexible"]),

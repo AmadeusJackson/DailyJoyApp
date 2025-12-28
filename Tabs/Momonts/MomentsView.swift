@@ -12,6 +12,7 @@ struct MomentsView: View {
     @State private var showCreateMoment = false
     @State private var showHeatmap = false
     @State private var searchText = ""
+    @State private var isSearching = false
     @Query(sort: \Moment.timestamp)
     private var moments: [Moment]
 
@@ -58,7 +59,20 @@ struct MomentsView: View {
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .primaryAction) {
+                // Search button (shows when 10+ moments)
+                if shouldShowSearch {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            isSearching.toggle()
+                        } label: {
+                            Image(systemName: "magnifyingglass")
+                        }
+                        .accessibilityLabel("Search moments")
+                    }
+                }
+                
+                // Add moment button (always visible)
+                ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showCreateMoment = true
                     } label: {
@@ -71,7 +85,7 @@ struct MomentsView: View {
                     }
                 }
             }
-            .searchable(text: $searchText, placement: shouldShowSearch ? .navigationBarDrawer(displayMode: .always) : .navigationBarDrawer(displayMode: .automatic), prompt: "Search moments")
+            .searchable(text: $searchText, isPresented: $isSearching, prompt: "Search moments")
             .autocorrectionDisabled()
             .sheet(isPresented: $showHeatmap) {
                 HeatmapCalendarView()
@@ -157,8 +171,8 @@ struct MomentsView: View {
         let size = isLarge ? HexagonLayout.large.size : HexagonLayout.standard.size
         
         ZStack {
-            Color(hex: "0000FF")
-                .opacity(0.85)
+            Color(hex: "FF6B35")
+                .opacity(0.95)
             
             VStack(spacing: isLarge ? 8 : 4) {
                 Image(systemName: "lock.fill")
@@ -221,4 +235,3 @@ struct MomentsView: View {
         .modelContainer(for: [Moment.self])
         .environment(DataContainer())
 }
-

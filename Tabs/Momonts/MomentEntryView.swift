@@ -30,21 +30,29 @@ struct MomentEntryView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Title (Required)")) {
+                Section {
                     TextField("What made you happy?", text: $title)
                         .font(.headline)
                         .accessibilityLabel("Moment title")
                         .accessibilityHint("Enter what made you happy today")
+                } header: {
+                    Text("Title (Required)")
                 }
                 
-                Section(header: Text("Note")) {
+                Section {
                     TextEditor(text: $note)
                         .frame(minHeight: 100)
                         .accessibilityLabel("Moment note")
                         .accessibilityHint("Add additional details about this moment")
+                } header: {
+                    Text("Note (Optional)")
+                } footer: {
+                    Text("A title is enough! Add details only if you want to.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
                 
-                Section(header: Text("Background Type")) {
+                Section {
                     Picker("Type", selection: $contentType) {
                         Text("Photo").tag(ContentType.photo)
                         Text("Color").tag(ContentType.color)
@@ -52,15 +60,21 @@ struct MomentEntryView: View {
                     .pickerStyle(.segmented)
                     .accessibilityLabel("Background type")
                     .accessibilityHint("Choose between photo or color background")
+                } header: {
+                    Text("Background Type")
                 }
                 
                 if contentType == .photo {
-                    Section(header: Text("Photo (Optional)")) {
+                    Section {
                         photoPicker
+                    } header: {
+                        Text("Photo (Optional)")
                     }
                 } else {
-                    Section(header: Text("Choose a Color")) {
+                    Section {
                         colorPicker
+                    } header: {
+                        Text("Choose a Color")
                     }
                 }
                 
@@ -83,13 +97,15 @@ struct MomentEntryView: View {
                 
                 // TEMPORARY - For testing Memory Lane
                 #if DEBUG
-                Section(header: Text("🧪 Test: Custom Date")) {
+                Section {
                     Toggle("Use Custom Date", isOn: $useCustomDate)
                     
                     if useCustomDate {
                         DatePicker("Select Date", selection: $customDate, displayedComponents: [.date, .hourAndMinute])
                             .datePickerStyle(.compact)
                     }
+                } header: {
+                    Text("🧪 Test: Custom Date")
                 }
                 #endif
             }
