@@ -8,13 +8,12 @@
 import SwiftData
 import SwiftUI
 
-
 @Observable
 @MainActor
 class DataContainer {
     let modelContainer: ModelContainer
     var badgeManager: BadgeManager
-
+    var notificationManager: NotificationManager  // ✅ ADDED
 
     var context: ModelContext {
         modelContainer.mainContext
@@ -24,25 +23,22 @@ class DataContainer {
         ChallengeManager(modelContext: context)
     }
 
-
     init(includeSampleMoments: Bool = false) {
         let schema = Schema([
             Moment.self,
             Badge.self,
-            DailyChallenge.self
+            DailyChallenge.self,
+            Draft.self
         ])
 
-
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: includeSampleMoments)
-
 
         do {
             modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
             badgeManager = BadgeManager(modelContainer: modelContainer)
-
+            notificationManager = NotificationManager(modelContext: modelContainer.mainContext)  // ✅ ADDED
 
             try badgeManager.loadBadgesIfNeeded()
-
 
             if includeSampleMoments {
                 try loadSampleMoments()
@@ -53,7 +49,6 @@ class DataContainer {
         }
     }
 
-
     private func loadSampleMoments() throws {
         for moment in Moment.sampleData {
             context.insert(moment)
@@ -62,9 +57,7 @@ class DataContainer {
     }
 }
 
-
 private let sampleContainer = DataContainer(includeSampleMoments: true)
-
 
 extension View {
     func sampleDataContainer() -> some View {

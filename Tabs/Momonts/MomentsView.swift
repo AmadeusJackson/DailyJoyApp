@@ -13,6 +13,7 @@ struct MomentsView: View {
     @State private var showHeatmap = false
     @State private var searchText = ""
     @State private var isSearching = false
+    @State private var showNotificationPrompt = false  // ✅ ADDED
     @Query(sort: \Moment.timestamp)
     private var moments: [Moment]
 
@@ -89,6 +90,18 @@ struct MomentsView: View {
             .autocorrectionDisabled()
             .sheet(isPresented: $showHeatmap) {
                 HeatmapCalendarView()
+            }
+            .sheet(isPresented: $showNotificationPrompt) {  // ✅ ADDED
+                FirstLaunchNotificationPrompt()
+            }
+            .onAppear {  // ✅ ADDED
+                // Check if we should show notification prompt (first launch)
+                if !UserDefaults.standard.bool(forKey: "hasShownNotificationPrompt") {
+                    // Delay so user sees the app first
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        showNotificationPrompt = true
+                    }
+                }
             }
             .defaultScrollAnchor(.bottom, for: .initialOffset)
             .defaultScrollAnchor(.bottom, for: .sizeChanges)

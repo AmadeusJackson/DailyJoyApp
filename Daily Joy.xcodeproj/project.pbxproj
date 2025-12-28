@@ -63,6 +63,7 @@
 				MomentHexagonView.swift,
 				MomentsView.swift,
 				ReducedMotionHelper.swift,
+				VoiceLoggingManager.swift,
 			);
 			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;
 		};
@@ -523,6 +524,8 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Daily Joy";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "\"We need Face ID to unlock your private moments\"";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "\"Daily Joy needs microphone access to record your voice for moment logging.\"";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "\"Daily Joy uses speech recognition to let you quickly capture grateful moments by voice.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -562,6 +565,8 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Daily Joy";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "\"We need Face ID to unlock your private moments\"";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "\"Daily Joy needs microphone access to record your voice for moment logging.\"";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "\"Daily Joy uses speech recognition to let you quickly capture grateful moments by voice.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
