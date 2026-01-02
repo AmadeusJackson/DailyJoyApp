@@ -1,3 +1,7 @@
+// ========================================
+// 'MomentEntryViewx'.swift
+// ========================================
+
 import SwiftUI
 import PhotosUI
 import SwiftData
@@ -14,7 +18,8 @@ struct MomentEntryView: View {
     @State private var existingDraft: Draft?
     
     @State private var contentType: ContentType = .photo
-    @State private var selectedColorName: String = "Ember"
+    @State private var selectedColor: Color = Color(hue: 0.0, saturation: 0.8, brightness: 0.9)
+    @State private var showColorPicker = false
     
     // TEMPORARY - For testing Memory Lane (COMMENTED OUT FOR SUBMISSION)
 //    @State private var customDate = Date()
@@ -32,7 +37,7 @@ struct MomentEntryView: View {
     @Environment(\.modelContext) private var modelContext
     @FocusState private var focusedField: Field?
     
-    enum ContentType {
+    enum ContentType: String, Sendable {
         case photo
         case color
     }
@@ -42,128 +47,140 @@ struct MomentEntryView: View {
         case note
     }
     
-    let availableColors = ["Ember", "Forest", "Lavender", "Ocean", "Pearl", "Rose", "Ruby", "Sapphire", "Sky"]
+    private var titleSection: some View {
+        Section {
+            titleRow
+        } header: {
+            Text("Title (Required)")
+        } footer: {
+            if voiceManager.isRecording {
+                HStack {
+                    Image(systemName: "waveform")
+                        .symbolEffect(.variableColor.iterative, options: .repeating)
+                    Text("Listening...")
+                        .foregroundStyle(.secondary)
+                }
+                .font(.caption)
+            }
+        }
+    }
+
+    private var titleRow: some View {
+        HStack {
+            TextField("What made you happy?", text: $title)
+                .font(.headline)
+                .focused($focusedField, equals: .title)
+                .accessibilityLabel("Moment title")
+                .accessibilityHint("Enter what made you happy today")
+
+            Button {
+                handleVoiceInput()
+            } label: {
+                Image(systemName: voiceManager.isRecording ? "stop.circle.fill" : "mic.circle.fill")
+                    .font(.title2)
+                    .foregroundStyle(voiceManager.isRecording ? .red : Color("Ember"))
+                    .symbolEffect(.pulse, options: .repeating, isActive: voiceManager.isRecording)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(voiceManager.isRecording ? "Stop recording" : "Record with voice")
+        }
+    }
+
+    private var noteSection: some View {
+        Section {
+            TextEditor(text: $note)
+                .frame(minHeight: 100)
+                .focused($focusedField, equals: .note)
+                .accessibilityLabel("Moment note")
+                .accessibilityHint("Add additional details about this moment")
+        } header: {
+            Text("Note (Optional)")
+        } footer: {
+            Text("A title is enough! Add details only if you want to.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private var typePickerSection: some View {
+        Section {
+            Picker("Type", selection: $contentType) {
+                Text("Photo").tag(ContentType.photo)
+                Text("Color").tag(ContentType.color)
+            }
+            .pickerStyle(.segmented)
+            .onChange(of: contentType) { _, _ in
+                focusedField = nil
+            }
+            .accessibilityLabel("Background type")
+            .accessibilityHint("Choose between photo or color background")
+        } header: {
+            Text("Background Type")
+        }
+    }
+
+    private var colorSection: some View {
+        Section {
+            Button {
+                showColorPicker = true
+            } label: {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(selectedColor)
+                    .frame(height: 250)
+                    .overlay(
+                        VStack(spacing: 12) {
+                            Image(systemName: "paintpalette.fill")
+                                .font(.largeTitle)
+                                .foregroundStyle(.white)
+                                .shadow(radius: 2)
+                            Text("Add Color")
+                                .font(.subheadline)
+                                .foregroundStyle(.white)
+                                .shadow(radius: 2)
+                        }
+                    )
+            }
+            .buttonStyle(.plain)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+        } header: {
+            Text("Color (Optional)")
+        }
+    }
+
+    private var privacySection: some View {
+        Section {
+            Toggle(isOn: $isLocked) {
+                HStack {
+                    Image(systemName: isLocked ? "lock.fill" : "lock.open")
+                        .foregroundColor(isLocked ? .orange : .gray)
+                    Text("Lock this moment")
+                }
+            }
+            .onChange(of: isLocked) { _, _ in
+                focusedField = nil
+            }
+            .accessibilityLabel("Lock moment")
+            .accessibilityValue(isLocked ? "Locked" : "Unlocked")
+            .accessibilityHint("Locked moments require Face ID to view")
+        } header: {
+            Text("Privacy")
+        } footer: {
+            Text("Locked moments require Face ID or passcode to view")
+        }
+    }
+    
+    private var contentWithOverlays: some View {
+        let base = formContent
+            .scrollDismissesKeyboard(.immediately)
+        let blurred = base.blur(radius: showingSaveConfirmation ? 3 : 0)
+        return blurred.disabled(showingSaveConfirmation)
+    }
     
     var body: some View {
         NavigationStack {
             ZStack {
-                Form {
-                    Section {
-                        HStack {
-                            TextField("What made you happy?", text: $title)
-                                .font(.headline)
-                                .focused($focusedField, equals: .title)
-                                .accessibilityLabel("Moment title")
-                                .accessibilityHint("Enter what made you happy today")
-                            
-                            // Voice input button
-                            Button {
-                                handleVoiceInput()
-                            } label: {
-                                Image(systemName: voiceManager.isRecording ? "stop.circle.fill" : "mic.circle.fill")
-                                    .font(.title2)
-                                    .foregroundStyle(voiceManager.isRecording ? .red : Color("Ember"))
-                                    .symbolEffect(.pulse, options: .repeating, isActive: voiceManager.isRecording)
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityLabel(voiceManager.isRecording ? "Stop recording" : "Record with voice")
-                        }
-                    } header: {
-                        Text("Title (Required)")
-                    } footer: {
-                        if voiceManager.isRecording {
-                            HStack {
-                                Image(systemName: "waveform")
-                                    .symbolEffect(.variableColor.iterative, options: .repeating)
-                                Text("Listening...")
-                                    .foregroundStyle(.secondary)
-                            }
-                            .font(.caption)
-                        }
-                    }
-                    
-                    Section {
-                        TextEditor(text: $note)
-                            .frame(minHeight: 100)
-                            .focused($focusedField, equals: .note)
-                            .accessibilityLabel("Moment note")
-                            .accessibilityHint("Add additional details about this moment")
-                    } header: {
-                        Text("Note (Optional)")
-                    } footer: {
-                        Text("A title is enough! Add details only if you want to.")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                    
-                    Section {
-                        Picker("Type", selection: $contentType) {
-                            Text("Photo").tag(ContentType.photo)
-                            Text("Color").tag(ContentType.color)
-                        }
-                        .pickerStyle(.segmented)
-                        .onChange(of: contentType) { _, _ in
-                            focusedField = nil
-                        }
-                        .accessibilityLabel("Background type")
-                        .accessibilityHint("Choose between photo or color background")
-                    } header: {
-                        Text("Background Type")
-                    }
-                    
-                    if contentType == .photo {
-                        Section {
-                            photoPicker
-                        } header: {
-                            Text("Photo (Optional)")
-                        }
-                    } else {
-                        Section {
-                            colorPicker
-                        } header: {
-                            Text("Choose a Color")
-                        }
-                    }
-                    
-                    Section {
-                        Toggle(isOn: $isLocked) {
-                            HStack {
-                                Image(systemName: isLocked ? "lock.fill" : "lock.open")
-                                    .foregroundColor(isLocked ? .orange : .gray)
-                                Text("Lock this moment")
-                            }
-                        }
-                        .onChange(of: isLocked) { _, _ in
-                            focusedField = nil
-                        }
-                        .accessibilityLabel("Lock moment")
-                        .accessibilityValue(isLocked ? "Locked" : "Unlocked")
-                        .accessibilityHint("Locked moments require Face ID to view")
-                    } header: {
-                        Text("Privacy")
-                    } footer: {
-                        Text("Locked moments require Face ID or passcode to view")
-                    }
-                    
-                    // TEMPORARY - For testing Memory Lane (COMMENTED OUT FOR SUBMISSION)
-//                    #if DEBUG
-//                    Section {
-//                        Toggle("Use Custom Date", isOn: $useCustomDate)
-//
-//                        if useCustomDate {
-//                            DatePicker("Select Date", selection: $customDate, displayedComponents: [.date, .hourAndMinute])
-//                                .datePickerStyle(.compact)
-//                        }
-//                    } header: {
-//                        Text("🧪 Test: Custom Date")
-//                    }
-//                    #endif
-                }
-                .scrollDismissesKeyboard(.immediately)
-                .blur(radius: showingSaveConfirmation ? 3 : 0)
-                .disabled(showingSaveConfirmation)
+                contentWithOverlays
                 
-                // NEW: Save confirmation overlay
                 if showingSaveConfirmation {
                     SaveConfirmationView()
                         .transition(.scale.combined(with: .opacity))
@@ -172,95 +189,119 @@ struct MomentEntryView: View {
             .navigationTitle("Grateful For")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        if title.isEmpty, note.isEmpty, imageData == nil {
-                            dismiss()
-                        } else {
-                            isShowingCancelConfirmation = true
-                        }
-                    }
-                    .tint(Color("Ember"))
-                    .accessibilityLabel("Cancel")
-                    .accessibilityHint("Discard this moment")
-                    .confirmationDialog("Save as Draft?", isPresented: $isShowingCancelConfirmation) {
-                        Button("Save Draft") {
-                            saveDraft()
-                            dismiss()
-                        }
-                        Button("Discard", role: .destructive) {
-                            if let draft = existingDraft {
-                                deleteDraft(draft)
-                            }
-                            dismiss()
-                        }
-                        Button("Keep Editing", role: .cancel) {}
-                    } message: {
-                        Text("You have unsaved changes. Would you like to save as a draft?")
+                toolbarContent
+            }
+            .sheet(isPresented: $showColorPicker) {
+                ColorPicker(selectedColor: $selectedColor)
+            }
+            .alert("Continue Draft?", isPresented: $showDraftAlert) {
+                Button("Continue") {
+                    if let draft = existingDraft {
+                        loadFromDraft(draft)
                     }
                 }
-                
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Add") {
-                        saveMoment()
+                Button("Start Fresh") {
+                    if let draft = existingDraft {
+                        deleteDraft(draft)
                     }
-                    .tint(Color("Ember"))
-                    .disabled(title.isEmpty)
-                    .accessibilityLabel("Add moment")
-                    .accessibilityHint(title.isEmpty ? "Enter a title first" : "Save this grateful moment")
                 }
-                
-                // NEW: Done button to dismiss keyboard (only shows when keyboard is visible)
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-                    Button {
-                        focusedField = nil
-                    } label: {
-                        Text("Done")
-                            .fontWeight(.semibold)
+            } message: {
+                Text("You have an unfinished moment. Would you like to continue where you left off?")
+            }
+            .alert("Enable Microphone", isPresented: $showVoicePermissionAlert) {
+                Button("Open Settings") {
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(url)
                     }
-                    .tint(Color("Ember"))
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("To use voice input, please enable microphone access in Settings.")
+            }
+            .onChange(of: voiceManager.transcribedText) { oldValue, newValue in
+                if !newValue.isEmpty && newValue != oldValue {
+                    title = newValue
                 }
             }
+            .onAppear {
+                loadDraft()
+            }
         }
-        .onAppear {
-            loadDraft()
-        }
-        .alert("Continue Draft?", isPresented: $showDraftAlert) {
-            Button("Continue") {
-                if let draft = existingDraft {
-                    loadFromDraft(draft)
+    }
+    
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .cancellationAction) {
+            Button("Cancel") {
+                if title.isEmpty, note.isEmpty, imageData == nil {
+                    dismiss()
+                } else {
+                    isShowingCancelConfirmation = true
                 }
             }
-            Button("Start Fresh") {
-                if let draft = existingDraft {
-                    deleteDraft(draft)
+            .tint(Color("Ember"))
+            .accessibilityLabel("Cancel")
+            .accessibilityHint("Discard this moment")
+            .confirmationDialog("Save as Draft?", isPresented: $isShowingCancelConfirmation) {
+                Button("Save Draft") {
+                    saveDraft()
+                    dismiss()
                 }
-            }
-        } message: {
-            Text("You have an unfinished moment. Would you like to continue where you left off?")
-        }
-        .alert("Enable Microphone", isPresented: $showVoicePermissionAlert) {
-            Button("Open Settings") {
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(url)
+                Button("Discard", role: .destructive) {
+                    if let draft = existingDraft {
+                        deleteDraft(draft)
+                    }
+                    dismiss()
                 }
+                Button("Keep Editing", role: .cancel) {}
+            } message: {
+                Text("You have unsaved changes. Would you like to save as a draft?")
             }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("To use voice input, please enable microphone access in Settings.")
         }
-        .onChange(of: voiceManager.transcribedText) { oldValue, newValue in
-            // Auto-fill title with transcribed text
-            if !newValue.isEmpty && newValue != oldValue {
-                title = newValue
+        
+        ToolbarItem(placement: .confirmationAction) {
+            Button("Add") {
+                saveMoment()
             }
+            .tint(Color("Ember"))
+            .disabled(title.isEmpty)
+            .accessibilityLabel("Add moment")
+            .accessibilityHint(title.isEmpty ? "Enter a title first" : "Save this grateful moment")
+        }
+        
+        ToolbarItemGroup(placement: .keyboard) {
+            Spacer()
+            Button {
+                focusedField = nil
+            } label: {
+                Text("Done")
+                    .fontWeight(.semibold)
+            }
+            .tint(Color("Ember"))
+        }
+    }
+    
+    private var formContent: some View {
+        Form {
+            titleSection
+            noteSection
+            typePickerSection
+            if contentType == .photo {
+                Section {
+                    photoPicker
+                } header: {
+                    Text("Photo (Optional)")
+                }
+            } else {
+                colorSection
+            }
+            privacySection
         }
     }
     
     private var photoPicker: some View {
         PhotosPicker(selection: $newImage) {
-            Group {
+            let content: some View = Group {
                 if let imageData, let uiImage = UIImage(data: imageData) {
                     Image(uiImage: uiImage)
                         .resizable()
@@ -279,43 +320,14 @@ struct MomentEntryView: View {
                     .background(Color(white: 0.4, opacity: 0.32))
                 }
             }
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+            content
+                .clipShape(RoundedRectangle(cornerRadius: 16))
         }
-        .onChange(of: newImage) {
-            guard let newImage else { return }
+        .onChange(of: newImage) { _, newValue in
+            guard let newValue else { return }
             Task {
-                imageData = try await newImage.loadTransferable(type: Data.self)
+                imageData = try await newValue.loadTransferable(type: Data.self)
             }
-        }
-    }
-    
-    private var colorPicker: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            LazyVGrid(columns: [
-                GridItem(.adaptive(minimum: 80))
-            ], spacing: 16) {
-                ForEach(availableColors, id: \.self) { colorName in
-                    ColorOption(
-                        colorName: colorName,
-                        isSelected: selectedColorName == colorName
-                    )
-                    .onTapGesture {
-                        selectedColorName = colorName
-                        focusedField = nil // Dismiss keyboard when selecting color
-                    }
-                }
-            }
-            
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color(selectedColorName))
-                .frame(height: 200)
-                .overlay(
-                    VStack {
-                        Image(systemName: "heart.fill")
-                            .font(.system(size: 60))
-                            .foregroundStyle(.white.opacity(0.3))
-                    }
-                )
         }
     }
     
@@ -323,7 +335,7 @@ struct MomentEntryView: View {
         let finalImageData: Data?
         
         if contentType == .color {
-            finalImageData = createColorImage(colorName: selectedColorName)
+            finalImageData = createColorImage(color: selectedColor)
         } else {
             finalImageData = imageData
         }
@@ -389,7 +401,6 @@ struct MomentEntryView: View {
         title = draft.title
         note = draft.note
         imageData = draft.imageData
-        selectedColorName = draft.selectedColorName ?? "Ember"
         contentType = draft.contentType == "color" ? .color : .photo
         isLocked = draft.isLocked
     }
@@ -407,7 +418,7 @@ struct MomentEntryView: View {
             title: title,
             note: note,
             imageData: imageData,
-            selectedColorName: selectedColorName,
+            selectedColorName: nil,
             contentType: contentType == .color ? "color" : "photo",
             isLocked: isLocked
         )
@@ -422,12 +433,12 @@ struct MomentEntryView: View {
         existingDraft = nil
     }
     
-    private func createColorImage(colorName: String) -> Data? {
+    private func createColorImage(color: Color) -> Data? {
         let size = CGSize(width: 500, height: 500)
         let renderer = UIGraphicsImageRenderer(size: size)
         
         let image = renderer.image { context in
-            UIColor(Color(colorName)).setFill()
+            UIColor(color).setFill()
             context.fill(CGRect(origin: .zero, size: size))
         }
         
@@ -506,54 +517,8 @@ struct SaveConfirmationView: View {
     }
 }
 
-struct ColorOption: View {
-    let colorName: String
-    let isSelected: Bool
-    
-    let lightColors = ["Pearl", "Lavender", "Sky", "Rose"]
-    
-    var borderColor: Color {
-        if lightColors.contains(colorName) {
-            return Color.gray.opacity(0.3)
-        }
-        return Color.white.opacity(0.2)
-    }
-    
-    var checkmarkColor: Color {
-        if lightColors.contains(colorName) {
-            return Color.black
-        }
-        return Color.white
-    }
-    
-    var body: some View {
-        VStack(spacing: 8) {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color(colorName))
-                .frame(height: 80)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .strokeBorder(borderColor, lineWidth: 1)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .strokeBorder(Color.primary, lineWidth: isSelected ? 3 : 0)
-                )
-                .overlay(
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.title)
-                        .foregroundStyle(checkmarkColor)
-                        .opacity(isSelected ? 1 : 0)
-                )
-            
-            Text(colorName)
-                .font(.caption)
-                .foregroundStyle(isSelected ? .primary : .secondary)
-        }
-    }
-}
-
 #Preview {
     MomentEntryView()
         .sampleDataContainer()
 }
+

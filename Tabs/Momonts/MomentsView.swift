@@ -184,7 +184,7 @@ struct MomentsView: View {
         let size = isLarge ? HexagonLayout.large.size : HexagonLayout.standard.size
         
         ZStack {
-            Color(hex: "FF6B35")
+            Color("FF6B35")
                 .opacity(0.95)
             
             VStack(spacing: isLarge ? 8 : 4) {

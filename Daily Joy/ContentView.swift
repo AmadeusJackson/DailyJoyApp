@@ -9,62 +9,80 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+
+    // ✅ Explicit initializer to remove SwiftData ambiguity
+    init() {}
+
     @State private var celebrationBadge: Badge?
     @State private var showCelebration = false
     @State private var completedChallenge: String?
     @State private var showChallengeCelebration = false
-    
+
     @Query private var allMoments: [Moment]
-    
-    // Check if there are any memory lane moments
+
+    // MARK: - Memory Lane Check
     var hasMemories: Bool {
         let calendar = Calendar.current
         let today = Date()
+
         let currentDay = calendar.component(.day, from: today)
         let currentMonth = calendar.component(.month, from: today)
         let currentYear = calendar.component(.year, from: today)
-        
+
         return allMoments.contains { moment in
             let momentDay = calendar.component(.day, from: moment.timestamp)
             let momentMonth = calendar.component(.month, from: moment.timestamp)
             let momentYear = calendar.component(.year, from: moment.timestamp)
-            
+
             return momentDay == currentDay &&
                    momentMonth == currentMonth &&
                    momentYear < currentYear
         }
     }
-    
+
+    // MARK: - UI
     var body: some View {
         TabView {
-            Tab("Moments", systemImage: "heart.text.square.fill") {
-                MomentsView()
-            }
-            
-            Tab("Challenges", systemImage: "star.circle.fill") {
-                ChallengesView()
-            }
-            
-            // Only show Memory Lane tab if there are memories
-            if hasMemories {
-                Tab("Memory Lane", systemImage: "clock.arrow.circlepath") {
-                    MemoryLaneFullView()
+
+            MomentsView()
+                .tabItem {
+                    Label("Moments", systemImage: "heart.text.square.fill")
                 }
+
+            DailyChallengesView()
+                .tabItem {
+                    Label("Challenges", systemImage: "star.circle.fill")
+                }
+
+            if hasMemories {
+                MemoryLaneFullView()
+                    .tabItem {
+                        Label("Memory Lane", systemImage: "clock.arrow.circlepath")
+                    }
             }
-            
-            Tab("Achievements", systemImage: "medal.fill") {
-                AchievementsView()
-            }
+
+            AchievementsView()
+                .tabItem {
+                    Label("Achievements", systemImage: "medal.fill")
+                }
         }
-        .badgeCelebration(badge: celebrationBadge, isPresented: $showCelebration)
-        .challengeCelebration(challenge: completedChallenge, isPresented: $showChallengeCelebration)
-        .onReceive(NotificationCenter.default.publisher(for: .badgeUnlocked)) { notification in
+        .badgeCelebration(
+            badge: celebrationBadge,
+            isPresented: $showCelebration
+        )
+        .challengeCelebration(
+            challenge: completedChallenge,
+            isPresented: $showChallengeCelebration
+        )
+        .onReceive(NotificationCenter.default.publisher(for: .badgeUnlocked)) {
+            notification in
             if let badge = notification.object as? Badge {
                 celebrationBadge = badge
                 showCelebration = true
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: .challengeCompleted)) { notification in
+        .onReceive(NotificationCenter.default.publisher(for: .challengeCompleted)) {
+            notification in
             if let challenge = notification.object as? String {
                 completedChallenge = challenge
                 showChallengeCelebration = true
@@ -73,33 +91,39 @@ struct ContentView: View {
     }
 }
 
-// MARK: - Full Memory Lane View (for dedicated tab)
+// MARK: - Memory Lane Full View
 struct MemoryLaneFullView: View {
+
+    init() {}
+
     @Query private var allMoments: [Moment]
-    
+
     var memoryMoments: [Moment] {
         let calendar = Calendar.current
         let today = Date()
+
         let currentDay = calendar.component(.day, from: today)
         let currentMonth = calendar.component(.month, from: today)
-        
-        return allMoments.filter { moment in
-            let momentDay = calendar.component(.day, from: moment.timestamp)
-            let momentMonth = calendar.component(.month, from: moment.timestamp)
-            let momentYear = calendar.component(.year, from: moment.timestamp)
-            let currentYear = calendar.component(.year, from: today)
-            
-            return momentDay == currentDay &&
-                   momentMonth == currentMonth &&
-                   momentYear < currentYear
-        }.sorted { $0.timestamp > $1.timestamp }
+        let currentYear = calendar.component(.year, from: today)
+
+        return allMoments
+            .filter { moment in
+                let day = calendar.component(.day, from: moment.timestamp)
+                let month = calendar.component(.month, from: moment.timestamp)
+                let year = calendar.component(.year, from: moment.timestamp)
+
+                return day == currentDay &&
+                       month == currentMonth &&
+                       year < currentYear
+            }
+            .sorted { $0.timestamp > $1.timestamp }
     }
-    
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    // Header with icon and description
+
                     VStack(spacing: 12) {
                         Image(systemName: "clock.arrow.circlepath")
                             .font(.system(size: 60))
@@ -110,43 +134,20 @@ struct MemoryLaneFullView: View {
                                     endPoint: .bottomTrailing
                                 )
                             )
-                        
+
                         Text("On This Day")
                             .font(.largeTitle.bold())
-                        
-                        Text("Revisit your grateful moments from past years on this very day.")
+
+                        Text("Revisit your grateful moments from past years.")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal)
                     }
-                    .padding(.top, 20)
-                    
-                    // Stats section - using StatBadge from SharedComponents
-                    HStack(spacing: 20) {
-                        StatBadge(
-                            value: "\(memoryMoments.count)",
-                            label: memoryMoments.count == 1 ? "Memory" : "Memories",
-                            icon: "sparkles",
-                            color: .purple
-                        )
-                        
-                        if let oldest = memoryMoments.last {
-                            let yearsAgo = Calendar.current.dateComponents([.year], from: oldest.timestamp, to: Date()).year ?? 0
-                            StatBadge(
-                                value: "\(yearsAgo)",
-                                label: yearsAgo == 1 ? "Year Ago" : "Years Ago",
-                                icon: "calendar",
-                                color: .blue
-                            )
-                        }
-                    }
-                    .padding(.horizontal)
-                    
+                    .padding(.top)
+
                     Divider()
-                        .padding(.vertical)
-                    
-                    // Memory cards
+
                     LazyVStack(spacing: 16) {
                         ForEach(memoryMoments) { moment in
                             MemoryCardFull(moment: moment)
@@ -162,162 +163,56 @@ struct MemoryLaneFullView: View {
     }
 }
 
-// MARK: - Full Memory Card
+// MARK: - Memory Card
 struct MemoryCardFull: View {
+
     let moment: Moment
-    
+
     var yearsAgo: Int {
-        let calendar = Calendar.current
-        let years = calendar.dateComponents([.year], from: moment.timestamp, to: Date())
-        return years.year ?? 0
+        Calendar.current
+            .dateComponents([.year], from: moment.timestamp, to: Date())
+            .year ?? 0
     }
-    
+
     var body: some View {
         NavigationLink {
-            if moment.isLocked {
-                LockedEntryView(moment: moment)
-            } else {
-                MomentDetailView(moment: moment)
-            }
+            moment.isLocked
+                ? AnyView(LockedEntryView(moment: moment))
+                : AnyView(MomentDetailView(moment: moment))
         } label: {
-            VStack(alignment: .leading, spacing: 16) {
-                HStack(spacing: 8) {
-                    // Years ago badge
-                    HStack {
-                        Image(systemName: "calendar.badge.clock")
-                            .font(.caption)
-                        Text("\(yearsAgo) \(yearsAgo == 1 ? "year" : "years") ago")
-                            .font(.caption.bold())
-                    }
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
+            VStack(alignment: .leading, spacing: 12) {
+
+                Text("\(yearsAgo) \(yearsAgo == 1 ? "Year" : "Years") Ago")
+                    .font(.caption.bold())
+                    .foregroundColor(.white)
+                    .padding(6)
                     .background(
-                        Capsule()
-                            .fill(
-                                LinearGradient(
-                                    colors: [.purple, .blue],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
+                        Capsule().fill(Color.blue)
                     )
-                    
-                    // Lock badge for locked moments
-                    if moment.isLocked {
-                        HStack {
-                            Image(systemName: "lock.fill")
-                                .font(.caption)
-                            Text("Locked")
-                                .font(.caption.bold())
-                        }
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(
-                            Capsule()
-                                .fill(Color.blue)
-                        )
-                    }
+
+                Text(moment.title)
+                    .font(.title3.bold())
+                    .blur(radius: moment.isLocked ? 5 : 0)
+
+                if !moment.note.isEmpty {
+                    Text(moment.note)
+                        .font(.body)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(4)
+                        .blur(radius: moment.isLocked ? 5 : 0)
                 }
-                
-                // Image or color preview with lock overlay
-                ZStack {
-                    if let imageData = moment.imageData,
-                       let uiImage = UIImage(data: imageData) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(height: 250)
-                            .clipped()
-                            .cornerRadius(16)
-                    } else {
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.gray.opacity(0.2))
-                            .frame(height: 250)
-                            .overlay(
-                                Image(systemName: "photo")
-                                    .font(.system(size: 60))
-                                    .foregroundStyle(.gray)
-                            )
-                    }
-                    
-                    // Blur/tint overlay for locked moments
-                    if moment.isLocked {
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color(hex: "0000FF").opacity(0.85))
-                            .frame(height: 250)
-                        
-                        VStack(spacing: 12) {
-                            Image(systemName: "lock.fill")
-                                .font(.system(size: 50, weight: .bold))
-                                .foregroundColor(.white)
-                            
-                            Text("Locked Moment")
-                                .font(.title3.bold())
-                                .foregroundColor(.white)
-                            
-                            Text("Tap to unlock")
-                                .font(.caption)
-                                .foregroundColor(.white.opacity(0.9))
-                        }
-                    }
-                }
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    // Title - blur if locked
-                    if moment.isLocked {
-                        Text(moment.title)
-                            .font(.title3.bold())
-                            .foregroundStyle(.primary)
-                            .blur(radius: 5)
-                    } else {
-                        Text(moment.title)
-                            .font(.title3.bold())
-                            .foregroundStyle(.primary)
-                    }
-                    
-                    // Note - blur if locked
-                    if !moment.note.isEmpty {
-                        if moment.isLocked {
-                            Text(moment.note)
-                                .font(.body)
-                                .foregroundStyle(.secondary)
-                                .lineLimit(4)
-                                .blur(radius: 5)
-                        } else {
-                            Text(moment.note)
-                                .font(.body)
-                                .foregroundStyle(.secondary)
-                                .lineLimit(4)
-                        }
-                    }
-                    
-                    // Original date
-                    HStack {
-                        Image(systemName: "clock")
-                            .font(.caption2)
-                        Text(moment.timestamp, style: .date)
-                            .font(.caption)
-                    }
+
+                Text(moment.timestamp, style: .date)
+                    .font(.caption)
                     .foregroundStyle(.tertiary)
-                    .padding(.top, 4)
-                }
             }
             .padding()
             .background(
-                RoundedRectangle(cornerRadius: 20)
+                RoundedRectangle(cornerRadius: 16)
                     .fill(Color(.systemBackground))
-                    .shadow(color: .purple.opacity(0.1), radius: 10, x: 0, y: 5)
+                    .shadow(radius: 5)
             )
         }
         .buttonStyle(.plain)
     }
 }
-
-#Preview {
-    ContentView()
-        .sampleDataContainer()
-}
-
-

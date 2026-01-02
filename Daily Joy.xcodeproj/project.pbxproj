@@ -7,13 +7,6 @@
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
-		3F1896922EFF5FC200EE4376 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3F7DFE192EC7A89500D1CEE2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3F7DFE202EC7A89500D1CEE2;
-			remoteInfo = "Daily Joy";
-		};
 		3FF08A322ED86FAD001CB6CE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3F7DFE192EC7A89500D1CEE2 /* Project object */;
@@ -37,7 +30,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3F18968C2EFF5FC200EE4376 /* Daily JoyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Daily JoyUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F67A6E02ED9D71900D1BB24 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		3F67A6E22ED9D71900D1BB24 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		3F7DFE212EC7A89500D1CEE2 /* Daily Joy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Daily Joy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,7 +37,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		3F3BA9212ED3BCDE00297DE8 /* Exceptions for "Achievements" folder in "Daily Joy" target */ = {
+		3F0B9D1C2F05802800187337 /* Exceptions for "Achievements" folder in "Daily Joy" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AchievementsView.swift,
@@ -55,7 +47,7 @@
 			);
 			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;
 		};
-		3F7DFE462EC7AB8A00D1CEE2 /* Exceptions for "Momonts" folder in "Daily Joy" target */ = {
+		3F0B9D1D2F05802800187337 /* Exceptions for "Momonts" folder in "Daily Joy" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				MomentDetailView.swift,
@@ -70,11 +62,6 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		3F18968D2EFF5FC200EE4376 /* Daily JoyUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Daily JoyUITests";
-			sourceTree = "<group>";
-		};
 		3F7DFE232EC7A89500D1CEE2 /* Daily Joy */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Daily Joy";
@@ -83,7 +70,7 @@
 		3F7DFE412EC7AB5100D1CEE2 /* Achievements */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				3F3BA9212ED3BCDE00297DE8 /* Exceptions for "Achievements" folder in "Daily Joy" target */,
+				3F0B9D1C2F05802800187337 /* Exceptions for "Achievements" folder in "Daily Joy" target */,
 			);
 			path = Achievements;
 			sourceTree = "<group>";
@@ -91,7 +78,7 @@
 		3F7DFE422EC7AB5900D1CEE2 /* Momonts */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				3F7DFE462EC7AB8A00D1CEE2 /* Exceptions for "Momonts" folder in "Daily Joy" target */,
+				3F0B9D1D2F05802800187337 /* Exceptions for "Momonts" folder in "Daily Joy" target */,
 			);
 			path = Momonts;
 			sourceTree = "<group>";
@@ -104,13 +91,6 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		3F1896892EFF5FC200EE4376 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3F7DFE1E2EC7A89500D1CEE2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -142,7 +122,6 @@
 			children = (
 				3F7DFE232EC7A89500D1CEE2 /* Daily Joy */,
 				3FF08A2F2ED86FAD001CB6CE /* Daily JoyTests */,
-				3F18968D2EFF5FC200EE4376 /* Daily JoyUITests */,
 				3F67A6DF2ED9D71900D1BB24 /* Frameworks */,
 				3F7DFE222EC7A89500D1CEE2 /* Products */,
 				3F7DFE402EC7AB4B00D1CEE2 /* Tabs */,
@@ -154,7 +133,6 @@
 			children = (
 				3F7DFE212EC7A89500D1CEE2 /* Daily Joy.app */,
 				3FF08A2E2ED86FAD001CB6CE /* Daily JoyTests.xctest */,
-				3F18968C2EFF5FC200EE4376 /* Daily JoyUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -171,29 +149,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3F18968B2EFF5FC200EE4376 /* Daily JoyUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3F1896942EFF5FC200EE4376 /* Build configuration list for PBXNativeTarget "Daily JoyUITests" */;
-			buildPhases = (
-				3F1896882EFF5FC200EE4376 /* Sources */,
-				3F1896892EFF5FC200EE4376 /* Frameworks */,
-				3F18968A2EFF5FC200EE4376 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				3F1896932EFF5FC200EE4376 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				3F18968D2EFF5FC200EE4376 /* Daily JoyUITests */,
-			);
-			name = "Daily JoyUITests";
-			packageProductDependencies = (
-			);
-			productName = "Daily JoyUITests";
-			productReference = 3F18968C2EFF5FC200EE4376 /* Daily JoyUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		3F7DFE202EC7A89500D1CEE2 /* Daily Joy */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3F7DFE2C2EC7A89600D1CEE2 /* Build configuration list for PBXNativeTarget "Daily Joy" */;
@@ -248,12 +203,8 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2610;
-				LastUpgradeCheck = 2610;
+				LastUpgradeCheck = 2620;
 				TargetAttributes = {
-					3F18968B2EFF5FC200EE4376 = {
-						CreatedOnToolsVersion = 26.1.1;
-						TestTargetID = 3F7DFE202EC7A89500D1CEE2;
-					};
 					3F7DFE202EC7A89500D1CEE2 = {
 						CreatedOnToolsVersion = 26.1;
 					};
@@ -279,19 +230,11 @@
 			targets = (
 				3F7DFE202EC7A89500D1CEE2 /* Daily Joy */,
 				3FF08A2D2ED86FAD001CB6CE /* Daily JoyTests */,
-				3F18968B2EFF5FC200EE4376 /* Daily JoyUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		3F18968A2EFF5FC200EE4376 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3F7DFE1F2EC7A89500D1CEE2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -309,13 +252,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		3F1896882EFF5FC200EE4376 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3F7DFE1D2EC7A89500D1CEE2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -333,11 +269,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		3F1896932EFF5FC200EE4376 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;
-			targetProxy = 3F1896922EFF5FC200EE4376 /* PBXContainerItemProxy */;
-		};
 		3FF08A332ED86FAD001CB6CE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;
@@ -346,48 +277,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		3F1896952EFF5FC200EE4376 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XPACNBKTU8;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "name.amadeusjackson.Daily-JoyUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Daily Joy";
-			};
-			name = Debug;
-		};
-		3F1896962EFF5FC200EE4376 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XPACNBKTU8;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "name.amadeusjackson.Daily-JoyUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Daily Joy";
-			};
-			name = Release;
-		};
 		3F7DFE2A2EC7A89600D1CEE2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -447,6 +336,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -504,6 +394,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -638,15 +529,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3F1896942EFF5FC200EE4376 /* Build configuration list for PBXNativeTarget "Daily JoyUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3F1896952EFF5FC200EE4376 /* Debug */,
-				3F1896962EFF5FC200EE4376 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		3F7DFE1C2EC7A89500D1CEE2 /* Build configuration list for PBXProject "Daily Joy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
