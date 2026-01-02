@@ -226,7 +226,7 @@ struct MomentEntryView: View {
                 }
             }
             .sheet(isPresented: $showColorPicker) {
-                ColorPickerSheet(selectedColor: $selectedColor)
+                MomentColorPicker(selectedColor: $selectedColor)
             }
             .alert("Continue Draft?", isPresented: $showDraftAlert) {
                 Button("Continue") {
