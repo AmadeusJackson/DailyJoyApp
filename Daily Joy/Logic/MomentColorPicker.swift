@@ -11,7 +11,7 @@
 
 import SwiftUI
 
-struct ColorPickerSheetView: View {
+struct MomentColorPicker: View {
     @Binding var selectedColor: Color
     @Environment(\.dismiss) private var dismiss
     
@@ -244,6 +244,6 @@ extension Color {
 }
 
 #Preview {
-    ColorPickerSheetView(selectedColor: .constant(Color(hue: 0.0, saturation: 0.8, brightness: 0.9)))
+    MomentColorPicker(selectedColor: .constant(Color(hue: 0.0, saturation: 0.8, brightness: 0.9)))
 }
 
