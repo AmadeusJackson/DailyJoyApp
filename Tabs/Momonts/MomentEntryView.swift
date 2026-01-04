@@ -18,7 +18,7 @@ struct MomentEntryView: View {
     @State private var existingDraft: Draft?
     
     @State private var contentType: ContentType = .photo
-    @State private var selectedColor: Color = Color(hue: 0.0, saturation: 0.8, brightness: 0.9)
+    @State private var selectedColor: Color = Color(white: 0.4, opacity: 0.32)
     @State private var showColorPicker = false
     
     // TEMPORARY - For testing Memory Lane (COMMENTED OUT FOR SUBMISSION)
@@ -273,7 +273,7 @@ struct MomentEntryView: View {
                         .scaledToFit()
                 } else {
                     VStack(spacing: 12) {
-                        Image(systemName: "photo.badge.plus.fill")
+                        Image(systemName: "photo.fill")
                             .font(.largeTitle)
                             .foregroundStyle(Color("Ember"))
                         Text("Add Photo")
@@ -299,18 +299,24 @@ struct MomentEntryView: View {
         Button {
             showColorPicker = true
         } label: {
-            VStack(spacing: 12) {
-                Image(systemName: "paintpalette.fill")
-                    .font(.largeTitle)
-                    .foregroundStyle(Color("Ember"))
-                Text("Add Color")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+            ZStack {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(selectedColor)
+                    .frame(height: 250)
+                
+                // Only show icon and text if still using default gray
+                if selectedColor == Color(white: 0.4, opacity: 0.32) {
+                    VStack(spacing: 12) {
+                        Image(systemName: "paintpalette.fill")
+                            .font(.largeTitle)
+                            .foregroundStyle(Color("Ember"))
+                        Text("Add Color")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color("Ember"))
+                    }
+                }
             }
-            .frame(height: 250)
-            .frame(maxWidth: .infinity)
-            .background(selectedColor)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
         }
         .buttonStyle(.plain)
     }
