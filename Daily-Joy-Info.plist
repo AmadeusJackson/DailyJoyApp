@@ -19,6 +19,8 @@
 	</array>
 	<key>NSSupportsAppIntentsIntents</key>
 	<true/>
+	<key>Privacy-Photo Library Usage Description</key>
+	<string>Allow selecting photos for moments</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict/>

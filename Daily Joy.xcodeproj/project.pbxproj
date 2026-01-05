@@ -50,6 +50,7 @@
 		3F0B9D1D2F05802800187337 /* Exceptions for "Momonts" folder in "Daily Joy" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				CameraPicker.swift,
 				MomentDetailView.swift,
 				MomentEntryView.swift,
 				MomentHexagonView.swift,
@@ -414,8 +415,9 @@
 				INFOPLIST_FILE = "Daily-Joy-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Daily Joy";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "\"We need Face ID to unlock your private moments\"";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "\"Daily Joy needs microphone access to record your voice for moment logging.\"";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow taking photos for moments";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need Face ID to unlock your private moments";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Daily Joy needs microphone access to record your voice for moment logging.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "\"Daily Joy uses speech recognition to let you quickly capture grateful moments by voice.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -423,7 +425,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.7.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -455,8 +457,9 @@
 				INFOPLIST_FILE = "Daily-Joy-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Daily Joy";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "\"We need Face ID to unlock your private moments\"";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "\"Daily Joy needs microphone access to record your voice for moment logging.\"";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow taking photos for moments";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need Face ID to unlock your private moments";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Daily Joy needs microphone access to record your voice for moment logging.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "\"Daily Joy uses speech recognition to let you quickly capture grateful moments by voice.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -464,7 +467,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.7.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

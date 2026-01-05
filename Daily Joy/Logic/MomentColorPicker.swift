@@ -154,7 +154,7 @@ struct MomentColorPicker: View {
                                         .fill(color)
                                         .frame(width: 30, height: 30)
                                         .overlay(
-                                            RoundedRectangle(cornerRadius: 8)
+                                            RoundedRectangle(cornerRadius: 30, style: .continuous)
                                                 .strokeBorder(.white, lineWidth: 2)
                                                 .opacity(selectedColor.isApproximately(color) ? 1 : 0)
                                         )
@@ -237,6 +237,8 @@ struct MomentColorPicker: View {
                             }
                         }
                     }
+                    .frame(maxWidth: 400)
+                    .frame(maxWidth: 350)
                     .padding(.horizontal)
                     .padding(.bottom)
                 }

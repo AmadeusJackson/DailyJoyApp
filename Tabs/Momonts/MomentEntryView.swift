@@ -21,6 +21,10 @@ struct MomentEntryView: View {
     @State private var selectedColor: Color = Color(white: 0.4, opacity: 0.32)
     @State private var showColorPicker = false
     
+    // NEW: Camera support
+    @State private var showCamera = false
+    @State private var showPhotoSourcePicker = false
+    
     // TEMPORARY - For testing Memory Lane (COMMENTED OUT FOR SUBMISSION)
 //    @State private var customDate = Date()
 //    @State private var useCustomDate = false
@@ -228,6 +232,9 @@ struct MomentEntryView: View {
             .sheet(isPresented: $showColorPicker) {
                 MomentColorPicker(selectedColor: $selectedColor)
             }
+            .sheet(isPresented: $showCamera) {
+                CameraPicker(imageData: $imageData)
+            }
             .alert("Continue Draft?", isPresented: $showDraftAlert) {
                 Button("Continue") {
                     if let draft = existingDraft {
@@ -265,7 +272,9 @@ struct MomentEntryView: View {
     }
     
     private var photoPicker: some View {
-        PhotosPicker(selection: $newImage) {
+        Button {
+            showPhotoSourcePicker = true
+        } label: {
             Group {
                 if let imageData, let uiImage = UIImage(data: imageData) {
                     Image(uiImage: uiImage)
@@ -286,6 +295,18 @@ struct MomentEntryView: View {
                 }
             }
             .clipShape(RoundedRectangle(cornerRadius: 16))
+        }
+        .buttonStyle(.plain)
+        .confirmationDialog("Choose Photo Source", isPresented: $showPhotoSourcePicker) {
+            Button("Take Photo") {
+                showCamera = true
+            }
+            
+            PhotosPicker(selection: $newImage) {
+                Text("Choose from Library")
+            }
+            
+            Button("Cancel", role: .cancel) {}
         }
         .onChange(of: newImage) { _, newValue in
             guard let newValue else { return }
@@ -313,7 +334,6 @@ struct MomentEntryView: View {
                         Text("Add Color")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
-                            .foregroundStyle(Color("Ember"))
                     }
                 }
             }
