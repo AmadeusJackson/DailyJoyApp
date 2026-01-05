@@ -21,50 +21,109 @@ struct MomentColorPicker: View {
     
     // Color grid - similar to iOS system picker
     let colorGrid: [[Color]] = [
-        // Row 1 - Reds to Oranges
+        // Row 1 - Blacks and Whites
         [
-            Color(hue: 0.0, saturation: 0.9, brightness: 0.9),
-            Color(hue: 0.03, saturation: 0.9, brightness: 0.9),
-            Color(hue: 0.05, saturation: 0.9, brightness: 0.9),
-            Color(hue: 0.08, saturation: 0.9, brightness: 0.9),
-            Color(hue: 0.1, saturation: 0.9, brightness: 0.9),
-            Color(hue: 0.12, saturation: 0.9, brightness: 0.9),
+            Color("Black"),
+            Color("Tundora"),
+            Color("Dove Gray"),
+            Color("Dusty Gray"),
+            Color("Noble"),
+            Color("Silver"),
+            Color("Alto"),
+            Color("Gallery"),
+            Color("Concrete"),
+            Color("White")
         ],
-        // Row 2 - Yellows to Greens
+        // Row 2
         [
-            Color(hue: 0.15, saturation: 0.9, brightness: 0.95),
-            Color(hue: 0.2, saturation: 0.8, brightness: 0.9),
-            Color(hue: 0.25, saturation: 0.8, brightness: 0.85),
-            Color(hue: 0.3, saturation: 0.8, brightness: 0.8),
-            Color(hue: 0.33, saturation: 0.8, brightness: 0.75),
-            Color(hue: 0.38, saturation: 0.8, brightness: 0.7),
+            Color("Red Berry"),
+            Color("Red"),
+            Color("California"),
+            Color("Yellow"),
+            Color("Green"),
+            Color("Cyan"),
+            Color("Cornflower Blue"),
+            Color("Blue"),
+            Color("Electric Violet"),
+            Color("Magenta")
         ],
-        // Row 3 - Cyans to Blues
+        // Row 3
         [
-            Color(hue: 0.5, saturation: 0.8, brightness: 0.9),
-            Color(hue: 0.53, saturation: 0.8, brightness: 0.9),
-            Color(hue: 0.58, saturation: 0.8, brightness: 0.85),
-            Color(hue: 0.6, saturation: 0.85, brightness: 0.8),
-            Color(hue: 0.63, saturation: 0.85, brightness: 0.75),
-            Color(hue: 0.65, saturation: 0.85, brightness: 0.75),
+            Color("Shilo"),
+            Color("Beauty Bush"),
+            Color("Double Pearl Lusta"),
+            Color("Barley White"),
+            Color("Zanah"),
+            Color("Geyser"),
+            Color("Tropical Blue"),
+            Color("Link Water"),
+            Color("Snuff"),
+            Color("Melanie")
         ],
-        // Row 4 - Purples to Pinks
+        // Row 4
         [
-            Color(hue: 0.7, saturation: 0.8, brightness: 0.85),
-            Color(hue: 0.75, saturation: 0.7, brightness: 0.85),
-            Color(hue: 0.8, saturation: 0.7, brightness: 0.9),
-            Color(hue: 0.85, saturation: 0.6, brightness: 0.95),
-            Color(hue: 0.9, saturation: 0.6, brightness: 0.95),
-            Color(hue: 0.95, saturation: 0.7, brightness: 0.9),
+            Color("Japonica"),
+            Color("Sea Pink"),
+            Color("Corvette"),
+            Color("Cream Brulee"),
+            Color("Sprout"),
+            Color("Opal"),
+            Color("Perano"),
+            Color("Cornflower"),
+            Color("Wistful"),
+            Color("Careys Pink"),
         ],
-        // Row 5 - Grays
+        // Row 5
         [
-            Color(hue: 0.0, saturation: 0.0, brightness: 0.2),
-            Color(hue: 0.0, saturation: 0.0, brightness: 0.35),
-            Color(hue: 0.0, saturation: 0.0, brightness: 0.5),
-            Color(hue: 0.0, saturation: 0.0, brightness: 0.65),
-            Color(hue: 0.0, saturation: 0.0, brightness: 0.8),
-            Color(hue: 0.0, saturation: 0.0, brightness: 0.95),
+            Color("Punch"),
+            Color("Sunglo"),
+            Color("Rajah"),
+            Color("Dandelion"),
+            Color("Olivine"),
+            Color("Gulf Stream"),
+            Color("Cornflower Blue"),
+            Color("Havelock Blue"),
+            Color("Purple Mountain's Majesty"),
+            Color("Viola")
+        ],
+        // Row 6
+        [
+            Color("Milano Red"),
+            Color("Guardsman Red"),
+            Color("Fire Bush"),
+            Color("Saffron"),
+            Color("Chelsea Cucumber"),
+            Color("Wedgewood"),
+            Color("Royal Blue"),
+            Color("Boston Blue"),
+            Color("Butterfly Bush"),
+            Color("Cadillac")
+        ],
+        // Row 7
+        [
+            Color("Tamarillo"),
+            Color("Red Berry"),
+            Color("Mai Tai"),
+            Color("Pirate Gold"),
+            Color("Forest Green"),
+            Color("Eden"),
+            Color("Denim"),
+            Color("Venice Blue"),
+            Color("Meteorite"),
+            Color("Claret"),
+        ],
+        // Row 8
+        [
+            Color("Rosewood"),
+            Color("Lonestar"),
+            Color("Peru Tan"),
+            Color("Olive"),
+            Color("Green House"),
+            Color("Elephant"),
+            Color("Chathams Blue"),
+            Color("Deep Sapphire"),
+            Color("Valentino"),
+            Color("Loulou"),
         ]
     ]
     
@@ -73,7 +132,7 @@ struct MomentColorPicker: View {
             ScrollView {
                 VStack(spacing: 32) {
                     // Selected color preview
-                    RoundedRectangle(cornerRadius: 20)
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .fill(selectedColor)
                         .frame(height: 120)
                         .overlay(
@@ -91,9 +150,9 @@ struct MomentColorPicker: View {
                                 ForEach(0..<colorGrid[rowIndex].count, id: \.self) { colIndex in
                                     let color = colorGrid[rowIndex][colIndex]
                                     
-                                    RoundedRectangle(cornerRadius: 8)
+                                    RoundedRectangle(cornerRadius: 30, style: .continuous)
                                         .fill(color)
-                                        .frame(height: 50)
+                                        .frame(width: 30, height: 30)
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 8)
                                                 .strokeBorder(.white, lineWidth: 2)
