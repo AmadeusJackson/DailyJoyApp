@@ -6,24 +6,27 @@ import SwiftUI
 import PhotosUI
 import SwiftData
 internal import Speech
+import Photos
+import AVFoundation
 
 struct MomentEntryView: View {
     @State private var title = ""
     @State private var note = ""
     @State private var imageData: Data?
-    @State private var newImage: PhotosPickerItem?
     @State private var isShowingCancelConfirmation = false
     @State private var isLocked: Bool = false
     @State private var showDraftAlert = false
     @State private var existingDraft: Draft?
-    
+    @State private var showPhotoOptions = false
     @State private var contentType: ContentType = .photo
     @State private var selectedColor: Color = Color(white: 0.4, opacity: 0.32)
     @State private var showColorPicker = false
     
+    @State private var showPhotoLibrary = false // Added line
+    @State private var showCameraPermissionAlert = false
+    
     // NEW: Camera support
     @State private var showCamera = false
-    @State private var showPhotoSourcePicker = false
     
     // TEMPORARY - For testing Memory Lane (COMMENTED OUT FOR SUBMISSION)
 //    @State private var customDate = Date()
@@ -51,57 +54,64 @@ struct MomentEntryView: View {
         case note
     }
     
+    private var titleSection: some View {
+        Section {
+            HStack {
+                TextField("What made you happy?", text: $title)
+                    .font(.headline)
+                    .focused($focusedField, equals: .title)
+                    .accessibilityLabel("Moment title")
+                    .accessibilityHint("Enter what made you happy today")
+
+                Button {
+                    handleVoiceInput()
+                } label: {
+                    Image(systemName: voiceManager.isRecording ? "stop.circle.fill" : "mic.circle.fill")
+                        .font(.title2)
+                        .foregroundStyle(voiceManager.isRecording ? .red : Color("Ember"))
+                        .symbolEffect(.pulse, options: .repeating, isActive: voiceManager.isRecording)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(voiceManager.isRecording ? "Stop recording" : "Record with voice")
+            }
+        } header: {
+            Text("Title (Required)")
+        } footer: {
+            if voiceManager.isRecording {
+                HStack {
+                    Image(systemName: "waveform")
+                        .symbolEffect(.variableColor.iterative, options: .repeating)
+                    Text("Listening...")
+                        .foregroundStyle(.secondary)
+                }
+                .font(.caption)
+            }
+        }
+    }
+
+    private var noteSection: some View {
+        Section {
+            TextEditor(text: $note)
+                .frame(minHeight: 100)
+                .focused($focusedField, equals: .note)
+                .accessibilityLabel("Moment note")
+                .accessibilityHint("Add additional details about this moment")
+        } header: {
+            Text("Note (Optional)")
+        } footer: {
+            Text("A title is enough! Add details only if you want to.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             ZStack {
                 Form {
-                    Section {
-                        HStack {
-                            TextField("What made you happy?", text: $title)
-                                .font(.headline)
-                                .focused($focusedField, equals: .title)
-                                .accessibilityLabel("Moment title")
-                                .accessibilityHint("Enter what made you happy today")
-                            
-                            // Voice input button
-                            Button {
-                                handleVoiceInput()
-                            } label: {
-                                Image(systemName: voiceManager.isRecording ? "stop.circle.fill" : "mic.circle.fill")
-                                    .font(.title2)
-                                    .foregroundStyle(voiceManager.isRecording ? .red : Color("Ember"))
-                                    .symbolEffect(.pulse, options: .repeating, isActive: voiceManager.isRecording)
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityLabel(voiceManager.isRecording ? "Stop recording" : "Record with voice")
-                        }
-                    } header: {
-                        Text("Title (Required)")
-                    } footer: {
-                        if voiceManager.isRecording {
-                            HStack {
-                                Image(systemName: "waveform")
-                                    .symbolEffect(.variableColor.iterative, options: .repeating)
-                                Text("Listening...")
-                                    .foregroundStyle(.secondary)
-                            }
-                            .font(.caption)
-                        }
-                    }
+                    titleSection
                     
-                    Section {
-                        TextEditor(text: $note)
-                            .frame(minHeight: 100)
-                            .focused($focusedField, equals: .note)
-                            .accessibilityLabel("Moment note")
-                            .accessibilityHint("Add additional details about this moment")
-                    } header: {
-                        Text("Note (Optional)")
-                    } footer: {
-                        Text("A title is enough! Add details only if you want to.")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
+                    noteSection
                     
                     Section {
                         Picker("Type", selection: $contentType) {
@@ -120,7 +130,7 @@ struct MomentEntryView: View {
                     
                     if contentType == .photo {
                         Section {
-                            photoPicker
+                            addPhotoView
                         } header: {
                             Text("Photo (Optional)")
                         }
@@ -165,7 +175,7 @@ struct MomentEntryView: View {
 //                        Text("🧪 Test: Custom Date")
 //                    }
 //                    #endif
-                }
+                }  
                 .scrollDismissesKeyboard(.immediately)
                 .blur(radius: showingSaveConfirmation ? 3 : 0)
                 .disabled(showingSaveConfirmation)
@@ -216,24 +226,15 @@ struct MomentEntryView: View {
                     .accessibilityLabel("Add moment")
                     .accessibilityHint(title.isEmpty ? "Enter a title first" : "Save this grateful moment")
                 }
-                
-                // NEW: Done button to dismiss keyboard (only shows when keyboard is visible)
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-                    Button {
-                        focusedField = nil
-                    } label: {
-                        Text("Done")
-                            .fontWeight(.semibold)
-                    }
-                    .tint(Color("Ember"))
-                }
             }
             .sheet(isPresented: $showColorPicker) {
                 MomentColorPicker(selectedColor: $selectedColor)
             }
-            .sheet(isPresented: $showCamera) {
+            .fullScreenCover(isPresented: $showCamera) {
                 CameraPicker(imageData: $imageData)
+            }
+            .sheet(isPresented: $showPhotoLibrary) {
+                PhotoLibraryPicker(imageData: $imageData)
             }
             .alert("Continue Draft?", isPresented: $showDraftAlert) {
                 Button("Continue") {
@@ -259,6 +260,16 @@ struct MomentEntryView: View {
             } message: {
                 Text("To use voice input, please enable microphone access in Settings.")
             }
+            .alert("Enable Camera", isPresented: $showCameraPermissionAlert) {
+                Button("Open Settings") {
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(url)
+                    }
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("To take a photo, please enable camera access in Settings.")
+            }
             .onChange(of: voiceManager.transcribedText) { oldValue, newValue in
                 // Auto-fill title with transcribed text
                 if !newValue.isEmpty && newValue != oldValue {
@@ -271,50 +282,83 @@ struct MomentEntryView: View {
         }
     }
     
-    private var photoPicker: some View {
-        Button {
-            showPhotoSourcePicker = true
-        } label: {
-            Group {
-                if let imageData, let uiImage = UIImage(data: imageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFit()
-                } else {
-                    VStack(spacing: 12) {
-                        Image(systemName: "photo.fill")
-                            .font(.largeTitle)
-                            .foregroundStyle(Color("Ember"))
-                        Text("Add Photo")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
+    private var addPhotoView: some View {
+        ZStack {
+            // 🔹 Your visible UI
+            Button {
+                showPhotoOptions = true
+            } label: {
+                Group {
+                    if let imageData,
+                       let uiImage = UIImage(data: imageData) {
+
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFit()
+
+                    } else {
+                        VStack(spacing: 12) {
+                            Image(systemName: "photo.fill")
+                                .font(.largeTitle)
+                                .foregroundStyle(Color("Ember"))
+
+                            Text("Add Photo")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+                        .frame(height: 250)
+                        .frame(maxWidth: .infinity)
+                        .background(Color(white: 0.4, opacity: 0.32))
                     }
-                    .frame(height: 250)
-                    .frame(maxWidth: .infinity)
-                    .background(Color(white: 0.4, opacity: 0.32))
                 }
+                .clipShape(RoundedRectangle(cornerRadius: 16))
             }
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-        }
-        .buttonStyle(.plain)
-        .confirmationDialog("Choose Photo Source", isPresented: $showPhotoSourcePicker) {
-            Button("Take Photo") {
-                showCamera = true
-            }
-            
-            PhotosPicker(selection: $newImage) {
-                Text("Choose from Library")
-            }
-            
-            Button("Cancel", role: .cancel) {}
-        }
-        .onChange(of: newImage) { _, newValue in
-            guard let newValue else { return }
-            Task {
-                imageData = try await newValue.loadTransferable(type: Data.self)
+            .confirmationDialog("Add Photo", isPresented: $showPhotoOptions) {
+                
+                Button("Take Photo") {
+                    showPhotoOptions = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                        let status = AVCaptureDevice.authorizationStatus(for: .video)
+                        switch status {
+                        case .authorized:
+                            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                                showCamera = true
+                            } else {
+                                // If no camera, fall back to photo library
+                                showPhotoLibrary = true
+                            }
+                        case .notDetermined:
+                            AVCaptureDevice.requestAccess(for: .video) { granted in
+                                DispatchQueue.main.async {
+                                    if granted {
+                                        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                                            showCamera = true
+                                        } else {
+                                            showPhotoLibrary = true
+                                        }
+                                    } else {
+                                        showCameraPermissionAlert = true
+                                    }
+                                }
+                            }
+                        case .denied, .restricted:
+                            showCameraPermissionAlert = true
+                        @unknown default:
+                            showCameraPermissionAlert = true
+                        }
+                    }
+                }
+                
+                Button("Choose from Photos") {
+                    showPhotoOptions = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                        showPhotoLibrary = true
+                    }
+                }
             }
         }
     }
+
     
     private var colorButton: some View {
         Button {
@@ -531,3 +575,4 @@ struct SaveConfirmationView: View {
     MomentEntryView()
         .sampleDataContainer()
 }
+

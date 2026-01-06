@@ -1,28 +1,19 @@
 //
-//  CameraPicker.swift
+//  PhotoLIbraryPicker.swift
 //  Daily Joy
 //
-//  Created by Amadeus Jackson on 1/5/26.
+//  Created by Amadeus Jackson on 1/6/26.
 //
-
-// Reminder: Don't forget to include NSCameraUsageDescription in Info.plist
 
 import SwiftUI
 import UIKit
 
-struct CameraPicker: UIViewControllerRepresentable {
+struct PhotoLibraryPicker: UIViewControllerRepresentable {
     @Binding var imageData: Data?
     
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
-        picker.mediaTypes = ["public.image"]
-        picker.allowsEditing = false
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            picker.sourceType = .camera
-        } else {
-            // Fallback to photo library if camera isn't available
-            picker.sourceType = .photoLibrary
-        }
+        picker.sourceType = .photoLibrary
         picker.delegate = context.coordinator
         return picker
     }
@@ -34,9 +25,9 @@ struct CameraPicker: UIViewControllerRepresentable {
     }
     
     class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-        let parent: CameraPicker
+        let parent: PhotoLibraryPicker
         
-        init(_ parent: CameraPicker) {
+        init(_ parent: PhotoLibraryPicker) {
             self.parent = parent
         }
         

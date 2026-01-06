@@ -55,6 +55,7 @@
 				MomentEntryView.swift,
 				MomentHexagonView.swift,
 				MomentsView.swift,
+				PhotoLibraryPicker.swift,
 				ReducedMotionHelper.swift,
 				VoiceLoggingManager.swift,
 			);
@@ -415,7 +416,7 @@
 				INFOPLIST_FILE = "Daily-Joy-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Daily Joy";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Allow taking photos for moments";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Daily Joy needs access to your photo library to select photos for your moments.";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need Face ID to unlock your private moments";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Daily Joy needs microphone access to record your voice for moment logging.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "\"Daily Joy uses speech recognition to let you quickly capture grateful moments by voice.\"";
@@ -457,7 +458,7 @@
 				INFOPLIST_FILE = "Daily-Joy-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Daily Joy";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Allow taking photos for moments";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Daily Joy needs access to your photo library to select photos for your moments.";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need Face ID to unlock your private moments";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Daily Joy needs microphone access to record your voice for moment logging.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "\"Daily Joy uses speech recognition to let you quickly capture grateful moments by voice.\"";
