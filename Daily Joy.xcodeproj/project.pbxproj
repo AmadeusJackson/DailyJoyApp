@@ -51,6 +51,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CameraPicker.swift,
+				Colors.swift,
 				MomentDetailView.swift,
 				MomentEntryView.swift,
 				MomentHexagonView.swift,

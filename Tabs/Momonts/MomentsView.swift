@@ -184,7 +184,7 @@ struct MomentsView: View {
         let size = isLarge ? HexagonLayout.large.size : HexagonLayout.standard.size
         
         ZStack {
-            Color("FF6B35")
+            Color.lockOverlay
                 .opacity(0.95)
             
             VStack(spacing: isLarge ? 8 : 4) {
@@ -197,12 +197,12 @@ struct MomentsView: View {
                     .foregroundColor(.white)
             }
         }
+        .compositingGroup()
         .mask {
             Image(systemName: "hexagon.fill")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: size - 2.0, height: size - 2.0)
-                .fontWeight(.ultraLight)
         }
     }
 
@@ -248,3 +248,4 @@ struct MomentsView: View {
         .modelContainer(for: [Moment.self])
         .environment(DataContainer())
 }
+
