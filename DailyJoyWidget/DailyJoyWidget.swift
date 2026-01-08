@@ -9,6 +9,34 @@ import WidgetKit
 import SwiftUI
 import SwiftData
 
+// MARK: - Color Extension for Hex
+extension Color {
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let a, r, g, b: UInt64
+        switch hex.count {
+        case 3: // RGB (12-bit)
+            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+        case 6: // RGB (24-bit)
+            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        case 8: // ARGB (32-bit)
+            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        default:
+            (a, r, g, b) = (1, 1, 1, 0)
+        }
+
+        self.init(
+            .sRGB,
+            red: Double(r) / 255,
+            green: Double(g) / 255,
+            blue:  Double(b) / 255,
+            opacity: Double(a) / 255
+        )
+    }
+}
+
 // MARK: - Widget Entry
 struct DailyJoyEntry: TimelineEntry {
     let date: Date
@@ -17,7 +45,7 @@ struct DailyJoyEntry: TimelineEntry {
 }
 
 // MARK: - Timeline Provider
-struct DailyJoyProvider: @MainActor TimelineProvider {
+struct DailyJoyProvider: TimelineProvider {
     func placeholder(in context: Context) -> DailyJoyEntry {
         DailyJoyEntry(date: Date(), streakDays: 7, hasLoggedToday: true)
     }
@@ -75,23 +103,31 @@ struct SmallStreakWidgetView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [Color.orange.opacity(0.6), Color.red.opacity(0.6)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
+            // Ember background
+            Color(hex: "#fe7d00")
             
             VStack(spacing: 8) {
-                Text("🔥")
-                    .font(.system(size: 40))
-                
-                Text("\(entry.streakDays)")
-                    .font(.system(size: 36, weight: .bold, design: .rounded))
-                    .foregroundColor(.white)
+                // Fire emoji with number cutout
+                ZStack {
+                    Text("🔥")
+                        .font(.system(size: 80))
+                }
+                .mask {
+                    ZStack {
+                        Rectangle()
+                            .fill(.black)
+                        
+                        Text("\(entry.streakDays)")
+                            .font(.system(size: 32, weight: .black, design: .rounded))
+                            .blendMode(.destinationOut)
+                            .offset(y: 18)
+                    }
+                    .compositingGroup()
+                }
                 
                 Text("Streak")
-                    .font(.caption2)
-                    .foregroundColor(.white.opacity(0.9))
+                    .font(.headline)
+                    .foregroundColor(.white)
             }
         }
     }
@@ -103,25 +139,35 @@ struct MediumWidgetView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [Color.orange.opacity(0.6), Color.red.opacity(0.6)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
+            // Ember background
+            Color(hex: "#fe7d00")
             
-            HStack(spacing: 8) {
-                // Streak Section
-                VStack(spacing: 4) {
-                    Text("🔥")
-                        .font(.system(size: 44))
-                    
-                    Text("\(entry.streakDays)")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundColor(.white)
+            HStack(spacing: 20) {
+                // Streak Section with flame and cutout number
+                VStack(spacing: 8) {
+                    ZStack {
+                        Text("🔥")
+                            .font(.system(size: 80))
+                            .foregroundColor(.white)
+                            .blendMode(.normal)
+                    }
+                    .mask {
+                        ZStack {
+                            Rectangle()
+                                .fill(.black)
+                            
+                            Text("\(entry.streakDays)")
+                                .font(.system(size: 28, weight: .black, design: .rounded))
+                                .blendMode(.destinationOut)
+                                .offset(y: 18)
+                                .foregroundStyle(.white)
+                        }
+                        .compositingGroup()
+                    }
                     
                     Text("Streak")
-                        .font(.caption)
-                        .foregroundColor(.white.opacity(0.9))
+                        .font(.subheadline.bold())
+                        .foregroundColor(.white)
                 }
                 .frame(maxWidth: .infinity)
                 
@@ -167,10 +213,11 @@ struct LockScreenStreakWidgetView: View {
             
             // Streak number or exclamation (see-through effect via blending)
             Text(displayText)
-                .font(.system(size: displayText == "!" ? 40 : 28, weight: .black, design: .rounded))
+                .font(.system(size: displayText == "!" ? 28 : 28, weight: .black, design: .rounded))
                 .foregroundColor(.white)
                 .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
                 .blendMode(.destinationOut)
+                .offset(y: displayText == "!" ? 12 : 9)
         }
         .compositingGroup()
     }
@@ -216,15 +263,5 @@ struct DailyJoyLockScreenWidget: Widget {
         .configurationDisplayName("Streak Reminder")
         .description("Your daily streak on your lock screen")
         .supportedFamilies([.accessoryCircular])
-    }
-}
-
-// MARK: - Widget Bundle
-@main
-struct DailyJoyWidgetsBundle: WidgetBundle {
-    var body: some Widget {
-        DailyJoySmallWidget()
-        DailyJoyMediumWidget()
-        DailyJoyLockScreenWidget()
     }
 }
