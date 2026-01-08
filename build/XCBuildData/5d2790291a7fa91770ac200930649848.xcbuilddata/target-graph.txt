@@ -1,0 +1,6 @@
+Target dependency graph (3 targets)
+Target 'Daily JoyTests' in project 'Daily Joy'
+➜ Explicit dependency on target 'Daily Joy' in project 'Daily Joy'
+Target 'Daily Joy' in project 'Daily Joy'
+➜ Explicit dependency on target 'DailyJoyWidgetExtension' in project 'Daily Joy'
+Target 'DailyJoyWidgetExtension' in project 'Daily Joy' (no dependencies)

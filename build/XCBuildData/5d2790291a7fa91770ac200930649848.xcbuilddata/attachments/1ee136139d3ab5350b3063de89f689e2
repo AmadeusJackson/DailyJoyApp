@@ -1,0 +1,19 @@
+{
+  "" : {
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily JoyTests.build/Objects-normal/arm64/Daily JoyTests-primary.dia",
+    "emit-module-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily JoyTests.build/Objects-normal/arm64/Daily JoyTests-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily JoyTests.build/Objects-normal/arm64/Daily JoyTests-primary-emit-module.dia",
+    "pch" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily JoyTests.build/Objects-normal/arm64/Daily JoyTests-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily JoyTests.build/Objects-normal/arm64/Daily JoyTests-primary.swiftdeps"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily JoyTests/Daily_JoyTests.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily JoyTests.build/Objects-normal/arm64/Daily_JoyTests.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily JoyTests.build/Objects-normal/arm64/Daily_JoyTests.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily JoyTests.build/Objects-normal/arm64/Daily_JoyTests.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily JoyTests.build/Objects-normal/arm64/Daily_JoyTests.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily JoyTests.build/Objects-normal/arm64/Daily_JoyTests.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily JoyTests.build/Objects-normal/arm64/Daily_JoyTests.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily JoyTests.build/Objects-normal/arm64/Daily_JoyTests.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily JoyTests.build/Objects-normal/arm64/Daily_JoyTests~partial.swiftmodule"
+  }
+}

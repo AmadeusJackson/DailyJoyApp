@@ -9,11 +9,18 @@ import SwiftUI
 import SwiftData
 
 struct MomentsView: View {
+    @Binding var shouldShowAddMoment: Bool  // ✅ Add binding for widget deep link
+    
+    // ✅ Add default initializer for preview/normal use
+    init(shouldShowAddMoment: Binding<Bool> = .constant(false)) {
+        self._shouldShowAddMoment = shouldShowAddMoment
+    }
+    
     @State private var showCreateMoment = false
     @State private var showHeatmap = false
     @State private var searchText = ""
     @State private var isSearching = false
-    @State private var showNotificationPrompt = false  // ✅ ADDED
+    @State private var showNotificationPrompt = false
     @Query(sort: \Moment.timestamp)
     private var moments: [Moment]
 
@@ -91,16 +98,23 @@ struct MomentsView: View {
             .sheet(isPresented: $showHeatmap) {
                 HeatmapCalendarView()
             }
-            .sheet(isPresented: $showNotificationPrompt) {  // ✅ ADDED
+            .sheet(isPresented: $showNotificationPrompt) {
                 FirstLaunchNotificationPrompt()
             }
-            .onAppear {  // ✅ ADDED
+            .onAppear {
                 // Check if we should show notification prompt (first launch)
                 if !UserDefaults.standard.bool(forKey: "hasShownNotificationPrompt") {
                     // Delay so user sees the app first
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                         showNotificationPrompt = true
                     }
+                }
+            }
+            // ✅ Handle widget deep link
+            .onChange(of: shouldShowAddMoment) { oldValue, newValue in
+                if newValue {
+                    showCreateMoment = true
+                    shouldShowAddMoment = false  // Reset the binding
                 }
             }
             .defaultScrollAnchor(.bottom, for: .initialOffset)
@@ -248,4 +262,3 @@ struct MomentsView: View {
         .modelContainer(for: [Moment.self])
         .environment(DataContainer())
 }
-

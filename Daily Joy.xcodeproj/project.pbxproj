@@ -6,7 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3FC022BE2F0F04ED002A5169 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F67A6E02ED9D71900D1BB24 /* WidgetKit.framework */; };
+		3FC022BF2F0F04ED002A5169 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F67A6E22ED9D71900D1BB24 /* SwiftUI.framework */; };
+		3FC022CA2F0F04EE002A5169 /* DailyJoyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3FC022BD2F0F04ED002A5169 /* DailyJoyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
+		3FC022C82F0F04EE002A5169 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3F7DFE192EC7A89500D1CEE2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3FC022BC2F0F04ED002A5169;
+			remoteInfo = DailyJoyWidgetExtension;
+		};
 		3FF08A322ED86FAD001CB6CE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3F7DFE192EC7A89500D1CEE2 /* Project object */;
@@ -23,6 +36,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				3FC022CA2F0F04EE002A5169 /* DailyJoyWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -33,6 +47,8 @@
 		3F67A6E02ED9D71900D1BB24 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		3F67A6E22ED9D71900D1BB24 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		3F7DFE212EC7A89500D1CEE2 /* Daily Joy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Daily Joy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FC022BD2F0F04ED002A5169 /* DailyJoyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DailyJoyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FC022CF2F0F051C002A5169 /* DailyJoyWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DailyJoyWidgetExtension.entitlements; sourceTree = "<group>"; };
 		3FF08A2E2ED86FAD001CB6CE /* Daily JoyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Daily JoyTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -62,11 +78,28 @@
 			);
 			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;
 		};
+		3FC022CD2F0F04EE002A5169 /* Exceptions for "DailyJoyWidget" folder in "DailyJoyWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3FC022BC2F0F04ED002A5169 /* DailyJoyWidgetExtension */;
+		};
+		3FC022D12F0F055E002A5169 /* Exceptions for "Daily Joy" folder in "DailyJoyWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Models/Moment.swift,
+			);
+			target = 3FC022BC2F0F04ED002A5169 /* DailyJoyWidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3F7DFE232EC7A89500D1CEE2 /* Daily Joy */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3FC022D12F0F055E002A5169 /* Exceptions for "Daily Joy" folder in "DailyJoyWidgetExtension" target */,
+			);
 			path = "Daily Joy";
 			sourceTree = "<group>";
 		};
@@ -86,6 +119,14 @@
 			path = Momonts;
 			sourceTree = "<group>";
 		};
+		3FC022C02F0F04ED002A5169 /* DailyJoyWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3FC022CD2F0F04EE002A5169 /* Exceptions for "DailyJoyWidget" folder in "DailyJoyWidgetExtension" target */,
+			);
+			path = DailyJoyWidget;
+			sourceTree = "<group>";
+		};
 		3FF08A2F2ED86FAD001CB6CE /* Daily JoyTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Daily JoyTests";
@@ -98,6 +139,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FC022BA2F0F04ED002A5169 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3FC022BF2F0F04ED002A5169 /* SwiftUI.framework in Frameworks */,
+				3FC022BE2F0F04ED002A5169 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,8 +173,10 @@
 		3F7DFE182EC7A89500D1CEE2 = {
 			isa = PBXGroup;
 			children = (
+				3FC022CF2F0F051C002A5169 /* DailyJoyWidgetExtension.entitlements */,
 				3F7DFE232EC7A89500D1CEE2 /* Daily Joy */,
 				3FF08A2F2ED86FAD001CB6CE /* Daily JoyTests */,
+				3FC022C02F0F04ED002A5169 /* DailyJoyWidget */,
 				3F67A6DF2ED9D71900D1BB24 /* Frameworks */,
 				3F7DFE222EC7A89500D1CEE2 /* Products */,
 				3F7DFE402EC7AB4B00D1CEE2 /* Tabs */,
@@ -136,6 +188,7 @@
 			children = (
 				3F7DFE212EC7A89500D1CEE2 /* Daily Joy.app */,
 				3FF08A2E2ED86FAD001CB6CE /* Daily JoyTests.xctest */,
+				3FC022BD2F0F04ED002A5169 /* DailyJoyWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -164,6 +217,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				3FC022C92F0F04EE002A5169 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				3F7DFE232EC7A89500D1CEE2 /* Daily Joy */,
@@ -174,6 +228,28 @@
 			productName = GratefulMoments;
 			productReference = 3F7DFE212EC7A89500D1CEE2 /* Daily Joy.app */;
 			productType = "com.apple.product-type.application";
+		};
+		3FC022BC2F0F04ED002A5169 /* DailyJoyWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3FC022CE2F0F04EE002A5169 /* Build configuration list for PBXNativeTarget "DailyJoyWidgetExtension" */;
+			buildPhases = (
+				3FC022B92F0F04ED002A5169 /* Sources */,
+				3FC022BA2F0F04ED002A5169 /* Frameworks */,
+				3FC022BB2F0F04ED002A5169 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3FC022C02F0F04ED002A5169 /* DailyJoyWidget */,
+			);
+			name = DailyJoyWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = DailyJoyWidgetExtension;
+			productReference = 3FC022BD2F0F04ED002A5169 /* DailyJoyWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		3FF08A2D2ED86FAD001CB6CE /* Daily JoyTests */ = {
 			isa = PBXNativeTarget;
@@ -205,11 +281,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2610;
+				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					3F7DFE202EC7A89500D1CEE2 = {
 						CreatedOnToolsVersion = 26.1;
+					};
+					3FC022BC2F0F04ED002A5169 = {
+						CreatedOnToolsVersion = 26.2;
 					};
 					3FF08A2D2ED86FAD001CB6CE = {
 						CreatedOnToolsVersion = 26.1.1;
@@ -233,12 +312,20 @@
 			targets = (
 				3F7DFE202EC7A89500D1CEE2 /* Daily Joy */,
 				3FF08A2D2ED86FAD001CB6CE /* Daily JoyTests */,
+				3FC022BC2F0F04ED002A5169 /* DailyJoyWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		3F7DFE1F2EC7A89500D1CEE2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FC022BB2F0F04ED002A5169 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -262,6 +349,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3FC022B92F0F04ED002A5169 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3FF08A2A2ED86FAD001CB6CE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -272,6 +366,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		3FC022C92F0F04EE002A5169 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3FC022BC2F0F04ED002A5169 /* DailyJoyWidgetExtension */;
+			targetProxy = 3FC022C82F0F04EE002A5169 /* PBXContainerItemProxy */;
+		};
 		3FF08A332ED86FAD001CB6CE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;
@@ -487,6 +586,96 @@
 			};
 			name = Release;
 		};
+		3FC022CB2F0F04EE002A5169 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = DailyJoyWidgetExtension.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XPACNBKTU8;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DailyJoyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DailyJoyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = name.amadeusjackson.GratefulMoments.DailyJoyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		3FC022CC2F0F04EE002A5169 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = DailyJoyWidgetExtension.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XPACNBKTU8;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DailyJoyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DailyJoyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = name.amadeusjackson.GratefulMoments.DailyJoyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
 		3FF08A352ED86FAD001CB6CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -548,6 +737,15 @@
 			buildConfigurations = (
 				3F7DFE2D2EC7A89600D1CEE2 /* Debug */,
 				3F7DFE2E2EC7A89600D1CEE2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3FC022CE2F0F04EE002A5169 /* Build configuration list for PBXNativeTarget "DailyJoyWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3FC022CB2F0F04EE002A5169 /* Debug */,
+				3FC022CC2F0F04EE002A5169 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

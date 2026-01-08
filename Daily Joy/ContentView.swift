@@ -10,13 +10,19 @@ import SwiftData
 
 struct ContentView: View {
 
-    // ✅ Explicit initializer to remove SwiftData ambiguity
-    init() {}
+    // ✅ Add binding for widget deep link
+    @Binding var shouldShowAddMoment: Bool
+    
+    // ✅ Explicit initializer with default value
+    init(shouldShowAddMoment: Binding<Bool> = .constant(false)) {
+        self._shouldShowAddMoment = shouldShowAddMoment
+    }
 
     @State private var celebrationBadge: Badge?
     @State private var showCelebration = false
     @State private var completedChallenge: String?
     @State private var showChallengeCelebration = false
+    @State private var selectedTab = 0  // ✅ Track selected tab
 
     @Query private var allMoments: [Moment]
 
@@ -42,29 +48,33 @@ struct ContentView: View {
 
     // MARK: - UI
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
 
-            MomentsView()
+            MomentsView(shouldShowAddMoment: $shouldShowAddMoment)
                 .tabItem {
                     Label("Moments", systemImage: "heart.text.square.fill")
                 }
+                .tag(0)
 
             DailyChallengesView()
                 .tabItem {
                     Label("Challenges", systemImage: "star.circle.fill")
                 }
+                .tag(1)
 
             if hasMemories {
                 MemoryLaneFullView()
                     .tabItem {
                         Label("Memory Lane", systemImage: "clock.arrow.circlepath")
                     }
+                    .tag(2)
             }
 
             AchievementsView()
                 .tabItem {
                     Label("Achievements", systemImage: "medal.fill")
                 }
+                .tag(hasMemories ? 3 : 2)
         }
         .badgeCelebration(
             badge: celebrationBadge,
@@ -86,6 +96,13 @@ struct ContentView: View {
             if let challenge = notification.object as? String {
                 completedChallenge = challenge
                 showChallengeCelebration = true
+            }
+        }
+        // ✅ Handle widget deep link
+        .onChange(of: shouldShowAddMoment) { oldValue, newValue in
+            if newValue {
+                selectedTab = 0  // Switch to Moments tab
+                // The binding will trigger MomentsView to show add sheet
             }
         }
     }

@@ -1,0 +1,29 @@
+{
+  "" : {
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/DailyJoyWidgetExtension-primary.dia",
+    "emit-module-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/DailyJoyWidgetExtension-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/DailyJoyWidgetExtension-primary-emit-module.dia",
+    "pch" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/DailyJoyWidgetExtension-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/DailyJoyWidgetExtension-primary.swiftdeps"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Custom Views/Badge.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Badge.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Badge.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Badge.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Badge.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Badge.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Badge.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Badge.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Badge~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Models/Moment.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Moment.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Moment.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Moment.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Moment.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Moment.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Moment.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Moment.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/DailyJoyWidgetExtension.build/Objects-normal/arm64/Moment~partial.swiftmodule"
+  }
+}

@@ -1,0 +1,439 @@
+{
+  "" : {
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Daily Joy-primary.dia",
+    "emit-module-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Daily Joy-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Daily Joy-primary-emit-module.dia",
+    "pch" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Daily Joy-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Daily Joy-primary.swiftdeps"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/ContentView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ContentView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ContentView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ContentView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ContentView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ContentView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ContentView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ContentView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ContentView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Custom Views/Badge.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-c6f7e035919e1b53c60da2f5fd30f604.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-c6f7e035919e1b53c60da2f5fd30f604.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-c6f7e035919e1b53c60da2f5fd30f604.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-c6f7e035919e1b53c60da2f5fd30f604.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-c6f7e035919e1b53c60da2f5fd30f604.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-c6f7e035919e1b53c60da2f5fd30f604.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-c6f7e035919e1b53c60da2f5fd30f604.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-c6f7e035919e1b53c60da2f5fd30f604~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Custom Views/BadgeCelebrationView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeCelebrationView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeCelebrationView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeCelebrationView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeCelebrationView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeCelebrationView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeCelebrationView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeCelebrationView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeCelebrationView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Custom Views/ChallengeCelebrationView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeCelebrationView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeCelebrationView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeCelebrationView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeCelebrationView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeCelebrationView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeCelebrationView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeCelebrationView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeCelebrationView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Custom Views/DailyChallengesView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallengesView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallengesView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallengesView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallengesView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallengesView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallengesView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallengesView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallengesView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Custom Views/FirstLaunchNotificationPrompt.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/FirstLaunchNotificationPrompt.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/FirstLaunchNotificationPrompt.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/FirstLaunchNotificationPrompt.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/FirstLaunchNotificationPrompt.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/FirstLaunchNotificationPrompt.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/FirstLaunchNotificationPrompt.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/FirstLaunchNotificationPrompt.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/FirstLaunchNotificationPrompt~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Custom Views/HeatmapCalender.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HeatmapCalender.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HeatmapCalender.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HeatmapCalender.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HeatmapCalender.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HeatmapCalender.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HeatmapCalender.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HeatmapCalender.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HeatmapCalender~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Custom Views/Hexagon.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Hexagon.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Hexagon.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Hexagon.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Hexagon.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Hexagon.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Hexagon.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Hexagon.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Hexagon~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Custom Views/HexagonAccessoryView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonAccessoryView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonAccessoryView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonAccessoryView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonAccessoryView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonAccessoryView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonAccessoryView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonAccessoryView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonAccessoryView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Custom Views/HexagonLayout.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonLayout.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonLayout.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonLayout.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonLayout.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonLayout.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonLayout.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonLayout.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/HexagonLayout~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Custom Views/LockedEntryView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedEntryView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedEntryView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedEntryView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedEntryView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedEntryView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedEntryView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedEntryView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedEntryView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Custom Views/MemoryLaneView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MemoryLaneView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MemoryLaneView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MemoryLaneView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MemoryLaneView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MemoryLaneView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MemoryLaneView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MemoryLaneView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MemoryLaneView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Custom Views/NotesContentView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotesContentView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotesContentView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotesContentView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotesContentView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotesContentView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotesContentView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotesContentView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotesContentView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Custom Views/NotificationManager.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotificationManager.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotificationManager.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotificationManager.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotificationManager.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotificationManager.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotificationManager.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotificationManager.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/NotificationManager~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Custom Views/SharedComponents.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/SharedComponents.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/SharedComponents.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/SharedComponents.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/SharedComponents.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/SharedComponents.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/SharedComponents.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/SharedComponents.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/SharedComponents~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/GratefulMomentsApp.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GratefulMomentsApp.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GratefulMomentsApp.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GratefulMomentsApp.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GratefulMomentsApp.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GratefulMomentsApp.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GratefulMomentsApp.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GratefulMomentsApp.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GratefulMomentsApp~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Intents/AppIntents.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AppIntents.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AppIntents.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AppIntents.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AppIntents.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AppIntents.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AppIntents.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AppIntents.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AppIntents~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Logic/BiometricAuthManager.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BiometricAuthManager.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BiometricAuthManager.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BiometricAuthManager.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BiometricAuthManager.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BiometricAuthManager.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BiometricAuthManager.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BiometricAuthManager.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BiometricAuthManager~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Logic/ChallengeManager.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeManager.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeManager.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeManager.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeManager.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeManager.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeManager.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeManager.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ChallengeManager~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Logic/DataContainer.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DataContainer.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DataContainer.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DataContainer.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DataContainer.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DataContainer.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DataContainer.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DataContainer.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DataContainer~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Logic/MomentColorPicker.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentColorPicker.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentColorPicker.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentColorPicker.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentColorPicker.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentColorPicker.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentColorPicker.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentColorPicker.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentColorPicker~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Logic/StreakCalculator.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakCalculator.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakCalculator.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakCalculator.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakCalculator.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakCalculator.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakCalculator.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakCalculator.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakCalculator~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Models/Badge.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-2cfff11b65f0b7f7ed2ce46ea4502560.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-2cfff11b65f0b7f7ed2ce46ea4502560.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-2cfff11b65f0b7f7ed2ce46ea4502560.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-2cfff11b65f0b7f7ed2ce46ea4502560.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-2cfff11b65f0b7f7ed2ce46ea4502560.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-2cfff11b65f0b7f7ed2ce46ea4502560.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-2cfff11b65f0b7f7ed2ce46ea4502560.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Badge-2cfff11b65f0b7f7ed2ce46ea4502560~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Models/BadgeDetailView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetailView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetailView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetailView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetailView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetailView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetailView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetailView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetailView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Models/BadgeDetails.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetails.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetails.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetails.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetails.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetails.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetails.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetails.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeDetails~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Models/BadgeManager.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeManager.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeManager.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeManager.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeManager.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeManager.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeManager.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeManager.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/BadgeManager~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Models/DailyChallenge.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallenge.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallenge.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallenge.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallenge.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallenge.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallenge.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallenge.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/DailyChallenge~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Models/Data.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Data.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Data.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Data.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Data.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Data.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Data.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Data.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Data~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy/Models/Moment.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Moment.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Moment.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Moment.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Moment.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Moment.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Moment.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Moment.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Moment~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Tabs/Achievements/AchievementsView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AchievementsView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AchievementsView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AchievementsView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AchievementsView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AchievementsView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AchievementsView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AchievementsView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/AchievementsView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Tabs/Achievements/LockedBadgeView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedBadgeView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedBadgeView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedBadgeView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedBadgeView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedBadgeView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedBadgeView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedBadgeView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/LockedBadgeView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Tabs/Achievements/StreakView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/StreakView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Tabs/Achievements/UnlockedBadgeView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/UnlockedBadgeView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/UnlockedBadgeView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/UnlockedBadgeView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/UnlockedBadgeView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/UnlockedBadgeView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/UnlockedBadgeView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/UnlockedBadgeView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/UnlockedBadgeView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Tabs/Momonts/CameraPicker.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/CameraPicker.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/CameraPicker.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/CameraPicker.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/CameraPicker.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/CameraPicker.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/CameraPicker.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/CameraPicker.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/CameraPicker~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Tabs/Momonts/Colors.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Colors.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Colors.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Colors.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Colors.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Colors.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Colors.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Colors.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/Colors~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Tabs/Momonts/MomentDetailView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentDetailView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentDetailView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentDetailView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentDetailView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentDetailView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentDetailView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentDetailView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentDetailView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Tabs/Momonts/MomentEntryView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentEntryView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentEntryView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentEntryView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentEntryView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentEntryView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentEntryView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentEntryView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentEntryView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Tabs/Momonts/MomentHexagonView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentHexagonView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentHexagonView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentHexagonView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentHexagonView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentHexagonView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentHexagonView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentHexagonView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentHexagonView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Tabs/Momonts/MomentsView.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentsView.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentsView.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentsView.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentsView.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentsView.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentsView.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentsView.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/MomentsView~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Tabs/Momonts/PhotoLibraryPicker.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/PhotoLibraryPicker.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/PhotoLibraryPicker.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/PhotoLibraryPicker.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/PhotoLibraryPicker.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/PhotoLibraryPicker.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/PhotoLibraryPicker.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/PhotoLibraryPicker.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/PhotoLibraryPicker~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Tabs/Momonts/ReducedMotionHelper.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ReducedMotionHelper.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ReducedMotionHelper.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ReducedMotionHelper.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ReducedMotionHelper.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ReducedMotionHelper.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ReducedMotionHelper.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ReducedMotionHelper.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/ReducedMotionHelper~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Tabs/Momonts/VoiceLoggingManager.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/VoiceLoggingManager.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/VoiceLoggingManager.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/VoiceLoggingManager.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/VoiceLoggingManager.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/VoiceLoggingManager.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/VoiceLoggingManager.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/VoiceLoggingManager.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/VoiceLoggingManager~partial.swiftmodule"
+  },
+  "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/build/Daily Joy.build/Debug-iphoneos/Daily Joy.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}

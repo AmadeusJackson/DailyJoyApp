@@ -14,19 +14,15 @@ class Moment {
     var note: String
     var imageData: Data?
     var timestamp: Date
-    var isLocked: Bool = false  // ✅ Add this line
-    
-    var badges: [Badge]
+    var isLocked: Bool = false
     
     init(title: String, note: String, imageData: Data? = nil, timestamp: Date = .now, isLocked: Bool = false) {
         self.title = title
         self.note = note
         self.imageData = imageData
         self.timestamp = timestamp
-        self.isLocked = isLocked  // ✅ Add this line
-        self.badges = []
+        self.isLocked = isLocked
     }
-
 
     var image: UIImage? {
         imageData.flatMap {
@@ -35,12 +31,10 @@ class Moment {
     }
 }
 
-
 extension Moment {
     static let sample = sampleData[0]
     static let longTextSample = sampleData[1]
     static let imageSample = sampleData[4]
-
 
     static let sampleData = [
         Moment(
@@ -49,7 +43,7 @@ extension Moment {
         ),
         Moment(
             title: "Passed the test!",
-            note: "The chem exam was tough, but I think I did well 🙌 I’m so glad I reached out to Guillermo and Lee for a study session. It really helped!",
+            note: "The chem exam was tough, but I think I did well 🙌 I'm so glad I reached out to Guillermo and Lee for a study session. It really helped!",
             imageData: UIImage(named: "Study")?.pngData()
         ),
         Moment(

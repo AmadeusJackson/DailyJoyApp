@@ -12,16 +12,23 @@ import AppIntents
 @main
 struct GratefulMomentsApp: App {
     @Environment(\.scenePhase) private var scenePhase
+    @State private var shouldShowAddMoment = false
     
     var dataContainer = DataContainer()
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(shouldShowAddMoment: $shouldShowAddMoment)
                 .environment(dataContainer)
                 .modelContainer(dataContainer.modelContainer)
-                .task {  // ✅ ADDED - Check notification permission on launch
+                .task {  // ✅ Check notification permission on launch
                     _ = await dataContainer.notificationManager.checkPermissionStatus()
+                }
+                .onOpenURL { url in
+                    // ✅ Handle widget deep links
+                    if url.scheme == "dailyjoy" && url.host == "addmoment" {
+                        shouldShowAddMoment = true
+                    }
                 }
         }
         .onChange(of: scenePhase) { oldPhase, newPhase in
@@ -29,7 +36,7 @@ struct GratefulMomentsApp: App {
                 // Update app shortcuts when app becomes active
                 GratefulMomentsShortcuts.updateAppShortcutParameters()
                 
-                // ✅ ADDED - Check notification permission when app becomes active
+                // ✅ Check notification permission when app becomes active
                 Task {
                     _ = await dataContainer.notificationManager.checkPermissionStatus()
                 }

@@ -1,0 +1,74 @@
+{
+  "buildCommand" : {
+    "command" : "prepareForIndexing",
+    "enableIndexBuildArena" : false,
+    "targets" : null
+  },
+  "configuredTargets" : [
+    {
+      "guid" : "ea6a2171801e608d63763c27114f7d88368e7df6cac033d4291f1727f82678d9"
+    },
+    {
+      "guid" : "ea6a2171801e608d63763c27114f7d8815f0471e50bd52b2e8993f7b0142ed14"
+    },
+    {
+      "guid" : "ea6a2171801e608d63763c27114f7d88626344322060e8be1a8ddbfdaf05f7df"
+    }
+  ],
+  "containerPath" : "/Users/amadeusjackson/Downloads/App Development/GreatfullMoments/Daily Joy.xcodeproj",
+  "continueBuildingAfterErrors" : true,
+  "dependencyScope" : "workspace",
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "activeArchitecture" : "arm64",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : false,
+      "platform" : "iphoneos",
+      "sdk" : "iphoneos26.2",
+      "sdkVariant" : "iphoneos",
+      "supportedArchitectures" : [
+        "arm64e",
+        "arm64v8",
+        "arm64",
+        "armv8"
+      ],
+      "targetArchitecture" : "arm64"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "",
+      "buildProductsPath" : "",
+      "derivedDataPath" : "/Users/amadeusjackson/Library/Developer/Xcode/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/amadeusjackson/Library/Developer/Xcode/DerivedData/Daily_Joy-feluioedrzgnrmdhfhiruxnnzpgl/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/amadeusjackson/Library/Developer/Xcode/DerivedData/Daily_Joy-feluioedrzgnrmdhfhiruxnnzpgl/Index.noindex/PrecompiledHeaders",
+      "pchPath" : ""
+    },
+    "configurationName" : "Debug",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ASSETCATALOG_FILTER_FOR_DEVICE_MODEL" : "iPhone11,2",
+          "ASSETCATALOG_FILTER_FOR_DEVICE_OS_VERSION" : "18.7.3",
+          "ASSETCATALOG_FILTER_FOR_THINNING_DEVICE_CONFIGURATION" : "iPhone11,2",
+          "BUILD_ACTIVE_RESOURCES_ONLY" : "YES",
+          "ENABLE_PREVIEWS" : "NO",
+          "ENABLE_XOJIT_PREVIEWS" : "NO",
+          "ONLY_ACTIVE_ARCH" : "YES",
+          "TARGET_DEVICE_IDENTIFIER" : "00008020-001A18822191002E",
+          "TARGET_DEVICE_MODEL" : "iPhone11,2",
+          "TARGET_DEVICE_OS_VERSION" : "18.7.3",
+          "TARGET_DEVICE_PLATFORM_NAME" : "iphoneos"
+        }
+      }
+    }
+  },
+  "qos" : "default",
+  "schemeCommand" : "launch",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : true,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}

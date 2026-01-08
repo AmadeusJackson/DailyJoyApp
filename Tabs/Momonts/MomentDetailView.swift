@@ -37,7 +37,7 @@ struct MomentDetailView: View {
                         dismiss()
                     }
                 } message: {
-                    Text("The moment will be permanently deleted. Earned badges won't be removed.")
+                    Text("The moment will be permanently deleted.")
                 }
             }
         }
@@ -50,15 +50,7 @@ struct MomentDetailView: View {
                 Text(moment.timestamp, style: .date)
                     .font(.subheadline)
                 Spacer()
-                ForEach(moment.badges) { badge in
-                    NavigationLink {
-                        BadgeDetailView(badge: badge)
-                    } label: {
-                        Image(badge.details.image)
-                            .resizable()
-                            .frame(width: 44, height: 44)
-                    }
-                }
+                // Badges feature not implemented yet
             }
             if !moment.note.isEmpty {
                 Text(moment.note)
