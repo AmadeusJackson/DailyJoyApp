@@ -41,7 +41,8 @@ struct StreakCalculator {
             }
         }
 
-        // Streak is calculated above starting from yesterday. Not yet saving a moment today shouldn't break the streak.
+        // Streak is calculated above starting from yesterday.
+        // Not yet saving a moment today shouldn't break the streak.
         // If a moment has been saved today, include it in the streak.
         if daysAgoArray.first == 0 {
             streak += 1
@@ -52,7 +53,17 @@ struct StreakCalculator {
 
         return streak
     }
-    
+
+    /// Returns true if at least one moment was saved today
+    func hasLoggedToday(moments: [Moment]) -> Bool {
+        let startOfToday = calendar.startOfDay(for: .now)
+        let endOfToday = calendar.date(byAdding: DateComponents(day: 1, second: -1), to: startOfToday)!
+
+        return moments.contains {
+            calendar.dateComponents([.day], from: $0.timestamp, to: endOfToday).day == 0
+        }
+    }
+
     /// Saves the current streak to shared UserDefaults so widgets can access it
     private func saveStreakForWidget(_ streak: Int) {
         guard let sharedDefaults = UserDefaults(suiteName: "group.dailyjoy.shared") else {

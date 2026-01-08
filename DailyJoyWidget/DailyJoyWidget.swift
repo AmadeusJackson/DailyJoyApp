@@ -17,7 +17,7 @@ struct DailyJoyEntry: TimelineEntry {
 }
 
 // MARK: - Timeline Provider
-struct DailyJoyProvider: TimelineProvider {
+struct DailyJoyProvider: @MainActor TimelineProvider {
     func placeholder(in context: Context) -> DailyJoyEntry {
         DailyJoyEntry(date: Date(), streakDays: 7, hasLoggedToday: true)
     }
@@ -89,7 +89,7 @@ struct SmallStreakWidgetView: View {
                     .font(.system(size: 36, weight: .bold, design: .rounded))
                     .foregroundColor(.white)
                 
-                Text("day streak")
+                Text("Streak")
                     .font(.caption2)
                     .foregroundColor(.white.opacity(0.9))
             }
@@ -109,7 +109,7 @@ struct MediumWidgetView: View {
                 endPoint: .bottomTrailing
             )
             
-            HStack(spacing: 20) {
+            HStack(spacing: 8) {
                 // Streak Section
                 VStack(spacing: 4) {
                     Text("🔥")
@@ -119,7 +119,7 @@ struct MediumWidgetView: View {
                         .font(.system(size: 32, weight: .bold, design: .rounded))
                         .foregroundColor(.white)
                     
-                    Text("day streak")
+                    Text("Streak")
                         .font(.caption)
                         .foregroundColor(.white.opacity(0.9))
                 }

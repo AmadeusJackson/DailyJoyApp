@@ -8,10 +8,11 @@
 import WidgetKit
 import SwiftUI
 
-@main
+
 struct DailyJoyWidgetBundle: WidgetBundle {
     var body: some Widget {
-        DailyJoyWidgets()
+        DailyJoySmallWidget()
+        DailyJoyMediumWidget()
+        DailyJoyLockScreenWidget()
     }
 }
-

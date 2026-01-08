@@ -78,6 +78,13 @@
 			);
 			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;
 		};
+		3F903E4A2F0FD1B500156053 /* Exceptions for "DailyJoyWidget" folder in "Daily Joy" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				StreakCounterWidget.swift,
+			);
+			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;
+		};
 		3FC022CD2F0F04EE002A5169 /* Exceptions for "DailyJoyWidget" folder in "DailyJoyWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -88,6 +95,7 @@
 		3FC022D12F0F055E002A5169 /* Exceptions for "Daily Joy" folder in "DailyJoyWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Logic/StreakCalculator.swift,
 				Models/Moment.swift,
 			);
 			target = 3FC022BC2F0F04ED002A5169 /* DailyJoyWidgetExtension */;
@@ -122,6 +130,7 @@
 		3FC022C02F0F04ED002A5169 /* DailyJoyWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				3F903E4A2F0FD1B500156053 /* Exceptions for "DailyJoyWidget" folder in "Daily Joy" target */,
 				3FC022CD2F0F04EE002A5169 /* Exceptions for "DailyJoyWidget" folder in "DailyJoyWidgetExtension" target */,
 			);
 			path = DailyJoyWidget;
@@ -602,7 +611,7 @@
 				INFOPLIST_FILE = DailyJoyWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = DailyJoyWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -647,7 +656,7 @@
 				INFOPLIST_FILE = DailyJoyWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = DailyJoyWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
