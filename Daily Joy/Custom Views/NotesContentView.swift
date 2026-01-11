@@ -12,7 +12,7 @@ import WidgetKit
 // MARK: - Shared UserDefaults
 extension UserDefaults {
     static var appGroup: UserDefaults {
-        UserDefaults(suiteName: "group.dailyjoy.shared")!
+        UserDefaults(suiteName: "group.com.amadeusjackson.dailyjoy")!
     }
 }
 

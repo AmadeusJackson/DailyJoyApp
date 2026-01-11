@@ -7,13 +7,23 @@
 
 import SwiftData
 import SwiftUI
+import WidgetKit
+
+private let appGroupIdentifier = "group.com.amadeusjackson.dailyjoy"
+
+// Local copy of widget kind strings so app can reload specific timelines
+struct DailyJoyWidgetKinds {
+    static let small = "DailyJoySmallWidget"
+    static let medium = "DailyJoyMediumWidget"
+    static let lock = "DailyJoyLockScreenWidget"
+}
 
 @Observable
 @MainActor
 class DataContainer {
     let modelContainer: ModelContainer
     var badgeManager: BadgeManager
-    var notificationManager: NotificationManager  // ✅ ADDED
+    var notificationManager: NotificationManager
 
     var context: ModelContext {
         modelContainer.mainContext
@@ -31,12 +41,21 @@ class DataContainer {
             Draft.self
         ])
 
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: includeSampleMoments)
-
         do {
-            modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
+            // Use shared App Group store so the app and widgets see the same data
+            if includeSampleMoments {
+                let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+                modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
+            } else {
+                guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier) else {
+                    fatalError("App Group container not found")
+                }
+                let storeURL = containerURL.appendingPathComponent("DailyJoy.store")
+                let modelConfiguration = ModelConfiguration(schema: schema, url: storeURL)
+                modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
+            }
             badgeManager = BadgeManager(modelContainer: modelContainer)
-            notificationManager = NotificationManager(modelContext: modelContainer.mainContext)  // ✅ ADDED
+            notificationManager = NotificationManager(modelContext: modelContainer.mainContext)
 
             try badgeManager.loadBadgesIfNeeded()
 
@@ -55,6 +74,36 @@ class DataContainer {
             try badgeManager.unlockBadges(newMoment: moment)
         }
     }
+    
+    // ✅ NEW: Function to save and refresh widgets
+    func saveMoment(_ moment: Moment) throws {
+        context.insert(moment)
+        try badgeManager.unlockBadges(newMoment: moment)
+        try context.save()
+        
+        // Reload widgets immediately after saving a moment
+        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.small)
+        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.medium)
+        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.lock)
+    }
+    
+    // ✅ NEW: Function to delete and refresh widgets
+    func deleteMoment(_ moment: Moment) throws {
+        context.delete(moment)
+        try context.save()
+        
+        // Reload widgets after deletion
+        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.small)
+        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.medium)
+        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.lock)
+    }
+    
+    // ✅ NEW: Call this after any context save that affects moments
+    func refreshWidgets() {
+        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.small)
+        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.medium)
+        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.lock)
+    }
 }
 
 private let sampleContainer = DataContainer(includeSampleMoments: true)
@@ -66,3 +115,4 @@ extension View {
             .modelContainer(sampleContainer.modelContainer)
     }
 }
+

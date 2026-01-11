@@ -9,6 +9,9 @@ import WidgetKit
 import SwiftUI
 import SwiftData
 
+// MARK: - Shared App Group Identifier (Update to your actual App Group)
+private let appGroupIdentifier = "group.com.amadeusjackson.dailyjoy"
+
 // MARK: - Color Extension for Hex
 extension Color {
     init(hex: String) {
@@ -78,7 +81,13 @@ struct DailyJoyProvider: TimelineProvider {
     @MainActor
     private func calculateStreak() -> (days: Int, loggedToday: Bool) {
         do {
-            let modelContainer = try ModelContainer(for: Moment.self)
+            // Open SwiftData store from shared App Group so the widget sees the same data as the app
+            guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier) else {
+                return (0, false)
+            }
+            let storeURL = containerURL.appendingPathComponent("DailyJoy.store")
+            let configuration = ModelConfiguration(url: storeURL)
+            let modelContainer = try ModelContainer(for: Moment.self, configurations: configuration)
             let context = modelContainer.mainContext
             
             let descriptor = FetchDescriptor<Moment>(
@@ -101,34 +110,27 @@ struct DailyJoyProvider: TimelineProvider {
 struct SmallStreakWidgetView: View {
     let entry: DailyJoyEntry
     
+    var displayText: String {
+        entry.hasLoggedToday ? "\(entry.streakDays)" : "!"
+    }
+    
     var body: some View {
-        ZStack {
-            // Ember background
-            Color(hex: "#fe7d00")
-            
-            VStack(spacing: 8) {
-                // Fire emoji with number cutout
-                ZStack {
-                    Text("🔥")
-                        .font(.system(size: 80))
-                }
-                .mask {
-                    ZStack {
-                        Rectangle()
-                            .fill(.black)
-                        
-                        Text("\(entry.streakDays)")
-                            .font(.system(size: 32, weight: .black, design: .rounded))
-                            .blendMode(.destinationOut)
-                            .offset(y: 18)
-                    }
-                    .compositingGroup()
-                }
+        VStack(spacing: 8) {
+            // Fire emoji with number
+            ZStack {
+                Text("🔥")
+                    .font(.system(size: 80))
                 
-                Text("Streak")
-                    .font(.headline)
-                    .foregroundColor(.white)
+                // White number overlay
+                Text(displayText)
+                    .font(.system(size: displayText == "!" ? 36 : 32, weight: .black, design: .rounded))
+                    .foregroundColor(.black)
+                    .offset(y: displayText == "!" ? 20 : 18)
             }
+            
+            Text("Streak")
+                .font(.headline)
+                .foregroundColor(.white)
         }
     }
 }
@@ -137,59 +139,49 @@ struct SmallStreakWidgetView: View {
 struct MediumWidgetView: View {
     let entry: DailyJoyEntry
     
+    var displayText: String {
+        entry.hasLoggedToday ? "\(entry.streakDays)" : "!"
+    }
+    
     var body: some View {
-        ZStack {
-            // Ember background
-            Color(hex: "#fe7d00")
-            
-            HStack(spacing: 20) {
-                // Streak Section with flame and cutout number
-                VStack(spacing: 8) {
-                    ZStack {
-                        Text("🔥")
-                            .font(.system(size: 80))
-                            .foregroundColor(.white)
-                            .blendMode(.normal)
-                    }
-                    .mask {
-                        ZStack {
-                            Rectangle()
-                                .fill(.black)
-                            
-                            Text("\(entry.streakDays)")
-                                .font(.system(size: 28, weight: .black, design: .rounded))
-                                .blendMode(.destinationOut)
-                                .offset(y: 18)
-                                .foregroundStyle(.white)
-                        }
-                        .compositingGroup()
-                    }
+        HStack(spacing: 20) {
+            // Streak Section with flame and white number
+            VStack(spacing: 8) {
+                ZStack {
+                    Text("🔥")
+                        .font(.system(size: 80))
                     
-                    Text("Streak")
+                    // White number overlay
+                    Text(displayText)
+                        .font(.system(size: displayText == "!" ? 32 : 28, weight: .black, design: .rounded))
+                        .foregroundColor(.black)
+                        .offset(y: displayText == "!" ? 20 : 18)
+                }
+                
+                Text("Streak")
+                    .font(.subheadline.bold())
+                    .foregroundColor(.white)
+            }
+            .frame(maxWidth: .infinity)
+            
+            Divider()
+                .background(Color.white.opacity(0.3))
+            
+            // Quick Add Section
+            Link(destination: URL(string: "dailyjoy://addmoment")!) {
+                VStack(spacing: 8) {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 44))
+                        .foregroundColor(.white)
+                    
+                    Text("Add Moment")
                         .font(.subheadline.bold())
                         .foregroundColor(.white)
                 }
                 .frame(maxWidth: .infinity)
-                
-                Divider()
-                    .background(Color.white.opacity(0.3))
-                
-                // Quick Add Section
-                Link(destination: URL(string: "dailyjoy://addmoment")!) {
-                    VStack(spacing: 8) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 44))
-                            .foregroundColor(.white)
-                        
-                        Text("Add Moment")
-                            .font(.subheadline.bold())
-                            .foregroundColor(.white)
-                    }
-                    .frame(maxWidth: .infinity)
-                }
             }
-            .padding()
         }
+        .padding()
     }
 }
 
@@ -230,7 +222,7 @@ struct DailyJoySmallWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: DailyJoyProvider()) { entry in
             SmallStreakWidgetView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+                .containerBackground(Color(hex: "#fe7d00"), for: .widget)
         }
         .configurationDisplayName("Daily Streak")
         .description("See your current streak at a glance")
@@ -244,7 +236,7 @@ struct DailyJoyMediumWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: DailyJoyProvider()) { entry in
             MediumWidgetView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+                .containerBackground(Color(hex: "#fe7d00"), for: .widget)
         }
         .configurationDisplayName("Streak & Quick Add")
         .description("View your streak and quickly add a moment")
@@ -265,3 +257,10 @@ struct DailyJoyLockScreenWidget: Widget {
         .supportedFamilies([.accessoryCircular])
     }
 }
+// MARK: - Widget Kind Helpers for App Reloads
+public struct DailyJoyWidgetKinds {
+    public static let small = "DailyJoySmallWidget"
+    public static let medium = "DailyJoyMediumWidget"
+    public static let lock = "DailyJoyLockScreenWidget"
+}
+

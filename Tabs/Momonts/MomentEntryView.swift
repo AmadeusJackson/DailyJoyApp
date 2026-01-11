@@ -22,15 +22,11 @@ struct MomentEntryView: View {
     @State private var selectedColor: Color = Color(white: 0.4, opacity: 0.32)
     @State private var showColorPicker = false
     
-    @State private var showPhotoLibrary = false // Added line
+    @State private var showPhotoLibrary = false
     @State private var showCameraPermissionAlert = false
     
     // NEW: Camera support
     @State private var showCamera = false
-    
-    // TEMPORARY - For testing Memory Lane (COMMENTED OUT FOR SUBMISSION)
-//    @State private var customDate = Date()
-//    @State private var useCustomDate = false
     
     // NEW: Reflection pause state
     @State private var showingSaveConfirmation = false
@@ -161,21 +157,7 @@ struct MomentEntryView: View {
                     } footer: {
                         Text("Locked moments require Face ID or passcode to view")
                     }
-                    
-                    // TEMPORARY - For testing Memory Lane (COMMENTED OUT FOR SUBMISSION)
-//                    #if DEBUG
-//                    Section {
-//                        Toggle("Use Custom Date", isOn: $useCustomDate)
-//
-//                        if useCustomDate {
-//                            DatePicker("Select Date", selection: $customDate, displayedComponents: [.date, .hourAndMinute])
-//                                .datePickerStyle(.compact)
-//                        }
-//                    } header: {
-//                        Text("🧪 Test: Custom Date")
-//                    }
-//                    #endif
-                }  
+                }
                 .scrollDismissesKeyboard(.immediately)
                 .blur(radius: showingSaveConfirmation ? 3 : 0)
                 .disabled(showingSaveConfirmation)
@@ -398,18 +380,16 @@ struct MomentEntryView: View {
             title: title,
             note: note,
             imageData: finalImageData,
-            timestamp: .now, // TEMPORARY: useCustomDate ? customDate : .now (commented out for submission)
+            timestamp: .now,
             isLocked: isLocked
         )
         
-        dataContainer.context.insert(newMoment)
         do {
-            try dataContainer.badgeManager.unlockBadges(newMoment: newMoment)
+            // ✅ Use the new saveMoment function that refreshes widgets
+            try dataContainer.saveMoment(newMoment)
             
             // ✅ CHECK FOR CHALLENGE COMPLETION
             dataContainer.challengeManager.checkChallengeCompletion(for: newMoment)
-            
-            try dataContainer.context.save()
             
             // Delete draft after successful save
             if let draft = existingDraft {
@@ -473,7 +453,7 @@ struct MomentEntryView: View {
             note: note,
             imageData: imageData,
             selectedColorName: nil,
-            contentType: contentType == .color ? "color" : "photo",
+            contentType: contentType.rawValue == "color" ? "color" : "photo",
             isLocked: isLocked
         )
         
@@ -575,4 +555,3 @@ struct SaveConfirmationView: View {
     MomentEntryView()
         .sampleDataContainer()
 }
-
