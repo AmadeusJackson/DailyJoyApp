@@ -411,6 +411,10 @@ struct MomentEntryView: View {
             
             // Dismiss after brief pause
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
+                // Hide overlay first for a clean transition
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    showingSaveConfirmation = false
+                }
                 dismiss()
             }
             
@@ -555,3 +559,4 @@ struct SaveConfirmationView: View {
     MomentEntryView()
         .sampleDataContainer()
 }
+
