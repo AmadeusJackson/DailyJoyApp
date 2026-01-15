@@ -8,8 +8,11 @@ import SwiftData
 internal import Speech
 import Photos
 import AVFoundation
+import UIKit
 
 struct MomentEntryView: View {
+    var onSaved: (() -> Void)? = nil
+
     @State private var title = ""
     @State private var note = ""
     @State private var imageData: Data?
@@ -27,9 +30,6 @@ struct MomentEntryView: View {
     
     // NEW: Camera support
     @State private var showCamera = false
-    
-    // NEW: Reflection pause state
-    @State private var showingSaveConfirmation = false
     
     // NEW: Voice logging
     @State private var voiceManager = VoiceLoggingManager()
@@ -159,14 +159,6 @@ struct MomentEntryView: View {
                     }
                 }
                 .scrollDismissesKeyboard(.immediately)
-                .blur(radius: showingSaveConfirmation ? 3 : 0)
-                .disabled(showingSaveConfirmation)
-                
-                // NEW: Save confirmation overlay
-                if showingSaveConfirmation {
-                    SaveConfirmationView()
-                        .transition(.scale.combined(with: .opacity))
-                }
             }
             .navigationTitle("Grateful For")
             .navigationBarTitleDisplayMode(.inline)
@@ -201,12 +193,15 @@ struct MomentEntryView: View {
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
-                        saveMoment()
+                        // Haptic feedback to confirm tap on device
+                        let generator = UINotificationFeedbackGenerator()
+                        generator.notificationOccurred(.success)
+                        addMomentTapped()
                     }
                     .tint(Color("Ember"))
-                    .disabled(title.isEmpty)
+                    .disabled(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                     .accessibilityLabel("Add moment")
-                    .accessibilityHint(title.isEmpty ? "Enter a title first" : "Save this grateful moment")
+                    .accessibilityHint(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "Enter a title first" : "Save this grateful moment")
                 }
             }
             .sheet(isPresented: $showColorPicker) {
@@ -367,6 +362,20 @@ struct MomentEntryView: View {
         .buttonStyle(.plain)
     }
     
+    @MainActor
+    private func addMomentTapped() {
+        let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedTitle.isEmpty else {
+            // Haptic error feedback for invalid input
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
+            return
+        }
+        // Keep the original title value for storage (you can also assign trimmed if desired)
+        saveMoment()
+    }
+    
+    @MainActor
     private func saveMoment() {
         let finalImageData: Data?
         
@@ -401,24 +410,20 @@ struct MomentEntryView: View {
                 await dataContainer.notificationManager.updateScheduleAfterNewMoment()
             }
             
-            // Dismiss keyboard before showing confirmation
+            print("Moment saved successfully: \(title)")
+            
+            // Dismiss keyboard and close immediately so parent can celebrate
             focusedField = nil
             
-            // NEW: Show reflection pause instead of immediate dismiss
-            withAnimation(.easeInOut(duration: 0.3)) {
-                showingSaveConfirmation = true
-            }
+            dismiss()
             
-            // Dismiss after brief pause
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
-                // Hide overlay first for a clean transition
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    showingSaveConfirmation = false
-                }
-                dismiss()
-            }
+            // Notify presenter to show confetti/message
+            onSaved?()
             
         } catch {
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
+            print("Failed to save moment: \(error.localizedDescription)")
             // Don't dismiss
         }
     }
@@ -517,40 +522,6 @@ struct MomentEntryView: View {
             try voiceManager.startRecording()
         } catch {
             voiceManager.errorMessage = error.localizedDescription
-        }
-    }
-}
-
-// MARK: - Save Confirmation View
-
-struct SaveConfirmationView: View {
-    @State private var scale: CGFloat = 0.8
-    
-    var body: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "sparkles")
-                .font(.system(size: 60))
-                .foregroundStyle(Color("Ember"))
-                .scaleEffect(scale)
-            
-            Text("Moment Saved")
-                .font(.title2)
-                .fontWeight(.semibold)
-            
-            Text("Take a breath")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-        }
-        .padding(40)
-        .background(
-            RoundedRectangle(cornerRadius: 24)
-                .fill(.regularMaterial)
-                .shadow(color: .black.opacity(0.1), radius: 20, y: 10)
-        )
-        .onAppear {
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.6)) {
-                scale = 1.0
-            }
         }
     }
 }
