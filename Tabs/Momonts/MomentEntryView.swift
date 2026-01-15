@@ -417,8 +417,10 @@ struct MomentEntryView: View {
             
             dismiss()
             
-            // Notify presenter to show confetti/message
-            onSaved?()
+            // Notify presenter after the sheet has actually dismissed
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                onSaved?()
+            }
             
         } catch {
             let generator = UINotificationFeedbackGenerator()
@@ -430,6 +432,7 @@ struct MomentEntryView: View {
     
     // MARK: - Draft Functions
     
+    @MainActor
     private func loadDraft() {
         let descriptor = FetchDescriptor<Draft>(sortBy: [SortDescriptor(\.savedAt, order: .reverse)])
         
@@ -448,6 +451,7 @@ struct MomentEntryView: View {
         isLocked = draft.isLocked
     }
     
+    @MainActor
     private func saveDraft() {
         // Only save if there's content
         guard !title.isEmpty || !note.isEmpty || imageData != nil else { return }
@@ -470,6 +474,7 @@ struct MomentEntryView: View {
         try? modelContext.save()
     }
     
+    @MainActor
     private func deleteDraft(_ draft: Draft) {
         modelContext.delete(draft)
         try? modelContext.save()

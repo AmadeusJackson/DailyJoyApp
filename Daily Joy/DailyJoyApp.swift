@@ -4,7 +4,6 @@
 //
 //  Created by Amadeus Jackson on 11/14/25.
 //
-
 import SwiftUI
 import SwiftData
 import AppIntents
