@@ -89,7 +89,7 @@ struct MomentsView: View {
                     .accessibilityLabel("Add new moment")
                     .accessibilityHint("Opens form to create a new grateful moment")
                     .sheet(isPresented: $showCreateMoment) {
-                        MomentEntryView()
+                        MomentEntryView().environment(DataContainer())
                     }
                 }
             }
@@ -262,3 +262,4 @@ struct MomentsView: View {
         .modelContainer(for: [Moment.self])
         .environment(DataContainer())
 }
+

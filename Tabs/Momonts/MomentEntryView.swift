@@ -1,4 +1,4 @@
-// ========================================
+ // ========================================
 // 'MomentEntryView'.swift
 // ========================================
 
@@ -394,8 +394,9 @@ struct MomentEntryView: View {
         )
         
         do {
-            // ✅ Use the new saveMoment function that refreshes widgets
-            try dataContainer.saveMoment(newMoment)
+            // Insert and save via the same SwiftData modelContext that the list observes
+            modelContext.insert(newMoment)
+            try modelContext.save()
             
             // ✅ CHECK FOR CHALLENGE COMPLETION
             dataContainer.challengeManager.checkChallengeCompletion(for: newMoment)
