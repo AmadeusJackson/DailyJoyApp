@@ -10,6 +10,7 @@ import SwiftData
 
 struct MomentsView: View {
     @Binding var shouldShowAddMoment: Bool  // ✅ Add binding for widget deep link
+    @Environment(DataContainer.self) private var dataContainer: DataContainer?
     
     // ✅ Add default initializer for preview/normal use
     init(shouldShowAddMoment: Binding<Bool> = .constant(false)) {
@@ -89,7 +90,12 @@ struct MomentsView: View {
                     .accessibilityLabel("Add new moment")
                     .accessibilityHint("Opens form to create a new grateful moment")
                     .sheet(isPresented: $showCreateMoment) {
-                        MomentEntryView().environment(DataContainer())
+                        if let dataContainer {
+                            MomentEntryView()
+                                .environment(dataContainer)
+                        } else {
+                            MomentEntryView()
+                        }
                     }
                 }
             }
