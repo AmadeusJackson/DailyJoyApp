@@ -66,7 +66,7 @@ class NotificationManager {
         }
         
         // Always schedule end-of-day reminder
-        await scheduleEndOfDayReminder()
+        //await scheduleEndOfDayReminder()
     }
     
     private func analyzeLoggingPatterns() async -> [DateComponents] {
@@ -139,7 +139,7 @@ class NotificationManager {
     private func scheduleDefaultNotification() async {
         // Default to mid-afternoon if no pattern exists
         var components = DateComponents()
-        components.hour = 15
+        components.hour = 15 // 3 pm
         components.minute = 0
         
         await scheduleNotification(
@@ -150,7 +150,7 @@ class NotificationManager {
         )
     }
     
-    private func scheduleEndOfDayReminder() async {
+   /* private func scheduleEndOfDayReminder() async {
         var components = DateComponents()
         components.hour = 21  // 9 PM
         components.minute = 0
@@ -169,7 +169,7 @@ class NotificationManager {
             print("Error scheduling end-of-day reminder: \(error)")
         }
     }
-    
+    */
     private func scheduleNotification(identifier: String, title: String, body: String, dateComponents: DateComponents) async {
         let content = UNMutableNotificationContent()
         content.title = title
