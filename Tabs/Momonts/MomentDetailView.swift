@@ -10,11 +10,13 @@ import SwiftData
 
 
 struct MomentDetailView: View {
+    // Set 'badgeAwardedThisEdit = true' from your badge award logic when a badge is earned during edit/save.
     var moment: Moment
     @State private var showConfirmation = false
     @State private var showEditor = false
     @State private var showCelebration = false
     @State private var heartRotation: Angle = .degrees(0)
+    @State private var badgeAwardedThisEdit = false
 
 
     @Environment(\.dismiss) private var dismiss
@@ -58,22 +60,38 @@ struct MomentDetailView: View {
         }
         .sheet(isPresented: $showEditor) {
             MomentEntryView(existingMoment: moment) {
-                // Trigger celebration
-                withAnimation(.spring(duration: 0.6)) {
+                // Reset state
+                badgeAwardedThisEdit = false
+                heartRotation = .degrees(0)
+
+                // 1) Show celebration overlay immediately (heart + confetti base)
+                withAnimation(.spring(duration: 0.4)) {
                     showCelebration = true
-                    heartRotation = .degrees(0)
                 }
-                // Spin the heart continuously for a moment
-                withAnimation(.linear(duration: 1.0).repeatCount(2, autoreverses: false)) {
-                    heartRotation = .degrees(720)
+
+                // 2) Spin the heart for ~2.2 seconds
+                withAnimation(.linear(duration: 2.2)) {
+                    heartRotation = .degrees(720 * 3) // 3 full spins
                 }
-                // Dismiss the editor sheet
+
+                // 3) Dismiss the editor sheet right away
                 showEditor = false
-                // Hide celebration after delay
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                    withAnimation(.easeOut(duration: 0.4)) {
-                        showCelebration = false
-                        heartRotation = .degrees(0)
+
+                // 4) Decide whether to continue confetti into badge award or end it after heart spin
+                // NOTE: Set `badgeAwardedThisEdit = true` from your badge-award logic before this fires if a badge was earned.
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.25) {
+                    if badgeAwardedThisEdit {
+                        // Keep confetti visible and let the badge award UI take over presentation.
+                        // Optionally, we can soften the heart emphasis now.
+                        withAnimation(.easeOut(duration: 0.3)) {
+                            heartRotation = .degrees(0)
+                        }
+                    } else {
+                        // No badge: end the celebration (hide confetti and overlay)
+                        withAnimation(.easeOut(duration: 0.4)) {
+                            showCelebration = false
+                            heartRotation = .degrees(0)
+                        }
                     }
                 }
             }
@@ -110,7 +128,7 @@ struct MomentDetailView: View {
             Color.black.opacity(0.25)
             VStack(spacing: 16) {
                 Image(systemName: "heart.fill")
-                    .font(.system(size: 72))
+                    .font(.system(size: 84))
                     .foregroundStyle(Color.accentColor)
                     .rotationEffect(heartRotation)
                     .shadow(color: Color.accentColor.opacity(0.5), radius: 10, x: 0, y: 4)
@@ -162,7 +180,7 @@ struct MomentDetailView: View {
             TimelineView(.animation) { timeline in
                 Canvas { context, size in
                     for i in pieces.indices {
-                        var piece = pieces[i]
+                        let piece = pieces[i]
                         var transform = CGAffineTransform.identity
                         transform = transform.translatedBy(x: piece.x, y: piece.y)
                         transform = transform.rotated(by: CGFloat(piece.angle.radians))
