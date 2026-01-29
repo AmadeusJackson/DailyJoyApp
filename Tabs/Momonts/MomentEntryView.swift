@@ -11,6 +11,7 @@ import AVFoundation
 import UIKit
 
 struct MomentEntryView: View {
+    var existingMoment: Moment? = nil
     var onSaved: (() -> Void)? = nil
 
     @State private var title = ""
@@ -34,6 +35,7 @@ struct MomentEntryView: View {
     // NEW: Voice logging
     @State private var voiceManager = VoiceLoggingManager()
     @State private var showVoicePermissionAlert = false
+    @State private var isEditing: Bool = false
     
     @Environment(\.dismiss) private var dismiss
     @Environment(DataContainer.self) private var dataContainer
@@ -192,7 +194,7 @@ struct MomentEntryView: View {
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Add") {
+                    Button(isEditing ? "Done" : "Add") {
                         // Haptic feedback to confirm tap on device
                         let generator = UINotificationFeedbackGenerator()
                         generator.notificationOccurred(.success)
@@ -200,8 +202,8 @@ struct MomentEntryView: View {
                     }
                     .tint(Color("Ember"))
                     .disabled(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                    .accessibilityLabel("Add moment")
-                    .accessibilityHint(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "Enter a title first" : "Save this grateful moment")
+                    .accessibilityLabel(isEditing ? "Save changes" : "Add moment")
+                    .accessibilityHint(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "Enter a title first" : (isEditing ? "Save your edits" : "Save this grateful moment"))
                 }
             }
             .sheet(isPresented: $showColorPicker) {
@@ -254,7 +256,25 @@ struct MomentEntryView: View {
                 }
             }
             .onAppear {
-                loadDraft()
+                // Ensure badges exist in the data store
+                try? dataContainer.badgeManager.loadBadgesIfNeeded()
+                if let m = existingMoment {
+                    // Enter edit mode and prefill fields
+                    isEditing = true
+                    title = m.title
+                    note = m.note
+                    imageData = m.imageData
+                    isLocked = m.isLocked
+                    // Determine content type based on whether imageData is a color image
+                    if let data = m.imageData, let img = UIImage(data: data), img.size == CGSize(width: 500, height: 500) {
+                        contentType = .color
+                        // selectedColor cannot be perfectly recovered; leave as default color swatch
+                    } else {
+                        contentType = .photo
+                    }
+                } else {
+                    loadDraft()
+                }
             }
         }
     }
@@ -372,7 +392,11 @@ struct MomentEntryView: View {
             return
         }
         // Keep the original title value for storage (you can also assign trimmed if desired)
-        saveMoment()
+        if isEditing {
+            saveEdits()
+        } else {
+            saveMoment()
+        }
     }
     
     @MainActor
@@ -397,6 +421,13 @@ struct MomentEntryView: View {
             // Insert and save via the same SwiftData modelContext that the list observes
             modelContext.insert(newMoment)
             try modelContext.save()
+            
+            // ✅ UNLOCK ACHIEVEMENT BADGES for this new moment
+            do {
+                try dataContainer.badgeManager.unlockBadges(newMoment: newMoment)
+            } catch {
+                print("Failed to unlock badges: \(error)")
+            }
             
             // ✅ CHECK FOR CHALLENGE COMPLETION
             dataContainer.challengeManager.checkChallengeCompletion(for: newMoment)
@@ -428,6 +459,39 @@ struct MomentEntryView: View {
             generator.notificationOccurred(.error)
             print("Failed to save moment: \(error.localizedDescription)")
             // Don't dismiss
+        }
+    }
+    
+    @MainActor
+    private func saveEdits() {
+        guard let m = existingMoment else { return }
+        let finalImageData: Data?
+        if contentType == .color {
+            finalImageData = createColorImage(color: selectedColor)
+        } else {
+            finalImageData = imageData
+        }
+        m.title = title
+        m.note = note
+        m.imageData = finalImageData
+        m.isLocked = isLocked
+        do {
+            try modelContext.save()
+            // Updating a moment may change badge eligibility (e.g., note/photo-dependent). We can re-evaluate.
+            do {
+                try dataContainer.badgeManager.unlockBadges(newMoment: m)
+            } catch {
+                print("Failed to re-evaluate badges after edit: \(error)")
+            }
+            focusedField = nil
+            dismiss()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                onSaved?()
+            }
+        } catch {
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
+            print("Failed to save edits: \(error.localizedDescription)")
         }
     }
     
