@@ -46,13 +46,16 @@ class DataContainer {
             if includeSampleMoments {
                 let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
                 modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
+                #if DEBUG
+                print("Using in-memory sample store (includeSampleMoments == true)")
+                #endif
             } else {
-                guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier) else {
-                    fatalError("App Group container not found")
-                }
-                let storeURL = containerURL.appendingPathComponent("DailyJoy.store")
-                let modelConfiguration = ModelConfiguration(schema: schema, url: storeURL)
+                // Diagnostic: use default app container (no App Group) to validate persistence across relaunches
+                let modelConfiguration = ModelConfiguration(schema: schema)
                 modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
+                #if DEBUG
+                print("Using default app container store (diagnostic mode)")
+                #endif
             }
             badgeManager = BadgeManager(modelContainer: modelContainer)
             notificationManager = NotificationManager(modelContext: modelContainer.mainContext)
@@ -106,7 +109,7 @@ class DataContainer {
     }
 }
 
-private let sampleContainer = DataContainer(includeSampleMoments: true)
+private let sampleContainer = DataContainer(includeSampleMoments: true)  
 
 extension View {
     func sampleDataContainer() -> some View {

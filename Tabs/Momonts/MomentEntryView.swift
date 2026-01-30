@@ -429,6 +429,9 @@ struct MomentEntryView: View {
                 print("Failed to unlock badges: \(error)")
             }
             
+            // Ensure badge updates are persisted
+            try? modelContext.save()
+            
             // ✅ CHECK FOR CHALLENGE COMPLETION
             dataContainer.challengeManager.checkChallengeCompletion(for: newMoment)
             
@@ -483,6 +486,8 @@ struct MomentEntryView: View {
             } catch {
                 print("Failed to re-evaluate badges after edit: \(error)")
             }
+            // Ensure badge updates are persisted after edit
+            try? modelContext.save()
             focusedField = nil
             dismiss()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {

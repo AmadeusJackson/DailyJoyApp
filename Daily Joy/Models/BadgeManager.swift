@@ -101,10 +101,17 @@ class BadgeManager {
         for badge in newlyUnlocked {
             badge.moment = newMoment
             badge.timestamp = newMoment.timestamp
-            
-            // Post notification for celebration
-            NotificationCenter.default.post(name: .badgeUnlocked, object: badge)
         }
+
+        // Post notifications after a short delay so the heart/confetti can play first
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            for badge in newlyUnlocked {
+                NotificationCenter.default.post(name: .badgeUnlocked, object: badge)
+            }
+        }
+
+        // Persist unlocked badge changes
+        try modelContainer.mainContext.save()
     }
 
     func loadBadgesIfNeeded() throws {
