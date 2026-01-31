@@ -163,7 +163,7 @@ struct MomentDetailView: View {
         var rotationSpeed: Angle
     }
 
-    private struct ConfettiView: View {
+    struct ConfettiView: View {
         var isActive: Bool
         enum Origin { case bottomLeading, bottomTrailing }
         var origin: Origin = .bottomLeading

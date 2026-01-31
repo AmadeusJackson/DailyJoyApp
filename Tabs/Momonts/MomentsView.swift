@@ -22,6 +22,10 @@ struct MomentsView: View {
     @State private var searchText = ""
     @State private var isSearching = false
     @State private var showNotificationPrompt = false
+    @State private var showCelebration = false
+    @State private var heartRotation: Angle = .degrees(0)
+    @State private var heartRotation3D: Angle = .degrees(0)
+    @State private var heartSize: CGFloat = 120
     @Query(sort: \Moment.timestamp)
     private var moments: [Moment]
 
@@ -46,87 +50,135 @@ struct MomentsView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                LazyVStack(spacing: 8, pinnedViews: .sectionHeaders) {
-                    Section {
-                        pathItems
-                            .frame(maxWidth: .infinity)
-                    } header: {
-                        streakHeader
-                    }
-                }
-            }
-            .overlay {
-                if filteredMoments.isEmpty && !searchText.isEmpty {
-                    ContentUnavailableView.search(text: searchText)
-                } else if moments.isEmpty {
-                    ContentUnavailableView {
-                        Label("No moments yet!", systemImage: "exclamationmark.circle.fill")
-                    } description: {
-                        Text("Post a note or photo to start filling this space with gratitude.")
-                    }
-                }
-            }
-            .toolbar {
-                // Search button (shows when 10+ moments)
-                if shouldShowSearch {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button {
-                            isSearching.toggle()
-                        } label: {
-                            Image(systemName: "magnifyingglass")
-                        }
-                        .accessibilityLabel("Search moments")
-                    }
-                }
-                
-                // Add moment button (always visible)
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
+            mainScrollContent
+                .overlay(emptyStateOverlay)
+                .toolbar { momentsToolbar }
+                .searchable(text: $searchText, isPresented: $isSearching, prompt: "Search moments")
+                .autocorrectionDisabled()
+                .sheet(isPresented: $showHeatmap) { HeatmapCalendarView() }
+                .sheet(isPresented: $showNotificationPrompt) { FirstLaunchNotificationPrompt() }
+                .onAppear(perform: handleFirstLaunchPrompt)
+                .onChange(of: shouldShowAddMoment) { oldValue, newValue in
+                    if newValue {
                         showCreateMoment = true
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                    .accessibilityLabel("Add new moment")
-                    .accessibilityHint("Opens form to create a new grateful moment")
-                    .sheet(isPresented: $showCreateMoment) {
-                        if let dataContainer {
-                            MomentEntryView()
-                                .environment(dataContainer)
-                        } else {
-                            MomentEntryView()
-                        }
+                        shouldShowAddMoment = false
                     }
                 }
+                .defaultScrollAnchor(.bottom, for: .initialOffset)
+                .defaultScrollAnchor(.bottom, for: .sizeChanges)
+                .defaultScrollAnchor(.top, for: .alignment)
+                .navigationTitle("Grateful Moments")
+                .overlay(celebrationOverlay)
+        }
+    }
+    
+    private var mainScrollContent: some View {
+        ScrollView {
+            LazyVStack(spacing: 8, pinnedViews: .sectionHeaders) {
+                Section {
+                    pathItems
+                        .frame(maxWidth: .infinity)
+                } header: {
+                    streakHeader
+                }
             }
-            .searchable(text: $searchText, isPresented: $isSearching, prompt: "Search moments")
-            .autocorrectionDisabled()
-            .sheet(isPresented: $showHeatmap) {
-                HeatmapCalendarView()
+        }
+    }
+
+    @ViewBuilder
+    private var emptyStateOverlay: some View {
+        if filteredMoments.isEmpty && !searchText.isEmpty {
+            ContentUnavailableView.search(text: searchText)
+        } else if moments.isEmpty {
+            ContentUnavailableView {
+                Label("No moments yet!", systemImage: "exclamationmark.circle.fill")
+            } description: {
+                Text("Post a note or photo to start filling this space with gratitude.")
             }
-            .sheet(isPresented: $showNotificationPrompt) {
-                FirstLaunchNotificationPrompt()
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var momentsToolbar: some ToolbarContent {
+        // Search button (shows when 10+ moments)
+        if shouldShowSearch {
+            ToolbarItem(placement: .topBarLeading) {
+                Button { isSearching.toggle() } label: {
+                    Image(systemName: "magnifyingglass")
+                }
+                .accessibilityLabel("Search moments")
             }
+        }
+
+        // Add moment button (always visible)
+        ToolbarItem(placement: .topBarTrailing) {
+            Button { showCreateMoment = true } label: {
+                Image(systemName: "plus")
+            }
+            .accessibilityLabel("Add new moment")
+            .accessibilityHint("Opens form to create a new grateful moment")
+            .sheet(isPresented: $showCreateMoment) {
+                let onSaved = { runCelebration() }
+                if let dataContainer {
+                    MomentEntryView(onSaved: onSaved)
+                        .environment(dataContainer)
+                } else {
+                    MomentEntryView(onSaved: onSaved)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var celebrationOverlay: some View {
+        if showCelebration {
+            ZStack {
+                Color.black.opacity(0.25).ignoresSafeArea()
+                VStack(spacing: 16) {
+                    Image(systemName: "heart.fill")
+                        .font(.system(size: heartSize))
+                        .foregroundStyle(Color.accentColor)
+                        .rotation3DEffect(
+                            heartRotation3D,
+                            axis: (x: 0, y: 1, z: 0),
+                            perspective: 0.6
+                        )
+                        .shadow(color: Color.accentColor.opacity(0.5), radius: 10, x: 0, y: 4)
+                    Text("Great Job!")
+                        .font(.title.weight(.bold))
+                        .foregroundStyle(.primary)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 8)
+                        .background(.ultraThinMaterial, in: Capsule())
+                }
+            }
+            .overlay(alignment: .bottomLeading) {
+                MomentDetailView.ConfettiView(isActive: showCelebration, origin: .bottomLeading)
+                    .allowsHitTesting(false)
+                    .padding(12)
+            }
+            .overlay(alignment: .bottomTrailing) {
+                MomentDetailView.ConfettiView(isActive: showCelebration, origin: .bottomTrailing)
+                    .allowsHitTesting(false)
+                    .padding(12)
+            }
+            .transition(.opacity.combined(with: .scale))
+            .zIndex(999)
+            .allowsHitTesting(false)
             .onAppear {
-                // Check if we should show notification prompt (first launch)
-                if !UserDefaults.standard.bool(forKey: "hasShownNotificationPrompt") {
-                    // Delay so user sees the app first
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                        showNotificationPrompt = true
-                    }
+                // Nudge ConfettiView to start immediately when the overlay appears
+                DispatchQueue.main.async {
+                    showCelebration = true
                 }
             }
-            // ✅ Handle widget deep link
-            .onChange(of: shouldShowAddMoment) { oldValue, newValue in
-                if newValue {
-                    showCreateMoment = true
-                    shouldShowAddMoment = false  // Reset the binding
-                }
+        }
+    }
+
+    private func handleFirstLaunchPrompt() {
+        if !UserDefaults.standard.bool(forKey: "hasShownNotificationPrompt") {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                showNotificationPrompt = true
             }
-            .defaultScrollAnchor(.bottom, for: .initialOffset)
-            .defaultScrollAnchor(.bottom, for: .sizeChanges)
-            .defaultScrollAnchor(.top, for: .alignment)
-            .navigationTitle("Grateful Moments")
         }
     }
 
@@ -254,6 +306,22 @@ struct MomentsView: View {
             }
             .font(.subheadline)
             .padding()
+        }
+    }
+    
+    private func runCelebration() {
+        withAnimation(.spring(duration: 0.4)) {
+            showCelebration = true
+        }
+        withAnimation(.linear(duration: 2.1)) {
+            // Revolving door effect: 3D Y-axis spin, negative for CCW (left-to-right)
+            heartRotation3D = .degrees(-360 * 2)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
+            withAnimation(.easeOut(duration: 0.3)) {
+                showCelebration = false
+                heartRotation3D = .degrees(0)
+            }
         }
     }
 }
