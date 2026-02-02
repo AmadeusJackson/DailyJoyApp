@@ -8,6 +8,9 @@
 import SwiftUI
 import SwiftData
 
+
+
+
 struct MomentsView: View {
     @Binding var shouldShowAddMoment: Bool  // ✅ Add binding for widget deep link
     @Environment(DataContainer.self) private var dataContainer: DataContainer?
@@ -134,6 +137,10 @@ struct MomentsView: View {
         if showCelebration {
             ZStack {
                 Color.black.opacity(0.25).ignoresSafeArea()
+                
+                CelebrationConfettiView()
+                    .allowsHitTesting(false)
+                
                 VStack(spacing: 16) {
                     Image(systemName: "heart.fill")
                         .font(.system(size: heartSize))
@@ -151,16 +158,6 @@ struct MomentsView: View {
                         .padding(.vertical, 8)
                         .background(.ultraThinMaterial, in: Capsule())
                 }
-            }
-            .overlay(alignment: .bottomLeading) {
-                MomentDetailView.ConfettiView(isActive: showCelebration, origin: .bottomLeading)
-                    .allowsHitTesting(false)
-                    .padding(12)
-            }
-            .overlay(alignment: .bottomTrailing) {
-                MomentDetailView.ConfettiView(isActive: showCelebration, origin: .bottomTrailing)
-                    .allowsHitTesting(false)
-                    .padding(12)
             }
             .transition(.opacity.combined(with: .scale))
             .zIndex(999)
@@ -336,4 +333,66 @@ struct MomentsView: View {
         .modelContainer(for: [Moment.self])
         .environment(DataContainer())
 }
+
+// MARK: - Celebration Confetti Particle (ported from BadgeCelebrationView)
+struct CelebrationConfettiParticle: Identifiable {
+    let id = UUID()
+    var x: CGFloat
+    var y: CGFloat
+    var color: Color
+    var opacity: Double = 1
+    var rotation: Double = 0
+}
+// MARK: - Celebration Confetti View (ported from BadgeCelebrationView)
+struct CelebrationConfettiView: View {
+    @State private var particles: [CelebrationConfettiParticle] = []
+    @State private var isAnimating = false
+    let colors: [Color] = [.red, .orange, .yellow, .green, .blue, .purple, .pink]
+
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                ForEach(particles) { particle in
+                    Circle()
+                        .fill(particle.color)
+                        .frame(width: 10, height: 10)
+                        .opacity(particle.opacity)
+                        .rotationEffect(.degrees(particle.rotation))
+                        .position(x: particle.x, y: particle.y)
+                }
+            }
+            .onAppear {
+                createConfetti(in: geometry.size)
+            }
+        }
+        .ignoresSafeArea()
+    }
+
+    private func createConfetti(in size: CGSize) {
+        // Create 50 confetti particles
+        for _ in 0..<50 {
+            let particle = CelebrationConfettiParticle(
+                x: CGFloat.random(in: 0...size.width),
+                y: -20,
+                color: colors.randomElement() ?? .blue
+            )
+            particles.append(particle)
+        }
+        animateParticles(in: size)
+    }
+
+    private func animateParticles(in size: CGSize) {
+        for (index, _) in particles.enumerated() {
+            let delay = Double(index) * 0.01
+            let duration = Double.random(in: 2...3)
+            withAnimation(.easeOut(duration: duration).delay(delay)) {
+                particles[index].y = size.height + 20
+                particles[index].x += CGFloat.random(in: -100...100)
+                particles[index].opacity = 0
+                particles[index].rotation = Double.random(in: 0...720)
+            }
+        }
+    }
+}
+
 
