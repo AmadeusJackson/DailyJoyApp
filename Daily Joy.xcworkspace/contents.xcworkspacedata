@@ -4,4 +4,7 @@
    <FileRef
       location = "group:Daily Joy.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:APP_OVERVIEW.md">
+   </FileRef>
 </Workspace>
