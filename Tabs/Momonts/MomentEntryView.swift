@@ -311,37 +311,29 @@ struct MomentEntryView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 16))
             }
             .confirmationDialog("Add Photo", isPresented: $showPhotoOptions) {
-                
-                Button("Take Photo") {
-                    showPhotoOptions = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                        let status = AVCaptureDevice.authorizationStatus(for: .video)
-                        switch status {
-                        case .authorized:
-                            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    Button("Take Photo") {
+                        showPhotoOptions = false
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                            let status = AVCaptureDevice.authorizationStatus(for: .video)
+                            switch status {
+                            case .authorized:
                                 showCamera = true
-                            } else {
-                                // If no camera, fall back to photo library
-                                showPhotoLibrary = true
-                            }
-                        case .notDetermined:
-                            AVCaptureDevice.requestAccess(for: .video) { granted in
-                                DispatchQueue.main.async {
-                                    if granted {
-                                        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                            case .notDetermined:
+                                AVCaptureDevice.requestAccess(for: .video) { granted in
+                                    DispatchQueue.main.async {
+                                        if granted {
                                             showCamera = true
                                         } else {
-                                            showPhotoLibrary = true
+                                            showCameraPermissionAlert = true
                                         }
-                                    } else {
-                                        showCameraPermissionAlert = true
                                     }
                                 }
+                            case .denied, .restricted:
+                                showCameraPermissionAlert = true
+                            @unknown default:
+                                showCameraPermissionAlert = true
                             }
-                        case .denied, .restricted:
-                            showCameraPermissionAlert = true
-                        @unknown default:
-                            showCameraPermissionAlert = true
                         }
                     }
                 }

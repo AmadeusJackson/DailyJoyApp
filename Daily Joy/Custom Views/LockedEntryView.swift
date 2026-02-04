@@ -7,11 +7,18 @@
 
 import SwiftUI
 import SwiftData
+import LocalAuthentication
 
 struct LockedEntryView: View {
     let moment: Moment
     @State private var showUnlockedContent = false
     @State private var authError: String?
+    
+    private var canAuthenticate: Bool {
+        let context = LAContext()
+        var error: NSError?
+        return context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error)
+    }
     
     var body: some View {
         ZStack {
@@ -30,26 +37,28 @@ struct LockedEntryView: View {
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                     
-                    Button(action: {
-                        let authManager = BiometricAuthManager()
-                        authManager.authenticate(reason: "Unlock this moment") { success, error in
-                            if success {
-                                withAnimation {
-                                    showUnlockedContent = true
+                    if canAuthenticate {
+                        Button(action: {
+                            let authManager = BiometricAuthManager()
+                            authManager.authenticate(reason: "Unlock this moment") { success, error in
+                                if success {
+                                    withAnimation {
+                                        showUnlockedContent = true
+                                    }
+                                } else {
+                                    authError = error
                                 }
-                            } else {
-                                authError = error
                             }
+                        }) {
+                            HStack {
+                                Image(systemName: "faceid")
+                                Text("Unlock")
+                            }
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
                         }
-                    }) {
-                        HStack {
-                            Image(systemName: "faceid")
-                            Text("Unlock")
-                        }
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
                     }
                     
                     if let error = authError {
