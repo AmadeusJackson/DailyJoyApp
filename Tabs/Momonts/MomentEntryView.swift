@@ -311,6 +311,7 @@ struct MomentEntryView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 16))
             }
             .confirmationDialog("Add Photo", isPresented: $showPhotoOptions) {
+                #if !targetEnvironment(simulator)
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
                     Button("Take Photo") {
                         showPhotoOptions = false
@@ -337,6 +338,7 @@ struct MomentEntryView: View {
                         }
                     }
                 }
+                #endif
                 
                 Button("Choose from Photos") {
                     showPhotoOptions = false
