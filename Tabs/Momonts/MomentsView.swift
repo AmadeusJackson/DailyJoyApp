@@ -29,6 +29,8 @@ struct MomentsView: View {
     @State private var heartRotation: Angle = .degrees(0)
     @State private var heartRotation3D: Angle = .degrees(0)
     @State private var heartSize: CGFloat = 120
+    @State private var showReminders = false
+    
     @Query(sort: \Moment.timestamp)
     private var moments: [Moment]
 
@@ -128,6 +130,19 @@ struct MomentsView: View {
                 } else {
                     MomentEntryView(onSaved: onSaved)
                 }
+            }
+        }
+        
+        ToolbarItem(placement: .topBarTrailing) {
+            Button {
+                showReminders = true
+            } label: {
+                Image(systemName: "gearshape")
+            }
+            .accessibilityLabel("Reminders Settings")
+            .sheet(isPresented: $showReminders) {
+                RemindersSettingsView()
+                    .environment(dataContainer)
             }
         }
     }

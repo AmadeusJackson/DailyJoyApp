@@ -5,8 +5,7 @@ struct RemindersSettingsView: View {
 
     @State private var style: NotificationManager.ReminderStyle = .gentle
     @State private var secondChanceEnabled: Bool = false
-    @State private var hour: Int = 21
-    @State private var minute: Int = 0
+    @State private var selectedDate: Date = Calendar.current.date(bySettingHour: 21, minute: 0, second: 0, of: Date()) ?? Date()
 
     var body: some View {
         NavigationStack {
@@ -27,11 +26,13 @@ struct RemindersSettingsView: View {
                 Section("Second Chance Reminder") {
                     Toggle("Enable", isOn: $secondChanceEnabled)
                     if secondChanceEnabled {
-                        HStack {
-                            Stepper("Hour: \(hour)", value: $hour, in: 0...23)
-                            Stepper("Minute: \(minute)", value: $minute, in: 0...59)
-                        }
-                        Text("Fires daily at \(String(format: "%02d:%02d", hour, minute)) if you haven't added a moment yet.")
+                        DatePicker(
+                            "Time",
+                            selection: Binding(get: { selectedDate }, set: { selectedDate = $0 }),
+                            displayedComponents: [.hourAndMinute]
+                        )
+                        .datePickerStyle(.compact)
+                        Text("Fires daily at the selected time if you haven't added a moment yet.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -53,14 +54,14 @@ struct RemindersSettingsView: View {
         style = NotificationManager.ReminderPreferences.style
         secondChanceEnabled = NotificationManager.ReminderPreferences.secondChanceEnabled
         let t = NotificationManager.ReminderPreferences.secondChanceTime
-        hour = t.hour
-        minute = t.minute
+        selectedDate = Calendar.current.date(bySettingHour: t.hour, minute: t.minute, second: 0, of: Date()) ?? Date()
     }
 
     private func savePreferences() {
         NotificationManager.ReminderPreferences.style = style
         NotificationManager.ReminderPreferences.secondChanceEnabled = secondChanceEnabled
-        NotificationManager.ReminderPreferences.secondChanceTime = (hour, minute)
+        let comps = Calendar.current.dateComponents([.hour, .minute], from: selectedDate)
+        NotificationManager.ReminderPreferences.secondChanceTime = (comps.hour ?? 21, comps.minute ?? 0)
     }
 
     private func label(for style: NotificationManager.ReminderStyle) -> String {

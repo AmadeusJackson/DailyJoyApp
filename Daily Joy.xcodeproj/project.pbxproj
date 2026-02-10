@@ -74,6 +74,7 @@
 				MomentsView.swift,
 				PhotoLibraryPicker.swift,
 				ReducedMotionHelper.swift,
+				RemindersSettingsView.swift,
 				VoiceLoggingManager.swift,
 			);
 			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;
