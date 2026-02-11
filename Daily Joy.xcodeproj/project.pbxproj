@@ -10,6 +10,7 @@
 		3FC022BE2F0F04ED002A5169 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F67A6E02ED9D71900D1BB24 /* WidgetKit.framework */; };
 		3FC022BF2F0F04ED002A5169 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F67A6E22ED9D71900D1BB24 /* SwiftUI.framework */; };
 		3FC022CA2F0F04EE002A5169 /* DailyJoyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3FC022BD2F0F04ED002A5169 /* DailyJoyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3FFE5EB42F3C06EC0072F10D /* Assets 2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FFE5E8B2F3C06EC0072F10D /* Assets 2.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		3FC022BD2F0F04ED002A5169 /* DailyJoyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DailyJoyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FC022CF2F0F051C002A5169 /* DailyJoyWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DailyJoyWidgetExtension.entitlements; sourceTree = "<group>"; };
 		3FF08A2E2ED86FAD001CB6CE /* Daily JoyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Daily JoyTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FFE5E8B2F3C06EC0072F10D /* Assets 2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets 2.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -57,8 +59,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AchievementsView.swift,
+				BadgeCelebrationView.swift,
+				BadgeDetailView.swift,
 				LockedBadgeView.swift,
-				StreakView.swift,
 				UnlockedBadgeView.swift,
 			);
 			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;
@@ -67,14 +70,17 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CameraPicker.swift,
+				ChallengeCelebrationView.swift,
 				Colors.swift,
+				MemoryLaneView.swift,
+				Moment.swift,
+				MomentColorPicker.swift,
 				MomentDetailView.swift,
 				MomentEntryView.swift,
 				MomentHexagonView.swift,
 				MomentsView.swift,
 				PhotoLibraryPicker.swift,
 				ReducedMotionHelper.swift,
-				RemindersSettingsView.swift,
 				VoiceLoggingManager.swift,
 			);
 			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;
@@ -93,11 +99,26 @@
 			);
 			target = 3FC022BC2F0F04ED002A5169 /* DailyJoyWidgetExtension */;
 		};
-		3FC022D12F0F055E002A5169 /* Exceptions for "Daily Joy" folder in "DailyJoyWidgetExtension" target */ = {
+		3FFE5EF42F3C0CD00072F10D /* Exceptions for "Challenges" folder in "Daily Joy" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Logic/StreakCalculator.swift,
-				Models/Moment.swift,
+				ChallengeCelebrationView.swift,
+				DailyChallenge.swift,
+				DailyChallengesView.swift,
+			);
+			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;
+		};
+		3FFE5F022F3C25640072F10D /* Exceptions for "Momonts" folder in "DailyJoyWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Moment.swift,
+			);
+			target = 3FC022BC2F0F04ED002A5169 /* DailyJoyWidgetExtension */;
+		};
+		3FFE5F042F3C25B80072F10D /* Exceptions for "Daily Joy" folder in "DailyJoyWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Data/StreakCalculator.swift,
 			);
 			target = 3FC022BC2F0F04ED002A5169 /* DailyJoyWidgetExtension */;
 		};
@@ -107,7 +128,7 @@
 		3F7DFE232EC7A89500D1CEE2 /* Daily Joy */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				3FC022D12F0F055E002A5169 /* Exceptions for "Daily Joy" folder in "DailyJoyWidgetExtension" target */,
+				3FFE5F042F3C25B80072F10D /* Exceptions for "Daily Joy" folder in "DailyJoyWidgetExtension" target */,
 			);
 			path = "Daily Joy";
 			sourceTree = "<group>";
@@ -124,6 +145,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				3F0B9D1D2F05802800187337 /* Exceptions for "Momonts" folder in "Daily Joy" target */,
+				3FFE5F022F3C25640072F10D /* Exceptions for "Momonts" folder in "DailyJoyWidgetExtension" target */,
 			);
 			path = Momonts;
 			sourceTree = "<group>";
@@ -140,6 +162,14 @@
 		3FF08A2F2ED86FAD001CB6CE /* Daily JoyTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Daily JoyTests";
+			sourceTree = "<group>";
+		};
+		3FFE5EF32F3C0CBD0072F10D /* Challenges */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3FFE5EF42F3C0CD00072F10D /* Exceptions for "Challenges" folder in "Daily Joy" target */,
+			);
+			path = Challenges;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -190,6 +220,7 @@
 				3F67A6DF2ED9D71900D1BB24 /* Frameworks */,
 				3F7DFE222EC7A89500D1CEE2 /* Products */,
 				3F7DFE402EC7AB4B00D1CEE2 /* Tabs */,
+				3FFE5E8B2F3C06EC0072F10D /* Assets 2.xcassets */,
 			);
 			sourceTree = "<group>";
 		};
@@ -208,6 +239,7 @@
 			children = (
 				3F7DFE412EC7AB5100D1CEE2 /* Achievements */,
 				3F7DFE422EC7AB5900D1CEE2 /* Momonts */,
+				3FFE5EF32F3C0CBD0072F10D /* Challenges */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -335,6 +367,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FFE5EB42F3C06EC0072F10D /* Assets 2.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

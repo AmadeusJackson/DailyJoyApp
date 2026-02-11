@@ -48,7 +48,7 @@ struct DailyJoyEntry: TimelineEntry {
 }
 
 // MARK: - Timeline Provider
-struct DailyJoyProvider: TimelineProvider {
+struct DailyJoyProvider: @MainActor TimelineProvider {
     func placeholder(in context: Context) -> DailyJoyEntry {
         DailyJoyEntry(date: Date(), streakDays: 7, hasLoggedToday: true)
     }
@@ -91,7 +91,7 @@ struct DailyJoyProvider: TimelineProvider {
             let context = modelContainer.mainContext
             
             let descriptor = FetchDescriptor<Moment>(
-                sortBy: [SortDescriptor(\.timestamp, order: .reverse)]
+                sortBy: [SortDescriptor(\Moment.timestamp, order: .reverse)]
             )
             let moments = try context.fetch(descriptor)
             
@@ -263,4 +263,5 @@ public struct DailyJoyWidgetKinds {
     public static let medium = "DailyJoyMediumWidget"
     public static let lock = "DailyJoyLockScreenWidget"
 }
+
 
