@@ -106,6 +106,21 @@ struct ContentView: View {
                 // The binding will trigger MomentsView to show add sheet
             }
         }
+        .onOpenURL { url in
+            handleWidgetURL(url)
+        }
+    }
+
+    private func handleWidgetURL(_ url: URL) {
+        guard url.scheme == "dailyjoy" else { return }
+        switch url.host {
+        case "add-moment":
+            shouldShowAddMoment = true
+        case "challenges":
+            selectedTab = 1
+        default:
+            break
+        }
     }
 }
 

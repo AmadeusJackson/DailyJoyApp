@@ -8,7 +8,6 @@
 import SwiftUI
 import SwiftData
 
-
 struct MomentDetailView: View {
     // Set 'badgeAwardedThisEdit = true' from your badge award logic when a badge is earned during edit/save.
     var moment: Moment
@@ -17,6 +16,7 @@ struct MomentDetailView: View {
     @State private var showCelebration = false
     @State private var heartRotation: Angle = .degrees(0)
     @State private var badgeAwardedThisEdit = false
+    @State private var showShareSheet = false
 
 
     @Environment(\.dismiss) private var dismiss
@@ -41,6 +41,14 @@ struct MomentDetailView: View {
                     showEditor = true
                 }
             }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showShareSheet = true
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
+                }
+                .accessibilityLabel("Share moment")
+            }
             ToolbarItem(placement: .destructiveAction) {
                 Button {
                     showConfirmation = true
@@ -51,6 +59,7 @@ struct MomentDetailView: View {
                     Button("Delete Moment", role: .destructive) {
                         dataContainer.context.delete(moment)
                         try? dataContainer.context.save()
+                        dataContainer.updateWidgetSnapshot()
                         dismiss()
                     }
                 } message: {
@@ -97,8 +106,35 @@ struct MomentDetailView: View {
             }
             .environment(dataContainer)
         }
+        .sheet(isPresented: $showShareSheet) {
+            ShareSheet(items: shareItems)
+        }
     }
 
+
+    private var shareItems: [Any] {
+        var items: [Any] = [shareText]
+        if let image = moment.image {
+            items.append(image)
+        }
+        return items
+    }
+
+    private var shareText: String {
+        var parts: [String] = [moment.title]
+        if !moment.note.isEmpty {
+            parts.append(moment.note)
+        }
+        parts.append(Self.shareDateFormatter.string(from: moment.timestamp))
+        return parts.joined(separator: "\n")
+    }
+
+    private static let shareDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }()
 
     private var contentStack: some View {
         VStack(alignment: .leading) {

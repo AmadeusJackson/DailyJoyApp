@@ -8,16 +8,24 @@
 import SwiftData
 import SwiftUI
 import WidgetKit
+import Foundation
 
 private let appGroupIdentifier = "group.com.amadeusjackson.dailyjoy"
+private let widgetAppGroupIdentifier = "group.dailyjoy.shared"
 private let iCloudContainerIdentifier = "iCloud.com.amadeusjackson.dailyjoy"
+// Set to true after enabling iCloud capability in a paid Apple Developer Program team.
+private let iCloudCapabilityAvailableDefault = false
 private let iCloudSyncEnabledKey = "icloud_sync_enabled"
+private let iCloudCapabilityAvailableKey = "icloud_capability_available"
 
 // Local copy of widget kind strings so app can reload specific timelines
 struct DailyJoyWidgetKinds {
-    static let small = "DailyJoySmallWidget"
-    static let medium = "DailyJoyMediumWidget"
-    static let lock = "DailyJoyLockScreenWidget"
+    static let streakSmall = "DailyJoyStreakSmallWidget"
+    static let addSmall = "DailyJoyAddSmallWidget"
+    static let streakAddSmall = "DailyJoyStreakAddSmallWidget"
+    static let streakAddMedium = "DailyJoyStreakAddMediumWidget"
+    static let large = "DailyJoyLargeWidget"
+    static let lock = "DailyJoyLockWidget"
 }
 
 @Observable
@@ -36,6 +44,9 @@ class DataContainer {
     }
 
     init(includeSampleMoments: Bool = false) {
+        if !Self.isICloudCapabilityAvailable {
+            Self.isICloudSyncEnabled = false
+        }
         let schema = Schema([
             Moment.self,
             Badge.self,
@@ -50,7 +61,7 @@ class DataContainer {
                 #if DEBUG
                 print("Using in-memory sample store (includeSampleMoments == true)")
                 #endif
-            } else if Self.isICloudSyncEnabled {
+            } else if Self.isICloudSyncEnabled && Self.isICloudCapabilityAvailable {
                 let modelConfiguration = ModelConfiguration(
                     schema: schema,
                     cloudKitDatabase: .private(iCloudContainerIdentifier)
@@ -76,6 +87,7 @@ class DataContainer {
                 try loadSampleMoments()
             }
             try context.save()
+            updateWidgetSnapshot()
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
@@ -93,29 +105,314 @@ class DataContainer {
         context.insert(moment)
         try badgeManager.unlockBadges(newMoment: moment)
         try context.save()
-
-        // Reload widgets immediately after saving a moment
-        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.small)
-        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.medium)
-        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.lock)
+        updateWidgetSnapshot()
     }
 
     // ✅ NEW: Function to delete and refresh widgets
     func deleteMoment(_ moment: Moment) throws {
         context.delete(moment)
         try context.save()
-
-        // Reload widgets after deletion
-        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.small)
-        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.medium)
-        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.lock)
+        updateWidgetSnapshot()
     }
 
     // ✅ NEW: Call this after any context save that affects moments
     func refreshWidgets() {
-        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.small)
-        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.medium)
+        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.streakSmall)
+        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.addSmall)
+        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.streakAddSmall)
+        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.streakAddMedium)
+        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.large)
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.lock)
+    }
+
+    func exportAllDataFiles() throws -> [URL] {
+        let exportPayload = try buildExportPayload(includeBadges: true, includeChallenges: true)
+        let jsonURL = try writeJSONExport(payload: exportPayload)
+        let csvURL = try writeCSVExport(payload: exportPayload)
+        return [jsonURL, csvURL]
+    }
+
+    func exportMomentsOnlyFiles() throws -> [URL] {
+        let exportPayload = try buildExportPayload(includeBadges: false, includeChallenges: false)
+        let jsonURL = try writeJSONExport(payload: exportPayload)
+        let csvURL = try writeCSVExport(payload: exportPayload)
+        return [jsonURL, csvURL]
+    }
+
+    private struct WidgetSnapshot: Codable {
+        let lastUpdated: Date
+        let streakCount: Int
+        let latestMomentTitle: String
+        let latestMomentNote: String
+        let latestMomentDate: Date?
+        let challenge1: String
+        let challenge2: String
+        let challenge1Completed: Bool
+        let challenge2Completed: Bool
+        let hasLoggedToday: Bool
+    }
+
+    private struct ExportPayload: Codable {
+        let exportedAt: Date
+        let moments: [MomentExport]
+        let badges: [BadgeExport]
+        let challenges: [ChallengeExport]
+    }
+
+    private struct MomentExport: Codable {
+        let title: String
+        let note: String
+        let timestamp: Date
+        let isLocked: Bool
+        let imageDataBase64: String?
+    }
+
+    private struct BadgeExport: Codable {
+        let detailsRawValue: Int
+        let title: String
+        let unlockedAt: Date?
+        let linkedMomentTitle: String?
+    }
+
+    private struct ChallengeExport: Codable {
+        let date: Date
+        let challenge1: String
+        let challenge2: String
+        let challenge1Completed: Bool
+        let challenge2Completed: Bool
+    }
+
+    private func buildExportPayload(includeBadges: Bool, includeChallenges: Bool) throws -> ExportPayload {
+        let moments = try context.fetch(FetchDescriptor<Moment>(sortBy: [SortDescriptor(\.timestamp)]))
+        let badges: [Badge] = includeBadges ? (try context.fetch(FetchDescriptor<Badge>())) : []
+        let challenges: [DailyChallenge] = includeChallenges ? (try context.fetch(FetchDescriptor<DailyChallenge>(sortBy: [SortDescriptor(\.date)]))) : []
+
+        let momentExports = moments.map { moment in
+            MomentExport(
+                title: moment.title,
+                note: moment.note,
+                timestamp: moment.timestamp,
+                isLocked: moment.isLocked,
+                imageDataBase64: moment.imageData?.base64EncodedString()
+            )
+        }
+
+        let badgeExports = badges.map { badge in
+            BadgeExport(
+                detailsRawValue: badge.details.rawValue,
+                title: badge.details.title,
+                unlockedAt: badge.timestamp,
+                linkedMomentTitle: badge.moment?.title
+            )
+        }
+
+        let challengeExports = challenges.map { challenge in
+            ChallengeExport(
+                date: challenge.date,
+                challenge1: challenge.challenge1,
+                challenge2: challenge.challenge2,
+                challenge1Completed: challenge.challenge1Completed,
+                challenge2Completed: challenge.challenge2Completed
+            )
+        }
+
+        return ExportPayload(
+            exportedAt: Date(),
+            moments: momentExports,
+            badges: badgeExports,
+            challenges: challengeExports
+        )
+    }
+
+    private func writeJSONExport(payload: ExportPayload) throws -> URL {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        encoder.dateEncodingStrategy = .iso8601
+        let data = try encoder.encode(payload)
+
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent(exportFileName(extension: "json"))
+        try data.write(to: url, options: [.atomic])
+        return url
+    }
+
+    private func writeCSVExport(payload: ExportPayload) throws -> URL {
+        var lines: [String] = []
+        lines.append("# Moments")
+        lines.append("title,note,timestamp,isLocked,hasImage")
+        for moment in payload.moments {
+            let row = [
+                csvEscape(moment.title),
+                csvEscape(moment.note),
+                csvEscape(Self.csvDateFormatter.string(from: moment.timestamp)),
+                moment.isLocked ? "true" : "false",
+                moment.imageDataBase64 == nil ? "false" : "true"
+            ].joined(separator: ",")
+            lines.append(row)
+        }
+
+        lines.append("")
+        lines.append("# Badges")
+        lines.append("detailsRawValue,title,unlockedAt,linkedMomentTitle")
+        for badge in payload.badges {
+            let row = [
+                String(badge.detailsRawValue),
+                csvEscape(badge.title),
+                csvEscape(badge.unlockedAt.map { Self.csvDateFormatter.string(from: $0) } ?? ""),
+                csvEscape(badge.linkedMomentTitle ?? "")
+            ].joined(separator: ",")
+            lines.append(row)
+        }
+
+        lines.append("")
+        lines.append("# Challenges")
+        lines.append("date,challenge1,challenge2,challenge1Completed,challenge2Completed")
+        for challenge in payload.challenges {
+            let row = [
+                csvEscape(Self.csvDateFormatter.string(from: challenge.date)),
+                csvEscape(challenge.challenge1),
+                csvEscape(challenge.challenge2),
+                challenge.challenge1Completed ? "true" : "false",
+                challenge.challenge2Completed ? "true" : "false"
+            ].joined(separator: ",")
+            lines.append(row)
+        }
+
+        let csv = lines.joined(separator: "\n")
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent(exportFileName(extension: "csv"))
+        guard let data = csv.data(using: .utf8) else {
+            throw CocoaError(.fileWriteUnknown)
+        }
+        try data.write(to: url, options: [.atomic])
+        return url
+    }
+
+    private func exportFileName(extension ext: String) -> String {
+        "DailyJoyExport_\(Self.fileDateFormatter.string(from: Date())).\(ext)"
+    }
+
+    private func csvEscape(_ value: String) -> String {
+        let escaped = value.replacingOccurrences(of: "\"", with: "\"\"")
+        if escaped.contains(",") || escaped.contains("\n") || escaped.contains("\"") {
+            return "\"\(escaped)\""
+        }
+        return escaped
+    }
+
+    private static let csvDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        return formatter
+    }()
+
+    private static let fileDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyyMMdd_HHmmss"
+        return formatter
+    }()
+
+    func updateWidgetSnapshot() {
+        do {
+            let moments = try context.fetch(FetchDescriptor<Moment>(sortBy: [SortDescriptor(\.timestamp)]))
+            let streak = StreakCalculator().calculateStreak(for: moments)
+            let hasLoggedToday = StreakCalculator().hasLoggedToday(moments: moments)
+            let latestMoment = moments.last
+            let challenge = ChallengeManager(modelContext: context).getTodaysChallenge()
+
+            let snapshot = WidgetSnapshot(
+                lastUpdated: Date(),
+                streakCount: streak,
+                latestMomentTitle: latestMoment?.title ?? "No moments yet",
+                latestMomentNote: latestMoment?.note ?? "Add a grateful moment today.",
+                latestMomentDate: latestMoment?.timestamp,
+                challenge1: challenge.challenge1,
+                challenge2: challenge.challenge2,
+                challenge1Completed: challenge.challenge1Completed,
+                challenge2Completed: challenge.challenge2Completed,
+                hasLoggedToday: hasLoggedToday
+            )
+
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            let data = try encoder.encode(snapshot)
+            if let widgetDefaults = UserDefaults(suiteName: widgetAppGroupIdentifier) {
+                widgetDefaults.set(data, forKey: "widgetSnapshot")
+            }
+            refreshWidgets()
+        } catch {
+            #if DEBUG
+            print("Failed to update widget snapshot: \(error)")
+            #endif
+        }
+    }
+
+    func importAllData(from url: URL) throws {
+        let data = try Data(contentsOf: url)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let payload = try decoder.decode(ExportPayload.self, from: data)
+
+        for momentExport in payload.moments {
+            let moment = Moment(
+                title: momentExport.title,
+                note: momentExport.note,
+                imageData: momentExport.imageDataBase64.flatMap { Data(base64Encoded: $0) },
+                timestamp: momentExport.timestamp,
+                isLocked: momentExport.isLocked
+            )
+            context.insert(moment)
+        }
+
+        try badgeManager.loadBadgesIfNeeded()
+        let existingBadges = try context.fetch(FetchDescriptor<Badge>())
+        let badgeByRawValue = Dictionary(grouping: existingBadges, by: { $0.details.rawValue })
+        let moments = try context.fetch(FetchDescriptor<Moment>())
+
+        for badgeExport in payload.badges {
+            let matchingBadge = badgeByRawValue[badgeExport.detailsRawValue]?.first
+            if let badge = matchingBadge {
+                badge.timestamp = badgeExport.unlockedAt
+                if let title = badgeExport.linkedMomentTitle {
+                    badge.moment = moments.first(where: { $0.title == title })
+                }
+            } else if let details = BadgeDetails(rawValue: badgeExport.detailsRawValue) {
+                let badge = Badge(details: details)
+                badge.timestamp = badgeExport.unlockedAt
+                if let title = badgeExport.linkedMomentTitle {
+                    badge.moment = moments.first(where: { $0.title == title })
+                }
+                context.insert(badge)
+            }
+        }
+
+        let existingChallenges = try context.fetch(FetchDescriptor<DailyChallenge>())
+        let calendar = Calendar.current
+        let challengeByDay = Dictionary(grouping: existingChallenges, by: { calendar.startOfDay(for: $0.date) })
+
+        for challengeExport in payload.challenges {
+            let dayKey = calendar.startOfDay(for: challengeExport.date)
+            if let existing = challengeByDay[dayKey]?.first {
+                existing.challenge1 = challengeExport.challenge1
+                existing.challenge2 = challengeExport.challenge2
+                existing.challenge1Completed = challengeExport.challenge1Completed
+                existing.challenge2Completed = challengeExport.challenge2Completed
+            } else {
+                let challenge = DailyChallenge(
+                    date: challengeExport.date,
+                    challenge1: challengeExport.challenge1,
+                    challenge2: challengeExport.challenge2,
+                    challenge1Keywords: [],
+                    challenge2Keywords: []
+                )
+                challenge.challenge1Completed = challengeExport.challenge1Completed
+                challenge.challenge2Completed = challengeExport.challenge2Completed
+                context.insert(challenge)
+            }
+        }
+
+        try context.save()
+        updateWidgetSnapshot()
     }
 
     static var isICloudSyncEnabled: Bool {
@@ -124,6 +421,18 @@ class DataContainer {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: iCloudSyncEnabledKey)
+        }
+    }
+
+    static var isICloudCapabilityAvailable: Bool {
+        get {
+            if UserDefaults.standard.object(forKey: iCloudCapabilityAvailableKey) == nil {
+                UserDefaults.standard.set(iCloudCapabilityAvailableDefault, forKey: iCloudCapabilityAvailableKey)
+            }
+            return UserDefaults.standard.bool(forKey: iCloudCapabilityAvailableKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: iCloudCapabilityAvailableKey)
         }
     }
 
@@ -150,14 +459,20 @@ class DataContainer {
 
         notificationManager.cancelAllNotifications()
         clearAppGroupData()
-        refreshWidgets()
+        updateWidgetSnapshot()
     }
 
     private func clearAppGroupData() {
-        guard let defaults = UserDefaults(suiteName: appGroupIdentifier) else { return }
-        defaults.removeObject(forKey: "savedNotes")
-        defaults.removeObject(forKey: "widgetNoteData")
-        defaults.synchronize()
+        if let defaults = UserDefaults(suiteName: appGroupIdentifier) {
+            defaults.removeObject(forKey: "savedNotes")
+            defaults.removeObject(forKey: "widgetNoteData")
+            defaults.synchronize()
+        }
+        if let widgetDefaults = UserDefaults(suiteName: widgetAppGroupIdentifier) {
+            widgetDefaults.removeObject(forKey: "widgetSnapshot")
+            widgetDefaults.removeObject(forKey: "streakCount")
+            widgetDefaults.synchronize()
+        }
     }
 }
 

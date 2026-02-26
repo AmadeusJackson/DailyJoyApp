@@ -78,18 +78,12 @@ struct StreakSmallWidgetView: View {
     let entry: DailyJoyWidgetEntry
 
     var body: some View {
-        VStack(spacing: 8) {
-            Image(systemName: "flame.fill")
-                .font(.title)
-                .foregroundStyle(.white)
-            Text("\(entry.snapshot.streakCount)")
-                .font(.largeTitle.bold())
-                .foregroundStyle(.white)
-            Text("day streak")
-                .font(.caption)
-                .foregroundStyle(.white.opacity(0.9))
+        ZStack(alignment: .center) {
+            FlameBadge(number: entry.snapshot.streakCount, size: 90)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .offset(y: 6)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .containerBackground(emberColor, for: .widget)
     }
 }
@@ -120,9 +114,8 @@ struct StreakAddSmallWidgetView: View {
 
     var body: some View {
         VStack(spacing: 10) {
-            HStack(spacing: 6) {
-                Image(systemName: "flame.fill")
-                    .foregroundStyle(.white)
+            HStack(spacing: 8) {
+                FlameBadge(number: entry.snapshot.streakCount, size: 52)
                 Text("\(entry.snapshot.streakCount)-day")
                     .font(.caption.bold())
                     .foregroundStyle(.white)
@@ -156,8 +149,7 @@ struct DailyJoyLargeWidgetView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Image(systemName: "flame.fill")
-                    .foregroundStyle(.white)
+                FlameBadge(number: entry.snapshot.streakCount, size: 40)
                 Text("\(entry.snapshot.streakCount)-day streak")
                     .font(.headline)
                     .foregroundStyle(.white)
@@ -221,15 +213,29 @@ struct DailyJoyLockScreenWidgetView: View {
     var body: some View {
         ZStack {
             Circle().fill(emberColor)
-            VStack(spacing: 2) {
-                Image(systemName: "flame.fill")
-                    .font(.caption)
-                    .foregroundStyle(.white)
-                Text("\(entry.snapshot.streakCount)")
-                    .font(.caption2.bold())
-                    .foregroundStyle(.white)
-            }
+            FlameBadge(number: entry.snapshot.streakCount, size: 22)
         }
+    }
+}
+
+struct FlameBadge: View {
+    let number: Int
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            Image("FlameSolid")
+                .renderingMode(.template)
+                .resizable()
+                .scaledToFit()
+                .frame(width: size * 2.15, height: size * 2.44)
+                .foregroundStyle(.white)
+            Text("\(number)")
+                .font(.system(size: max(10, size * 0.4), weight: .bold))
+                .foregroundStyle(.black)
+                .offset(y: size * 0.33)
+        }
+        .accessibilityHidden(true)
     }
 }
 
@@ -269,6 +275,63 @@ struct DailyJoyStreakAddSmallWidget: Widget {
         .supportedFamilies([.systemSmall])
         .configurationDisplayName("Streak + Add")
         .description("Streak and quick add.")
+    }
+}
+
+struct StreakAddMediumWidgetView: View {
+    let entry: DailyJoyWidgetEntry
+
+    var body: some View {
+        HStack(spacing: 16) {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(spacing: 8) {
+                    FlameBadge(number: entry.snapshot.streakCount, size: 44)
+                    Text("\(entry.snapshot.streakCount)-day streak")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                }
+
+                Text(entry.snapshot.latestMomentTitle)
+                    .font(.title3.bold())
+                    .foregroundStyle(.white)
+                    .lineLimit(1)
+
+                Text(entry.snapshot.latestMomentNote)
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.9))
+                    .lineLimit(2)
+            }
+
+            Spacer(minLength: 0)
+
+            Link(destination: addMomentURL!) {
+                VStack(spacing: 6) {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.title)
+                        .foregroundStyle(.white)
+                    Text("Add")
+                        .font(.caption.bold())
+                        .foregroundStyle(.white)
+                }
+                .padding(10)
+                .background(.white.opacity(0.2), in: RoundedRectangle(cornerRadius: 12))
+            }
+        }
+        .padding()
+        .containerBackground(emberColor, for: .widget)
+    }
+}
+
+struct DailyJoyStreakAddMediumWidget: Widget {
+    let kind: String = "DailyJoyStreakAddMediumWidget"
+
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: DailyJoyWidgetProvider()) { entry in
+            StreakAddMediumWidgetView(entry: entry)
+        }
+        .supportedFamilies([.systemMedium])
+        .configurationDisplayName("Streak + Add")
+        .description("Your streak and quick add.")
     }
 }
 

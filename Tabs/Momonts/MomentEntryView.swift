@@ -438,7 +438,8 @@ struct MomentEntryView: View {
             Task {
                 await dataContainer.notificationManager.updateScheduleAfterNewMoment()
             }
-            
+
+            dataContainer.updateWidgetSnapshot()
             print("Moment saved successfully: \(title)")
             
             // Dismiss keyboard and close immediately so parent can celebrate
@@ -482,6 +483,7 @@ struct MomentEntryView: View {
             }
             // Ensure badge updates are persisted after edit
             try? modelContext.save()
+            dataContainer.updateWidgetSnapshot()
             focusedField = nil
             dismiss()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
