@@ -2,266 +2,304 @@
 //  DailyJoyWidget.swift
 //  DailyJoyWidget
 //
-//  Created by Amadeus Jackson on 1/7/26.
+//  Created by Amadeus Jackson on 2/24/26.
 //
 
 import WidgetKit
 import SwiftUI
-import SwiftData
+import Foundation
 
-// MARK: - Shared App Group Identifier (Update to your actual App Group)
-private let appGroupIdentifier = "group.com.amadeusjackson.dailyjoy"
+private let widgetAppGroupIdentifier = "group.dailyjoy.shared"
+private let emberColor = Color(red: 1.0, green: 0.42, blue: 0.21)
+private let addMomentURL = URL(string: "dailyjoy://add-moment")
+private let openChallengesURL = URL(string: "dailyjoy://challenges")
 
-// MARK: - Color Extension for Hex
-extension Color {
-    init(hex: String) {
-        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&int)
-        let a, r, g, b: UInt64
-        switch hex.count {
-        case 3: // RGB (12-bit)
-            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: // RGB (24-bit)
-            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8: // ARGB (32-bit)
-            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
-        default:
-            (a, r, g, b) = (1, 1, 1, 0)
-        }
-
-        self.init(
-            .sRGB,
-            red: Double(r) / 255,
-            green: Double(g) / 255,
-            blue:  Double(b) / 255,
-            opacity: Double(a) / 255
-        )
-    }
-}
-
-// MARK: - Widget Entry
-struct DailyJoyEntry: TimelineEntry {
-    let date: Date
-    let streakDays: Int
+struct DailyJoyWidgetSnapshot: Codable {
+    let lastUpdated: Date
+    let streakCount: Int
+    let latestMomentTitle: String
+    let latestMomentNote: String
+    let latestMomentDate: Date?
+    let challenge1: String
+    let challenge2: String
+    let challenge1Completed: Bool
+    let challenge2Completed: Bool
     let hasLoggedToday: Bool
 }
 
-// MARK: - Timeline Provider
-struct DailyJoyProvider: @MainActor TimelineProvider {
-    func placeholder(in context: Context) -> DailyJoyEntry {
-        DailyJoyEntry(date: Date(), streakDays: 7, hasLoggedToday: true)
+struct DailyJoyWidgetEntry: TimelineEntry {
+    let date: Date
+    let snapshot: DailyJoyWidgetSnapshot
+}
+
+struct DailyJoyWidgetProvider: TimelineProvider {
+    func placeholder(in context: Context) -> DailyJoyWidgetEntry {
+        DailyJoyWidgetEntry(date: Date(), snapshot: Self.placeholderSnapshot)
     }
-    
-    func getSnapshot(in context: Context, completion: @escaping (DailyJoyEntry) -> Void) {
-        let entry = DailyJoyEntry(date: Date(), streakDays: 7, hasLoggedToday: true)
-        completion(entry)
+
+    func getSnapshot(in context: Context, completion: @escaping (DailyJoyWidgetEntry) -> Void) {
+        completion(DailyJoyWidgetEntry(date: Date(), snapshot: loadSnapshot() ?? Self.placeholderSnapshot))
     }
-    
-    @MainActor func getTimeline(in context: Context, completion: @escaping (Timeline<DailyJoyEntry>) -> Void) {
-        let currentDate = Date()
-        
-        // Calculate streak from SwiftData
-        let (streakDays, hasLoggedToday) = calculateStreak()
-        
-        // Create entry for current time
-        let entry = DailyJoyEntry(
-            date: currentDate,
-            streakDays: streakDays,
-            hasLoggedToday: hasLoggedToday
-        )
-        
-        // Schedule next update at midnight
-        let midnight = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: 1, to: currentDate)!)
-        
-        let timeline = Timeline(entries: [entry], policy: .after(midnight))
+
+    func getTimeline(in context: Context, completion: @escaping (Timeline<DailyJoyWidgetEntry>) -> Void) {
+        let snapshot = loadSnapshot() ?? Self.placeholderSnapshot
+        let entry = DailyJoyWidgetEntry(date: Date(), snapshot: snapshot)
+
+        let nextMidnight = Calendar.current.startOfDay(for: Date().addingTimeInterval(60 * 60 * 24))
+        let timeline = Timeline(entries: [entry], policy: .after(nextMidnight))
         completion(timeline)
     }
-    
-    @MainActor
-    private func calculateStreak() -> (days: Int, loggedToday: Bool) {
-        do {
-            // Open SwiftData store from shared App Group so the widget sees the same data as the app
-            guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier) else {
-                return (0, false)
-            }
-            let storeURL = containerURL.appendingPathComponent("DailyJoy.store")
-            let configuration = ModelConfiguration(url: storeURL)
-            let modelContainer = try ModelContainer(for: Moment.self, configurations: configuration)
-            let context = modelContainer.mainContext
-            
-            let descriptor = FetchDescriptor<Moment>(
-                sortBy: [SortDescriptor(\Moment.timestamp, order: .reverse)]
-            )
-            let moments = try context.fetch(descriptor)
-            
-            let calculator = StreakCalculator()
-            let streak = calculator.calculateStreak(for: moments)
-            let hasLogged = calculator.hasLoggedToday(moments: moments)
-            
-            return (streak, hasLogged)
-        } catch {
-            return (0, false)
+
+    private func loadSnapshot() -> DailyJoyWidgetSnapshot? {
+        guard let defaults = UserDefaults(suiteName: widgetAppGroupIdentifier),
+              let data = defaults.data(forKey: "widgetSnapshot") else {
+            return nil
         }
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return try? decoder.decode(DailyJoyWidgetSnapshot.self, from: data)
     }
+
+    static let placeholderSnapshot = DailyJoyWidgetSnapshot(
+        lastUpdated: Date(),
+        streakCount: 3,
+        latestMomentTitle: "A quiet morning",
+        latestMomentNote: "Grateful for a slow start and a warm drink.",
+        latestMomentDate: Date(),
+        challenge1: "Take a 10-minute walk outside",
+        challenge2: "Write a thank you note",
+        challenge1Completed: false,
+        challenge2Completed: true,
+        hasLoggedToday: true
+    )
 }
 
-// MARK: - Small Widget View (Streak Display)
-struct SmallStreakWidgetView: View {
-    let entry: DailyJoyEntry
-    
-    var displayText: String {
-        entry.hasLoggedToday ? "\(entry.streakDays)" : "!"
-    }
-    
+struct StreakSmallWidgetView: View {
+    let entry: DailyJoyWidgetEntry
+
     var body: some View {
         VStack(spacing: 8) {
-            // Fire emoji with number
-            ZStack {
-                Text("🔥")
-                    .font(.system(size: 80))
-                
-                // White number overlay
-                Text(displayText)
-                    .font(.system(size: displayText == "!" ? 36 : 32, weight: .black, design: .rounded))
-                    .foregroundColor(.black)
-                    .offset(y: displayText == "!" ? 20 : 18)
-            }
-            
-            Text("Streak")
-                .font(.headline)
-                .foregroundColor(.white)
+            Image(systemName: "flame.fill")
+                .font(.title)
+                .foregroundStyle(.white)
+            Text("\(entry.snapshot.streakCount)")
+                .font(.largeTitle.bold())
+                .foregroundStyle(.white)
+            Text("day streak")
+                .font(.caption)
+                .foregroundStyle(.white.opacity(0.9))
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .containerBackground(emberColor, for: .widget)
     }
 }
 
-// MARK: - Medium Widget View (Streak + Quick Add)
-struct MediumWidgetView: View {
-    let entry: DailyJoyEntry
-    
-    var displayText: String {
-        entry.hasLoggedToday ? "\(entry.streakDays)" : "!"
-    }
-    
+struct AddMomentSmallWidgetView: View {
+    let entry: DailyJoyWidgetEntry
+
     var body: some View {
-        HStack(spacing: 20) {
-            // Streak Section with flame and white number
-            VStack(spacing: 8) {
-                ZStack {
-                    Text("🔥")
-                        .font(.system(size: 80))
-                    
-                    // White number overlay
-                    Text(displayText)
-                        .font(.system(size: displayText == "!" ? 32 : 28, weight: .black, design: .rounded))
-                        .foregroundColor(.black)
-                        .offset(y: displayText == "!" ? 20 : 18)
-                }
-                
-                Text("Streak")
-                    .font(.subheadline.bold())
-                    .foregroundColor(.white)
+        VStack(spacing: 10) {
+            Image(systemName: "plus.circle.fill")
+                .font(.title)
+                .foregroundStyle(.white)
+            Text("Add Moment")
+                .font(.headline)
+                .foregroundStyle(.white)
+            Text(entry.snapshot.hasLoggedToday ? "Logged today" : "Log today")
+                .font(.caption)
+                .foregroundStyle(.white.opacity(0.85))
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .containerBackground(emberColor, for: .widget)
+        .widgetURL(addMomentURL)
+    }
+}
+
+struct StreakAddSmallWidgetView: View {
+    let entry: DailyJoyWidgetEntry
+
+    var body: some View {
+        VStack(spacing: 10) {
+            HStack(spacing: 6) {
+                Image(systemName: "flame.fill")
+                    .foregroundStyle(.white)
+                Text("\(entry.snapshot.streakCount)-day")
+                    .font(.caption.bold())
+                    .foregroundStyle(.white)
             }
-            .frame(maxWidth: .infinity)
-            
-            Divider()
-                .background(Color.white.opacity(0.3))
-            
-            // Quick Add Section
-            Link(destination: URL(string: "dailyjoy://addmoment")!) {
-                VStack(spacing: 8) {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.system(size: 44))
-                        .foregroundColor(.white)
-                    
-                    Text("Add Moment")
-                        .font(.subheadline.bold())
-                        .foregroundColor(.white)
+
+            Spacer(minLength: 0)
+
+            Text(entry.snapshot.latestMomentTitle)
+                .font(.headline)
+                .foregroundStyle(.white)
+                .lineLimit(1)
+
+            Spacer(minLength: 0)
+
+            Text("Add Moment")
+                .font(.caption.bold())
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .background(.white.opacity(0.2), in: Capsule())
+                .foregroundStyle(.white)
+        }
+        .padding()
+        .containerBackground(emberColor, for: .widget)
+        .widgetURL(addMomentURL)
+    }
+}
+
+struct DailyJoyLargeWidgetView: View {
+    let entry: DailyJoyWidgetEntry
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Image(systemName: "flame.fill")
+                    .foregroundStyle(.white)
+                Text("\(entry.snapshot.streakCount)-day streak")
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                Spacer()
+                Link(destination: addMomentURL!) {
+                    Label("Add", systemImage: "plus.circle.fill")
+                        .font(.caption.bold())
+                        .foregroundStyle(.white)
                 }
-                .frame(maxWidth: .infinity)
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(entry.snapshot.latestMomentTitle)
+                    .font(.title3.bold())
+                    .foregroundStyle(.white)
+                    .lineLimit(1)
+                Text(entry.snapshot.latestMomentNote)
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.9))
+                    .lineLimit(2)
+            }
+
+            Divider().overlay(.white.opacity(0.35))
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Daily Challenges")
+                    .font(.caption.bold())
+                    .foregroundStyle(.white)
+
+                challengeRow(text: entry.snapshot.challenge1, completed: entry.snapshot.challenge1Completed)
+                challengeRow(text: entry.snapshot.challenge2, completed: entry.snapshot.challenge2Completed)
+
+                Link(destination: openChallengesURL!) {
+                    Text("View challenges")
+                        .font(.caption2)
+                        .underline()
+                        .foregroundStyle(.white.opacity(0.9))
+                }
             }
         }
         .padding()
+        .containerBackground(emberColor, for: .widget)
+    }
+
+    private func challengeRow(text: String, completed: Bool) -> some View {
+        HStack(spacing: 6) {
+            Image(systemName: completed ? "checkmark.circle.fill" : "circle")
+                .font(.caption2)
+                .foregroundStyle(.white)
+            Text(text)
+                .font(.caption2)
+                .foregroundStyle(.white.opacity(0.9))
+                .lineLimit(1)
+        }
     }
 }
 
-// MARK: - Lock Screen Widget View
-struct LockScreenStreakWidgetView: View {
-    let entry: DailyJoyEntry
-    
-    var displayText: String {
-        if entry.hasLoggedToday {
-            return "\(entry.streakDays)"
-        } else {
-            return "!"
-        }
-    }
-    
+struct DailyJoyLockScreenWidgetView: View {
+    let entry: DailyJoyWidgetEntry
+
     var body: some View {
         ZStack {
-            // Fire emoji background
-            Text("🔥")
-                .font(.system(size: 56))
-            
-            // Streak number or exclamation (see-through effect via blending)
-            Text(displayText)
-                .font(.system(size: displayText == "!" ? 28 : 28, weight: .black, design: .rounded))
-                .foregroundColor(.white)
-                .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
-                .blendMode(.destinationOut)
-                .offset(y: displayText == "!" ? 12 : 9)
+            Circle().fill(emberColor)
+            VStack(spacing: 2) {
+                Image(systemName: "flame.fill")
+                    .font(.caption)
+                    .foregroundStyle(.white)
+                Text("\(entry.snapshot.streakCount)")
+                    .font(.caption2.bold())
+                    .foregroundStyle(.white)
+            }
         }
-        .compositingGroup()
     }
 }
 
-// MARK: - Widget Configurations
-struct DailyJoySmallWidget: Widget {
-    let kind: String = "DailyJoySmallWidget"
-    
+struct DailyJoyStreakSmallWidget: Widget {
+    let kind: String = "DailyJoyStreakSmallWidget"
+
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: DailyJoyProvider()) { entry in
-            SmallStreakWidgetView(entry: entry)
-                .containerBackground(Color(hex: "#fe7d00"), for: .widget)
+        StaticConfiguration(kind: kind, provider: DailyJoyWidgetProvider()) { entry in
+            StreakSmallWidgetView(entry: entry)
         }
-        .configurationDisplayName("Daily Streak")
-        .description("See your current streak at a glance")
         .supportedFamilies([.systemSmall])
+        .configurationDisplayName("Streak")
+        .description("Your current streak.")
     }
 }
 
-struct DailyJoyMediumWidget: Widget {
-    let kind: String = "DailyJoyMediumWidget"
-    
+struct DailyJoyAddSmallWidget: Widget {
+    let kind: String = "DailyJoyAddSmallWidget"
+
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: DailyJoyProvider()) { entry in
-            MediumWidgetView(entry: entry)
-                .containerBackground(Color(hex: "#fe7d00"), for: .widget)
+        StaticConfiguration(kind: kind, provider: DailyJoyWidgetProvider()) { entry in
+            AddMomentSmallWidgetView(entry: entry)
         }
-        .configurationDisplayName("Streak & Quick Add")
-        .description("View your streak and quickly add a moment")
-        .supportedFamilies([.systemMedium])
+        .supportedFamilies([.systemSmall])
+        .configurationDisplayName("Add Moment")
+        .description("Quickly add a grateful moment.")
     }
 }
 
-struct DailyJoyLockScreenWidget: Widget {
-    let kind: String = "DailyJoyLockScreenWidget"
-    
+struct DailyJoyStreakAddSmallWidget: Widget {
+    let kind: String = "DailyJoyStreakAddSmallWidget"
+
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: DailyJoyProvider()) { entry in
-            LockScreenStreakWidgetView(entry: entry)
-                .containerBackground(.clear, for: .widget)
+        StaticConfiguration(kind: kind, provider: DailyJoyWidgetProvider()) { entry in
+            StreakAddSmallWidgetView(entry: entry)
         }
-        .configurationDisplayName("Streak Reminder")
-        .description("Your daily streak on your lock screen")
+        .supportedFamilies([.systemSmall])
+        .configurationDisplayName("Streak + Add")
+        .description("Streak and quick add.")
+    }
+}
+
+struct DailyJoyLargeWidget: Widget {
+    let kind: String = "DailyJoyLargeWidget"
+
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: DailyJoyWidgetProvider()) { entry in
+            DailyJoyLargeWidgetView(entry: entry)
+        }
+        .supportedFamilies([.systemLarge])
+        .configurationDisplayName("Daily Joy")
+        .description("Streak, moments, and challenges.")
+    }
+}
+
+struct DailyJoyLockWidget: Widget {
+    let kind: String = "DailyJoyLockWidget"
+
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: DailyJoyWidgetProvider()) { entry in
+            DailyJoyLockScreenWidgetView(entry: entry)
+        }
         .supportedFamilies([.accessoryCircular])
+        .configurationDisplayName("Streak (Lock Screen)")
+        .description("Your streak at a glance.")
     }
 }
-// MARK: - Widget Kind Helpers for App Reloads
-public struct DailyJoyWidgetKinds {
-    public static let small = "DailyJoySmallWidget"
-    public static let medium = "DailyJoyMediumWidget"
-    public static let lock = "DailyJoyLockScreenWidget"
+
+#Preview(as: .systemSmall) {
+    DailyJoyStreakSmallWidget()
+} timeline: {
+    DailyJoyWidgetEntry(date: .now, snapshot: DailyJoyWidgetProvider.placeholderSnapshot)
 }
-
-

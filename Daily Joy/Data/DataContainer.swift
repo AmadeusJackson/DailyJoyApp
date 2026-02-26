@@ -10,6 +10,8 @@ import SwiftUI
 import WidgetKit
 
 private let appGroupIdentifier = "group.com.amadeusjackson.dailyjoy"
+private let iCloudContainerIdentifier = "iCloud.com.amadeusjackson.dailyjoy"
+private let iCloudSyncEnabledKey = "icloud_sync_enabled"
 
 // Local copy of widget kind strings so app can reload specific timelines
 struct DailyJoyWidgetKinds {
@@ -28,7 +30,7 @@ class DataContainer {
     var context: ModelContext {
         modelContainer.mainContext
     }
-    
+
     var challengeManager: ChallengeManager {
         ChallengeManager(modelContext: context)
     }
@@ -42,12 +44,20 @@ class DataContainer {
         ])
 
         do {
-            // Use shared App Group store so the app and widgets see the same data
             if includeSampleMoments {
                 let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
                 modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
                 #if DEBUG
                 print("Using in-memory sample store (includeSampleMoments == true)")
+                #endif
+            } else if Self.isICloudSyncEnabled {
+                let modelConfiguration = ModelConfiguration(
+                    schema: schema,
+                    cloudKitDatabase: .private(iCloudContainerIdentifier)
+                )
+                modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
+                #if DEBUG
+                print("Using iCloud CloudKit store (iCloud sync enabled)")
                 #endif
             } else {
                 // Diagnostic: use default app container (no App Group) to validate persistence across relaunches
@@ -77,35 +87,77 @@ class DataContainer {
             try badgeManager.unlockBadges(newMoment: moment)
         }
     }
-    
+
     // ✅ NEW: Function to save and refresh widgets
     func saveMoment(_ moment: Moment) throws {
         context.insert(moment)
         try badgeManager.unlockBadges(newMoment: moment)
         try context.save()
-        
+
         // Reload widgets immediately after saving a moment
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.small)
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.medium)
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.lock)
     }
-    
+
     // ✅ NEW: Function to delete and refresh widgets
     func deleteMoment(_ moment: Moment) throws {
         context.delete(moment)
         try context.save()
-        
+
         // Reload widgets after deletion
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.small)
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.medium)
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.lock)
     }
-    
+
     // ✅ NEW: Call this after any context save that affects moments
     func refreshWidgets() {
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.small)
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.medium)
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.lock)
+    }
+
+    static var isICloudSyncEnabled: Bool {
+        get {
+            UserDefaults.standard.bool(forKey: iCloudSyncEnabledKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: iCloudSyncEnabledKey)
+        }
+    }
+
+    @MainActor
+    func deleteAllData() async {
+        let context = modelContainer.mainContext
+        do {
+            let moments = try context.fetch(FetchDescriptor<Moment>())
+            let badges = try context.fetch(FetchDescriptor<Badge>())
+            let challenges = try context.fetch(FetchDescriptor<DailyChallenge>())
+            let drafts = try context.fetch(FetchDescriptor<Draft>())
+
+            moments.forEach { context.delete($0) }
+            badges.forEach { context.delete($0) }
+            challenges.forEach { context.delete($0) }
+            drafts.forEach { context.delete($0) }
+
+            try context.save()
+        } catch {
+            #if DEBUG
+            print("Failed to delete all data: \(error)")
+            #endif
+        }
+
+        notificationManager.cancelAllNotifications()
+        clearAppGroupData()
+        refreshWidgets()
+    }
+
+    private func clearAppGroupData() {
+        guard let defaults = UserDefaults(suiteName: appGroupIdentifier) else { return }
+        defaults.removeObject(forKey: "savedNotes")
+        defaults.removeObject(forKey: "widgetNoteData")
+        defaults.synchronize()
     }
 }
 
@@ -118,4 +170,3 @@ extension View {
             .modelContainer(sampleContainer.modelContainer)
     }
 }
-

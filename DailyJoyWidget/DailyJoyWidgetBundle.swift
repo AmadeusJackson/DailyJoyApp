@@ -2,7 +2,7 @@
 //  DailyJoyWidgetBundle.swift
 //  DailyJoyWidget
 //
-//  Created by Amadeus Jackson on 1/7/26.
+//  Created by Amadeus Jackson on 2/24/26.
 //
 
 import WidgetKit
@@ -11,8 +11,8 @@ import SwiftUI
 @main
 struct DailyJoyWidgetBundle: WidgetBundle {
     var body: some Widget {
-        DailyJoySmallWidget()
-        DailyJoyMediumWidget()
-        DailyJoyLockScreenWidget()
+        DailyJoyWidget()
+        DailyJoyWidgetControl()
+        DailyJoyWidgetLiveActivity()
     }
 }
