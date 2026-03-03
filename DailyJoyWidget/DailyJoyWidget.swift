@@ -225,15 +225,14 @@ struct FlameBadge: View {
     var body: some View {
         ZStack {
             Image("FlameSolid")
-                .renderingMode(.template)
+                .renderingMode(.original)
                 .resizable()
                 .scaledToFit()
-                .frame(width: size * 2.15, height: size * 2.44)
-                .foregroundStyle(.white)
+                .frame(width: size * 1.2, height: size * 1.35)
             Text("\(number)")
                 .font(.system(size: max(10, size * 0.4), weight: .bold))
                 .foregroundStyle(.black)
-                .offset(y: size * 0.33)
+                .offset(y: size * 0.1)
         }
         .accessibilityHidden(true)
     }
