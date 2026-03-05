@@ -8,27 +8,6 @@ struct InteractionSoundSettingsKey {
     static let appStorageKey = "interactionSoundsEnabled"
 }
 
-// MARK: - Environment support for interaction sounds
-private struct InteractionSoundsEnabledKey: EnvironmentKey {
-    static let defaultValue: Bool = true
-}
-
-extension EnvironmentValues {
-    /// Whether the app should play interaction sounds.
-    /// Backed by @AppStorage in views, but this provides a convenient read for helpers.
-    var interactionSoundsEnabled: Bool {
-        get { self[InteractionSoundsEnabledKey.self] }
-        set { self[InteractionSoundsEnabledKey.self] = newValue }
-    }
-}
-
-extension View {
-    /// Inject an interaction sound enabled flag into the environment.
-    func interactionSoundsEnabled(_ enabled: Bool) -> some View {
-        environment(\.interactionSoundsEnabled, enabled)
-    }
-}
-
 // MARK: - Sound & Haptic Feedback
 final class SoundFeedback {
     static let shared = SoundFeedback()
@@ -42,10 +21,23 @@ final class SoundFeedback {
     ///   - fileName: The bundled audio resource name without extension.
     ///   - fileExtension: The bundled audio file extension (default: "caf").
     func playAddMomentSound(reduceMotion: Bool, enabled: Bool, fileName: String = "addMoment", fileExtension: String = "caf") {
-        guard enabled, !reduceMotion else { return }
+        #if DEBUG
+        print("[SoundFeedback] Requested playAddMomentSound — reduceMotion=\(reduceMotion), enabled=\(enabled), file=\(fileName).\(fileExtension)")
+        #endif
+
+        guard enabled, !reduceMotion else {
+            #if DEBUG
+            if !enabled { print("[SoundFeedback] Skipped: interaction sounds disabled by user setting.") }
+            if reduceMotion { print("[SoundFeedback] Skipped: Reduce Motion is enabled.") }
+            #endif
+            return
+        }
 
         // Look for a bundled asset. If not found, silently do nothing.
         guard let url = Bundle.main.url(forResource: fileName, withExtension: fileExtension) else {
+            #if DEBUG
+            print("[SoundFeedback] Asset not found in bundle: \(fileName).\(fileExtension)")
+            #endif
             return
         }
 
@@ -58,9 +50,14 @@ final class SoundFeedback {
             player = try AVAudioPlayer(contentsOf: url)
             player?.volume = 0.7
             player?.prepareToPlay()
+            #if DEBUG
+            print("[SoundFeedback] Playing sound: \(fileName).\(fileExtension)")
+            #endif
             player?.play()
         } catch {
-            // Intentionally ignore playback errors to avoid impacting UX.
+            #if DEBUG
+            print("[SoundFeedback] Playback error: \(error)")
+            #endif
         }
     }
 }
@@ -77,3 +74,4 @@ enum HapticFeedback {
         generator.impactOccurred()
     }
 }
+

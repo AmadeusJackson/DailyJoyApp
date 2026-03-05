@@ -62,6 +62,7 @@
 				BadgeCelebrationView.swift,
 				BadgeDetailView.swift,
 				LockedBadgeView.swift,
+				PartyPopperSound.mp3,
 				UnlockedBadgeView.swift,
 			);
 			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;
@@ -69,6 +70,7 @@
 		3F84ABC82F4D485500B7DC56 /* Exceptions for "Momonts" folder in "Daily Joy" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AudioSettingsView.swift,
 				CameraPicker.swift,
 				Colors.swift,
 				MemoryLaneView.swift,
@@ -80,6 +82,7 @@
 				MomentsView.swift,
 				PhotoLibraryPicker.swift,
 				ReducedMotionHelper.swift,
+				SoundFeedback.swift,
 				VoiceLoggingManager.swift,
 			);
 			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;

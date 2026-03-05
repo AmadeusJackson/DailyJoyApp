@@ -13,6 +13,7 @@ struct ChallengeCelebrationView: View {
     @State private var scale: CGFloat = 0.5
     @State private var opacity: Double = 0
     @Environment(\.accessibilityReduceMotion) var reduceMotion
+    @AppStorage(InteractionSoundSettingsKey.appStorageKey) private var playInteractionSounds: Bool = true
     
     var body: some View {
         ZStack {
@@ -102,6 +103,12 @@ struct ChallengeCelebrationView: View {
             // Haptic feedback
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.success)
+            
+            // Play celebration sound (respects Reduce Motion and in-app toggle)
+            SoundFeedback.shared.playAddMomentSound(
+                reduceMotion: reduceMotion,
+                enabled: playInteractionSounds
+            )
             
             // Animations (respect reduced motion)
             if reduceMotion {

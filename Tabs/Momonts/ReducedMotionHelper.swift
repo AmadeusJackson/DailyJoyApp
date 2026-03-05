@@ -14,6 +14,18 @@ extension EnvironmentValues {
     }
 }
 
+// MARK: - Interaction Sounds Environment Helper
+private struct InteractionSoundsEnabledKey: EnvironmentKey {
+    static let defaultValue: Bool = true
+}
+
+extension EnvironmentValues {
+    var interactionSoundsEnabled: Bool {
+        get { self[InteractionSoundsEnabledKey.self] }
+        set { self[InteractionSoundsEnabledKey.self] = newValue }
+    }
+}
+
 // MARK: - Accessible Animation Modifier
 struct AccessibleAnimation: ViewModifier {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
