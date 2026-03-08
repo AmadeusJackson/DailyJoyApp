@@ -24,6 +24,18 @@ struct RemindersSettingsView: View {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
+                Section("Audio") {
+                    Toggle("Interaction Sounds", isOn: Binding(get: {
+                        UserDefaults.standard.bool(forKey: InteractionSoundSettingsKey.appStorageKey)
+                    }, set: { newValue in
+                        UserDefaults.standard.set(newValue, forKey: InteractionSoundSettingsKey.appStorageKey)
+                    }))
+                    .accessibilityHint("Play subtle sounds for actions like adding a moment.")
+
+                    Text("Interaction sounds respect the mute switch and will mix with other audio, like music or podcasts.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
                 Section("Reminders") {
                     Picker("Reminder Style", selection: $style) {
                         ForEach(NotificationManager.ReminderStyle.allCases, id: \.self) { s in
@@ -246,7 +258,3 @@ struct RemindersSettingsView: View {
     }
 }
 
-#Preview {
-    RemindersSettingsView()
-        .sampleDataContainer()
-}
