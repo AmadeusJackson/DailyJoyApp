@@ -322,6 +322,7 @@ struct MomentsView: View {
     }
     
     private func runCelebration() {
+        SoundManager.shared.playAddMomentSoundIfEnabled()
         withAnimation(.spring(duration: 0.4)) {
             showCelebration = true
         }

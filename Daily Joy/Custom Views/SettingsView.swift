@@ -8,9 +8,7 @@ struct RemindersSettingsView: View {
     @State private var style: NotificationManager.ReminderStyle = .gentle
     @State private var secondChanceEnabled: Bool = false
     @State private var selectedDate: Date = Calendar.current.date(bySettingHour: 21, minute: 0, second: 0, of: Date()) ?? Date()
-    @State private var iCloudSyncEnabled: Bool = DataContainer.isICloudSyncEnabled
     @State private var showDeleteAllConfirmation = false
-    @State private var showRestartNotice = false
     @State private var exportFiles: [URL] = []
     @State private var showExportSheet = false
     @State private var exportErrorMessage: String?
@@ -19,13 +17,13 @@ struct RemindersSettingsView: View {
     @State private var showDiscardChangesAlert = false
     @State private var showSavedNotice = false
     @State private var interactionSoundsEnabled: Bool = UserDefaults.standard.bool(forKey: InteractionSoundSettingsKey.appStorageKey)
+    @State private var showBackupRestoreDialog = false
 
     private var hasUnsavedChanges: Bool {
         let persistedStyle = NotificationManager.ReminderPreferences.style
         let persistedSecondChanceEnabled = NotificationManager.ReminderPreferences.secondChanceEnabled
         let t = NotificationManager.ReminderPreferences.secondChanceTime
         let persistedDate = Calendar.current.date(bySettingHour: t.hour, minute: t.minute, second: 0, of: Date()) ?? Date()
-        let persistedICloud = DataContainer.isICloudSyncEnabled
         let persistedInteractionSounds = UserDefaults.standard.bool(forKey: InteractionSoundSettingsKey.appStorageKey)
         let currentComps = Calendar.current.dateComponents([.hour, .minute], from: selectedDate)
         let persistedComps = Calendar.current.dateComponents([.hour, .minute], from: persistedDate)
@@ -33,7 +31,6 @@ struct RemindersSettingsView: View {
         return style != persistedStyle ||
                secondChanceEnabled != persistedSecondChanceEnabled ||
                timeChanged ||
-               iCloudSyncEnabled != persistedICloud ||
                interactionSoundsEnabled != persistedInteractionSounds
     }
 
@@ -81,63 +78,10 @@ struct RemindersSettingsView: View {
                     }
                 }
 
-                Section("iCloud Sync") {
-                    Toggle("Sync with iCloud", isOn: $iCloudSyncEnabled)
-                        .disabled(!DataContainer.isICloudCapabilityAvailable)
-                        .onChange(of: iCloudSyncEnabled) { _, newValue in
-                            guard DataContainer.isICloudCapabilityAvailable else {
-                                iCloudSyncEnabled = false
-                                return
-                            }
-                            DataContainer.isICloudSyncEnabled = newValue
-                            showRestartNotice = true
-                        }
-
-                    if DataContainer.isICloudCapabilityAvailable {
-                        Text("No account is required. If enabled, data syncs through the user's iCloud account.")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    } else {
-                        Text("Requires Apple Developer Program to enable iCloud capability.")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                Section("Backup & Restore") {
+                    Button("Backup & Restore") {
+                        showBackupRestoreDialog = true
                     }
-
-                    if showRestartNotice {
-                        Text("Restart the app to apply this change.")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-
-                /*
-                Section("Actions") {
-                    Button("Save & Apply") {
-                        savePreferences()
-                        Task { await dataContainer?.notificationManager.scheduleSmartNotifications() }
-                    }
-                }
-                */
-
-                Section("Export") {
-                    Button("Export Data (JSON + CSV)") {
-                        exportData()
-                    }
-                    Button("Export Moments Only (JSON + CSV)") {
-                        exportMomentsOnly()
-                    }
-                    Text("Exports moments, badges, and challenges.")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-
-                Section("Import") {
-                    Button("Import JSON Backup") {
-                        showImportPicker = true
-                    }
-                    Text("Import merges data and may create duplicates.")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
                 }
 
                 Section("Support & About") {
@@ -201,6 +145,13 @@ struct RemindersSettingsView: View {
             ) { result in
                 handleImport(result: result)
             }
+            .confirmationDialog("Backup & Restore", isPresented: $showBackupRestoreDialog) {
+                Button("Backup (Export)") { exportData() }
+                Button("Restore (Import)") { showImportPicker = true }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Choose an action. Backups are exported as JSON.")
+            }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -231,8 +182,6 @@ struct RemindersSettingsView: View {
         secondChanceEnabled = NotificationManager.ReminderPreferences.secondChanceEnabled
         let t = NotificationManager.ReminderPreferences.secondChanceTime
         selectedDate = Calendar.current.date(bySettingHour: t.hour, minute: t.minute, second: 0, of: Date()) ?? Date()
-        iCloudSyncEnabled = DataContainer.isICloudSyncEnabled
-        showRestartNotice = false
         exportFiles = []
         showExportSheet = false
         exportErrorMessage = nil

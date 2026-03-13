@@ -63,6 +63,7 @@
 				BadgeDetailView.swift,
 				LockedBadgeView.swift,
 				PartyPopperSound.mp3,
+				SoundManager.swift,
 				UnlockedBadgeView.swift,
 			);
 			target = 3F7DFE202EC7A89500D1CEE2 /* Daily Joy */;

@@ -416,6 +416,8 @@ struct MomentEntryView: View {
             modelContext.insert(newMoment)
             try modelContext.save()
             
+            //SoundManager.shared.playAddMomentSoundIfEnabled()
+            
             // ✅ UNLOCK ACHIEVEMENT BADGES for this new moment
             do {
                 try dataContainer.badgeManager.unlockBadges(newMoment: newMoment)
@@ -475,6 +477,9 @@ struct MomentEntryView: View {
         m.isLocked = isLocked
         do {
             try modelContext.save()
+            
+            //SoundManager.shared.playAddMomentSoundIfEnabled()
+            
             // Updating a moment may change badge eligibility (e.g., note/photo-dependent). We can re-evaluate.
             do {
                 try dataContainer.badgeManager.unlockBadges(newMoment: m)
