@@ -3,6 +3,7 @@ import UniformTypeIdentifiers
 
 struct RemindersSettingsView: View {
     @Environment(DataContainer.self) private var dataContainer: DataContainer?
+    @Environment(\.dismiss) private var dismiss
 
     @State private var style: NotificationManager.ReminderStyle = .gentle
     @State private var secondChanceEnabled: Bool = false
@@ -15,6 +16,26 @@ struct RemindersSettingsView: View {
     @State private var exportErrorMessage: String?
     @State private var showImportPicker = false
     @State private var importSuccessMessage: String?
+    @State private var showDiscardChangesAlert = false
+    @State private var showSavedNotice = false
+    @State private var interactionSoundsEnabled: Bool = UserDefaults.standard.bool(forKey: InteractionSoundSettingsKey.appStorageKey)
+
+    private var hasUnsavedChanges: Bool {
+        let persistedStyle = NotificationManager.ReminderPreferences.style
+        let persistedSecondChanceEnabled = NotificationManager.ReminderPreferences.secondChanceEnabled
+        let t = NotificationManager.ReminderPreferences.secondChanceTime
+        let persistedDate = Calendar.current.date(bySettingHour: t.hour, minute: t.minute, second: 0, of: Date()) ?? Date()
+        let persistedICloud = DataContainer.isICloudSyncEnabled
+        let persistedInteractionSounds = UserDefaults.standard.bool(forKey: InteractionSoundSettingsKey.appStorageKey)
+        let currentComps = Calendar.current.dateComponents([.hour, .minute], from: selectedDate)
+        let persistedComps = Calendar.current.dateComponents([.hour, .minute], from: persistedDate)
+        let timeChanged = currentComps.hour != persistedComps.hour || currentComps.minute != persistedComps.minute
+        return style != persistedStyle ||
+               secondChanceEnabled != persistedSecondChanceEnabled ||
+               timeChanged ||
+               iCloudSyncEnabled != persistedICloud ||
+               interactionSoundsEnabled != persistedInteractionSounds
+    }
 
     var body: some View {
         NavigationStack {
@@ -25,11 +46,7 @@ struct RemindersSettingsView: View {
                         .foregroundStyle(.secondary)
                 }
                 Section("Audio") {
-                    Toggle("Interaction Sounds", isOn: Binding(get: {
-                        UserDefaults.standard.bool(forKey: InteractionSoundSettingsKey.appStorageKey)
-                    }, set: { newValue in
-                        UserDefaults.standard.set(newValue, forKey: InteractionSoundSettingsKey.appStorageKey)
-                    }))
+                    Toggle("Interaction Sounds", isOn: $interactionSoundsEnabled)
                     .accessibilityHint("Play subtle sounds for actions like adding a moment.")
 
                     Text("Interaction sounds respect the mute switch and will mix with other audio, like music or podcasts.")
@@ -93,12 +110,14 @@ struct RemindersSettingsView: View {
                     }
                 }
 
+                /*
                 Section("Actions") {
                     Button("Save & Apply") {
                         savePreferences()
                         Task { await dataContainer?.notificationManager.scheduleSmartNotifications() }
                     }
                 }
+                */
 
                 Section("Export") {
                     Button("Export Data (JSON + CSV)") {
@@ -156,6 +175,22 @@ struct RemindersSettingsView: View {
             } message: {
                 Text(importSuccessMessage ?? "")
             }
+            .alert("Discard changes?", isPresented: $showDiscardChangesAlert) {
+                Button("Discard Changes", role: .destructive) {
+                    loadPreferences()
+                    dismiss()
+                }
+                Button("Keep Editing", role: .cancel) {}
+            } message: {
+                Text("You have unsaved changes. Do you want to discard them?")
+            }
+            .alert("Settings saved", isPresented: $showSavedNotice) {
+                Button("OK") {
+                    dismiss()
+                }
+            } message: {
+                Text("Your changes have been applied.")
+            }
             .sheet(isPresented: $showExportSheet) {
                 ShareSheet(items: exportFiles)
             }
@@ -165,6 +200,28 @@ struct RemindersSettingsView: View {
                 allowsMultipleSelection: false
             ) { result in
                 handleImport(result: result)
+            }
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        if hasUnsavedChanges {
+                            showDiscardChangesAlert = true
+                        } else {
+                            dismiss()
+                        }
+                    }
+                    .accessibilityLabel("Cancel and discard changes")
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") {
+                        savePreferences()
+                        Task { await dataContainer?.notificationManager.scheduleSmartNotifications() }
+                        showSavedNotice = true
+                    }
+                    .accessibilityLabel("Save settings")
+                    .disabled(!hasUnsavedChanges)
+                    .tint(hasUnsavedChanges ? Color("Ember") : .gray)
+                }
             }
         }
     }
@@ -181,6 +238,7 @@ struct RemindersSettingsView: View {
         exportErrorMessage = nil
         showImportPicker = false
         importSuccessMessage = nil
+        interactionSoundsEnabled = UserDefaults.standard.bool(forKey: InteractionSoundSettingsKey.appStorageKey)
     }
 
     private func savePreferences() {
@@ -188,6 +246,7 @@ struct RemindersSettingsView: View {
         NotificationManager.ReminderPreferences.secondChanceEnabled = secondChanceEnabled
         let comps = Calendar.current.dateComponents([.hour, .minute], from: selectedDate)
         NotificationManager.ReminderPreferences.secondChanceTime = (comps.hour ?? 21, comps.minute ?? 0)
+        UserDefaults.standard.set(interactionSoundsEnabled, forKey: InteractionSoundSettingsKey.appStorageKey)
     }
 
     private func exportData() {
@@ -257,4 +316,3 @@ struct RemindersSettingsView: View {
         }
     }
 }
-
