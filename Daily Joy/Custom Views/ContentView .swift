@@ -8,10 +8,13 @@
 import SwiftUI
 import SwiftData
 
+/// Root tab-based interface for Daily Joy.
+/// Hosts Moments, Challenges, conditional Memory Lane, and Achievements tabs.
+/// Handles deep links from widgets to open Add Moment or Challenges.
 @available(iOS 17.0, *)
 struct ContentView: View {
 
-    // ✅ Add binding for widget deep link
+    /// Bound to widget deep link state to present the Add Moment flow when needed.
     @Binding var shouldShowAddMoment: Bool
     
     // ✅ Explicit initializer with default value
@@ -19,15 +22,21 @@ struct ContentView: View {
         self._shouldShowAddMoment = shouldShowAddMoment
     }
 
+    /// The most recently unlocked badge to show in a celebration overlay.
     @State private var celebrationBadge: Badge?
+    /// Controls presentation of the badge celebration overlay.
     @State private var showCelebration = false
+    /// The identifier or title of a completed challenge to celebrate.
     @State private var completedChallenge: String?
+    /// Controls presentation of the challenge celebration overlay.
     @State private var showChallengeCelebration = false
+    /// Currently selected tab index.
     @State private var selectedTab = 0  // ✅ Track selected tab
 
+    /// All persisted moments, used to determine whether Memory Lane should be shown.
     @Query private var allMoments: [Moment]
 
-    // MARK: - Memory Lane Check
+    /// Returns true if there are moments from the same day/month in prior years.
     var hasMemories: Bool {
         let calendar = Calendar.current
         let today = Date()
@@ -47,7 +56,7 @@ struct ContentView: View {
         }
     }
 
-    // MARK: - UI
+    // Main tab layout and celebrations wiring.
     var body: some View {
         TabView(selection: $selectedTab) {
 
@@ -85,6 +94,7 @@ struct ContentView: View {
             challenge: completedChallenge,
             isPresented: $showChallengeCelebration
         )
+        /// Listen for badge unlock notifications to trigger celebration UI.
         .onReceive(NotificationCenter.default.publisher(for: .badgeUnlocked)) {
             notification in
             if let badge = notification.object as? Badge {
@@ -92,6 +102,7 @@ struct ContentView: View {
                 showCelebration = true
             }
         }
+        /// Listen for challenge completion notifications to trigger celebration UI.
         .onReceive(NotificationCenter.default.publisher(for: .challengeCompleted)) {
             notification in
             if let challenge = notification.object as? String {
@@ -99,18 +110,20 @@ struct ContentView: View {
                 showChallengeCelebration = true
             }
         }
-        // ✅ Handle widget deep link
+        /// Respond to deep link state and switch to the Moments tab to present the add flow.
         .onChange(of: shouldShowAddMoment) { oldValue, newValue in
             if newValue {
                 selectedTab = 0  // Switch to Moments tab
                 // The binding will trigger MomentsView to show add sheet
             }
         }
+        /// Handle custom URL scheme from widgets (e.g., dailyjoy://add-moment, dailyjoy://challenges).
         .onOpenURL { url in
             handleWidgetURL(url)
         }
     }
 
+    /// Parses and routes widget URLs to the appropriate tab or action.
     private func handleWidgetURL(_ url: URL) {
         guard url.scheme == "dailyjoy" else { return }
         switch url.host {
@@ -125,6 +138,8 @@ struct ContentView: View {
 }
 
 // MARK: - Memory Lane Full View
+
+/// Dedicated screen listing prior-year moments that occurred on today's date.
 @available(iOS 17.0, *)
 struct MemoryLaneFullView: View {
 
@@ -132,6 +147,7 @@ struct MemoryLaneFullView: View {
 
     @Query private var allMoments: [Moment]
 
+    /// Filters and sorts moments to "On This Day" entries from previous years.
     var memoryMoments: [Moment] {
         let calendar = Calendar.current
         let today = Date()
@@ -198,10 +214,13 @@ struct MemoryLaneFullView: View {
 }
 
 // MARK: - Memory Card
+
+/// Card-style navigation row for a single memory, respecting locked state.
 struct MemoryCardFull: View {
 
     let moment: Moment
 
+    /// Number of years between the moment timestamp and now.
     var yearsAgo: Int {
         Calendar.current
             .dateComponents([.year], from: moment.timestamp, to: Date())
@@ -209,6 +228,7 @@ struct MemoryCardFull: View {
     }
 
     var body: some View {
+        // Navigate to detail or locked view depending on moment state.
         NavigationLink {
             moment.isLocked
                 ? AnyView(LockedEntryView(moment: moment))

@@ -9,11 +9,13 @@ import SwiftUI
 import SwiftData
 import LocalAuthentication
 
+/// Presents a locked moment with biometric authentication to reveal its contents.
 struct LockedEntryView: View {
     let moment: Moment
     @State private var showUnlockedContent = false
     @State private var authError: String?
     
+    /// Returns true if the device can evaluate owner authentication (Face ID/Touch ID/passcode).
     private var canAuthenticate: Bool {
         let context = LAContext()
         var error: NSError?
@@ -21,6 +23,7 @@ struct LockedEntryView: View {
     }
     
     var body: some View {
+        // Shows locked UI until biometric auth succeeds, then reveals `MomentDetailView`.
         ZStack {
             if showUnlockedContent {
                 MomentDetailView(moment: moment)
@@ -39,6 +42,7 @@ struct LockedEntryView: View {
                     
                     if canAuthenticate {
                         Button(action: {
+                            // Authenticate the user before revealing the locked content
                             let authManager = BiometricAuthManager()
                             authManager.authenticate(reason: "Unlock this moment") { success, error in
                                 if success {
@@ -74,3 +78,4 @@ struct LockedEntryView: View {
         }
     }
 }
+

@@ -9,11 +9,16 @@ import WidgetKit
 import SwiftUI
 import Foundation
 
+// MARK: - Daily Joy Widgets
+// Defines timeline provider, snapshot model, and SwiftUI views for multiple widget families.
+// Reads compact snapshot data from the shared App Group and renders streaks, latest moment, and challenges.
+
 private let widgetAppGroupIdentifier = "group.dailyjoy.shared"
 private let emberColor = Color(red: 1.0, green: 0.42, blue: 0.21)
 private let addMomentURL = URL(string: "dailyjoy://add-moment")
 private let openChallengesURL = URL(string: "dailyjoy://challenges")
 
+/// Minimal state shared from the app to widgets via App Group storage.
 struct DailyJoyWidgetSnapshot: Codable {
     let lastUpdated: Date
     let streakCount: Int
@@ -27,11 +32,13 @@ struct DailyJoyWidgetSnapshot: Codable {
     let hasLoggedToday: Bool
 }
 
+/// Timeline entry for all Daily Joy widgets.
 struct DailyJoyWidgetEntry: TimelineEntry {
     let date: Date
     let snapshot: DailyJoyWidgetSnapshot
 }
 
+/// Supplies placeholder, snapshot, and timeline entries by reading a serialized snapshot from `UserDefaults`.
 struct DailyJoyWidgetProvider: TimelineProvider {
     func placeholder(in context: Context) -> DailyJoyWidgetEntry {
         DailyJoyWidgetEntry(date: Date(), snapshot: Self.placeholderSnapshot)
@@ -50,6 +57,7 @@ struct DailyJoyWidgetProvider: TimelineProvider {
         completion(timeline)
     }
 
+    /// Loads and decodes the latest widget snapshot from the shared App Group.
     private func loadSnapshot() -> DailyJoyWidgetSnapshot? {
         guard let defaults = UserDefaults(suiteName: widgetAppGroupIdentifier),
               let data = defaults.data(forKey: "widgetSnapshot") else {
@@ -74,6 +82,7 @@ struct DailyJoyWidgetProvider: TimelineProvider {
     )
 }
 
+/// Renders a small widget showing the user's current streak as a flame badge.
 struct StreakSmallWidgetView: View {
     let entry: DailyJoyWidgetEntry
 
@@ -88,6 +97,7 @@ struct StreakSmallWidgetView: View {
     }
 }
 
+/// Renders a small widget to quickly add a new moment, indicating whether today is already logged.
 struct AddMomentSmallWidgetView: View {
     let entry: DailyJoyWidgetEntry
 
@@ -109,6 +119,7 @@ struct AddMomentSmallWidgetView: View {
     }
 }
 
+/// Small widget combining streak display with a quick add affordance.
 struct StreakAddSmallWidgetView: View {
     let entry: DailyJoyWidgetEntry
 
@@ -143,6 +154,7 @@ struct StreakAddSmallWidgetView: View {
     }
 }
 
+/// Large widget showing streak, latest moment, and daily challenges with links into the app.
 struct DailyJoyLargeWidgetView: View {
     let entry: DailyJoyWidgetEntry
 
@@ -194,6 +206,7 @@ struct DailyJoyLargeWidgetView: View {
         .containerBackground(emberColor, for: .widget)
     }
 
+    /// Helper row for a single challenge with completion indicator.
     private func challengeRow(text: String, completed: Bool) -> some View {
         HStack(spacing: 6) {
             Image(systemName: completed ? "checkmark.circle.fill" : "circle")
@@ -207,6 +220,7 @@ struct DailyJoyLargeWidgetView: View {
     }
 }
 
+/// Lock screen circular widget showing a compact flame badge with streak.
 struct DailyJoyLockScreenWidgetView: View {
     let entry: DailyJoyWidgetEntry
 
@@ -218,6 +232,7 @@ struct DailyJoyLockScreenWidgetView: View {
     }
 }
 
+/// Composite flame image and number used across widget views.
 struct FlameBadge: View {
     let number: Int
     let size: CGFloat
@@ -238,6 +253,7 @@ struct FlameBadge: View {
     }
 }
 
+/// Configuration for the small streak widget.
 struct DailyJoyStreakSmallWidget: Widget {
     let kind: String = "DailyJoyStreakSmallWidget"
 
@@ -251,6 +267,7 @@ struct DailyJoyStreakSmallWidget: Widget {
     }
 }
 
+/// Configuration for the small quick-add widget.
 struct DailyJoyAddSmallWidget: Widget {
     let kind: String = "DailyJoyAddSmallWidget"
 
@@ -264,6 +281,7 @@ struct DailyJoyAddSmallWidget: Widget {
     }
 }
 
+/// Configuration for the small streak + add widget.
 struct DailyJoyStreakAddSmallWidget: Widget {
     let kind: String = "DailyJoyStreakAddSmallWidget"
 
@@ -321,6 +339,7 @@ struct StreakAddMediumWidgetView: View {
     }
 }
 
+/// Configuration for the medium streak + add widget.
 struct DailyJoyStreakAddMediumWidget: Widget {
     let kind: String = "DailyJoyStreakAddMediumWidget"
 
@@ -334,6 +353,7 @@ struct DailyJoyStreakAddMediumWidget: Widget {
     }
 }
 
+/// Configuration for the large composite widget.
 struct DailyJoyLargeWidget: Widget {
     let kind: String = "DailyJoyLargeWidget"
 
@@ -347,6 +367,7 @@ struct DailyJoyLargeWidget: Widget {
     }
 }
 
+/// Configuration for the lock screen circular widget.
 struct DailyJoyLockWidget: Widget {
     let kind: String = "DailyJoyLockWidget"
 
@@ -365,3 +386,4 @@ struct DailyJoyLockWidget: Widget {
 } timeline: {
     DailyJoyWidgetEntry(date: .now, snapshot: DailyJoyWidgetProvider.placeholderSnapshot)
 }
+

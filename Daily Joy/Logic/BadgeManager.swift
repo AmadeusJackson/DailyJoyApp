@@ -9,17 +9,23 @@ import Foundation
 import SwiftData
 import UIKit
 
+/// Notification names emitted when badges are unlocked.
 extension Notification.Name {
     static let badgeUnlocked = Notification.Name("badgeUnlocked")
 }
 
+/// Coordinates badge seeding and unlock logic based on user moments and activity.
 class BadgeManager {
+    /// Backing model container for fetching and persisting badges and moments.
     private let modelContainer: ModelContainer
 
+    /// Creates a manager bound to the provided model container.
     init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
     }
 
+    /// Evaluates all locked badges against current data and marks newly unlocked ones.
+    /// Posts `.badgeUnlocked` notifications after a short delay and saves changes.
     func unlockBadges(newMoment: Moment) throws {
         let context = modelContainer.mainContext
         let moments = try context.fetch(FetchDescriptor<Moment>())
@@ -114,6 +120,7 @@ class BadgeManager {
         try modelContainer.mainContext.save()
     }
 
+    /// Seeds all badge records if none exist in the store.
     func loadBadgesIfNeeded() throws {
         let context = modelContainer.mainContext
         var fetchDescriptor = FetchDescriptor<Badge>()
@@ -128,6 +135,7 @@ class BadgeManager {
     
     // MARK: - Helper Functions
     
+    /// Returns true if there is at least one moment on each of the last `days` days.
     private func checkStreak(moments: [Moment], days: Int) -> Bool {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
@@ -152,24 +160,28 @@ class BadgeManager {
         return consecutiveDays >= days
     }
     
+    /// Returns true if the moment timestamp is within the given hour range.
     private func checkTimeRange(moment: Moment, startHour: Int, endHour: Int) -> Bool {
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: moment.timestamp)
         return hour >= startHour && hour < endHour
     }
     
+    /// Returns true if the moment timestamp occurs at or after the provided hour.
     private func checkTimeAfter(moment: Moment, hour: Int) -> Bool {
         let calendar = Calendar.current
         let momentHour = calendar.component(.hour, from: moment.timestamp)
         return momentHour >= hour
     }
     
+    /// Returns true if the moment timestamp falls within typical golden hour bounds.
     private func checkGoldenHour(moment: Moment) -> Bool {
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: moment.timestamp)
         return (hour >= 6 && hour < 8) || (hour >= 18 && hour < 20)
     }
     
+    /// Returns true when moments include at least one solid-color entry for each palette color.
     private func checkAllColorsUsed(moments: [Moment]) -> Bool {
         // Get all color names from your assets
         let allColors = ["Ember", "Forest", "Lavender", "Ocean", "Pearl", "Rose", "Ruby", "Sapphire", "Sky"]
@@ -187,6 +199,7 @@ class BadgeManager {
         return usedColors.count >= allColors.count
     }
     
+    /// Returns true if the given image data represents a solid color image created by the app.
     private func checkColorOnlyMoments(moments: [Moment], count: Int) -> Bool {
         let colorOnlyMoments = moments.filter { moment in
             guard let imageData = moment.imageData else { return false }
@@ -196,6 +209,7 @@ class BadgeManager {
         return colorOnlyMoments.count >= count
     }
     
+    /// Returns true if there is at least one moment for each day in the past 30 days.
     private func checkMonthlyStreak(moments: [Moment]) -> Bool {
         let calendar = Calendar.current
         let today = Date()
@@ -216,7 +230,7 @@ class BadgeManager {
         return true
     }
     
-    // Helper to detect if image is a solid color
+    /// Returns true if the given image data represents a solid color image created by the app.
     private func isColorImage(_ imageData: Data) -> Bool {
         guard let image = UIImage(data: imageData),
               let cgImage = image.cgImage else { return false }
@@ -225,7 +239,7 @@ class BadgeManager {
         return cgImage.width == 500 && cgImage.height == 500
     }
     
-    // Helper to extract color name from solid color image (if you store it somehow)
+    /// Attempts to read a color name from stored image data; placeholder implementation.
     private func extractColorName(from imageData: Data) -> String? {
         // This is a placeholder - you'd need to implement based on how you store color info
         // One option: store color name in moment metadata
@@ -233,3 +247,4 @@ class BadgeManager {
         return isColorImage(imageData) ? "Unknown" : nil
     }
 }
+

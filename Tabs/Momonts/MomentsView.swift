@@ -8,11 +8,12 @@
 import SwiftUI
 import SwiftData
 
-
-
-
+/// Primary feed of grateful moments with search, creation flow, and streak header.
+/// Supports deep linking to present the Add Moment sheet.
 struct MomentsView: View {
+    /// Bound to deep link state from widgets; when true, presents creation flow.
     @Binding var shouldShowAddMoment: Bool  // ✅ Add binding for widget deep link
+    /// Optional data container from environment for persistence and services.
     @Environment(DataContainer.self) private var dataContainer: DataContainer?
     
     // ✅ Add default initializer for preview/normal use
@@ -20,11 +21,17 @@ struct MomentsView: View {
         self._shouldShowAddMoment = shouldShowAddMoment
     }
     
+    /// Controls presentation of the create-moment sheet.
     @State private var showCreateMoment = false
+    /// Controls presentation of the heatmap calendar sheet.
     @State private var showHeatmap = false
+    /// Current search text for filtering moments.
     @State private var searchText = ""
+    /// Whether the search UI is presented.
     @State private var isSearching = false
+    /// Shows the first-launch notification permission prompt.
     @State private var showNotificationPrompt = false
+    /// Triggers the celebration overlay after saving a moment.
     @State private var showCelebration = false
     @State private var heartRotation: Angle = .degrees(0)
     @State private var heartRotation3D: Angle = .degrees(0)
@@ -34,9 +41,10 @@ struct MomentsView: View {
     @Query(sort: \Moment.timestamp)
     private var moments: [Moment]
 
+    /// Horizontal offset amplitude used to stagger hexagon rows.
     static let offsetAmount: CGFloat = 70.0
     
-    // Filtered moments based on search
+    /// Moments filtered by the current search text.
     var filteredMoments: [Moment] {
         if searchText.isEmpty {
             return moments
@@ -48,7 +56,7 @@ struct MomentsView: View {
         }
     }
     
-    // Show search only when there are 10+ moments
+    /// Shows search affordance when there are at least 10 moments.
     var shouldShowSearch: Bool {
         moments.count >= 10
     }
@@ -77,6 +85,7 @@ struct MomentsView: View {
         }
     }
     
+    /// Main scrollable content including streak header and hexagon grid.
     private var mainScrollContent: some View {
         ScrollView {
             LazyVStack(spacing: 8, pinnedViews: .sectionHeaders) {
@@ -90,6 +99,7 @@ struct MomentsView: View {
         }
     }
 
+    /// Overlay shown for empty results or no content yet.
     @ViewBuilder
     private var emptyStateOverlay: some View {
         if filteredMoments.isEmpty && !searchText.isEmpty {
@@ -103,6 +113,7 @@ struct MomentsView: View {
         }
     }
 
+    /// Toolbar with search, add moment, and reminders/settings.
     @ToolbarContentBuilder
     private var momentsToolbar: some ToolbarContent {
         // Search button (shows when 10+ moments)
@@ -147,6 +158,7 @@ struct MomentsView: View {
         }
     }
 
+    /// Full-screen confetti/heart animation overlay for successful saves.
     @ViewBuilder
     private var celebrationOverlay: some View {
         if showCelebration {
@@ -186,6 +198,7 @@ struct MomentsView: View {
         }
     }
 
+    /// Delays and presents a notification prompt on first launch.
     private func handleFirstLaunchPrompt() {
         if !UserDefaults.standard.bool(forKey: "hasShownNotificationPrompt") {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -194,12 +207,14 @@ struct MomentsView: View {
         }
     }
 
+    /// Generates navigation links for each filtered moment.
     private var pathItems: some View {
         ForEach(Array(filteredMoments.enumerated()), id: \.element.id) { index, moment in
             momentNavigationLink(for: moment, at: index)
         }
     }
     
+    /// Configures navigation and transition for a single moment row.
     private func momentNavigationLink(for moment: Moment, at index: Int) -> some View {
         NavigationLink {
             destinationView(for: moment)
@@ -216,6 +231,7 @@ struct MomentsView: View {
         }
     }
     
+    /// Builds an accessibility label that describes a moment succinctly.
     private func accessibilityLabelFor(moment: Moment) -> String {
         var label = "Moment: \(moment.title)"
         if moment.isLocked {
@@ -230,6 +246,7 @@ struct MomentsView: View {
         return label
     }
     
+    /// Route to locked or detail view based on moment state.
     @ViewBuilder
     private func destinationView(for moment: Moment) -> some View {
         if moment.isLocked {
@@ -239,6 +256,7 @@ struct MomentsView: View {
         }
     }
     
+    /// Renders a hexagon card with an optional locked overlay and sine-based offset.
     private func momentHexagonWithOverlay(moment: Moment, index: Int) -> some View {
         let isLast = moment == moments.last
         let offset = sin(Double(index) * .pi / 2) * Self.offsetAmount
@@ -263,6 +281,7 @@ struct MomentsView: View {
         }
     }
     
+    /// Semi-opaque mask indicating locked content inside the hexagon.
     @ViewBuilder
     private func lockedOverlayContent(isLarge: Bool) -> some View {
         let size = isLarge ? HexagonLayout.large.size : HexagonLayout.standard.size
@@ -290,6 +309,7 @@ struct MomentsView: View {
         }
     }
 
+    /// Header showing the current streak with a button to open the heatmap.
     @ViewBuilder private var streakHeader: some View {
         let streak = StreakCalculator().calculateStreak(for: moments)
         if streak > 0 {
@@ -321,6 +341,7 @@ struct MomentsView: View {
         }
     }
     
+    /// Plays sound and animates the heart/confetti celebration, then dismisses it.
     private func runCelebration() {
         SoundManager.shared.playAddMomentSoundIfEnabled()
         withAnimation(.spring(duration: 0.4)) {
@@ -410,5 +431,3 @@ struct CelebrationConfettiView: View {
         }
     }
 }
-
-

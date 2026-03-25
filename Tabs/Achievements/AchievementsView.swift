@@ -9,20 +9,25 @@ import SwiftUI
 import SwiftData
 
 
+/// Displays streak status and badge collections, separated into unlocked and locked sections.
 struct AchievementsView: View {
+    /// All badges that have been unlocked (timestamp present).
     @Query(filter: #Predicate<Badge> { $0.timestamp != nil })
     private var unlockedBadges: [Badge]
 
 
+    /// All badges that are still locked (no timestamp yet).
     @Query(filter: #Predicate<Badge> { $0.timestamp == nil })
     private var lockedBadges: [Badge]
 
 
+    /// All moments, used to compute the current streak.
     @Query(sort: \Moment.timestamp)
     private var moments: [Moment]
 
 
     var body: some View {
+        // Main achievements layout with streak header and badge sections.
         NavigationStack {
             ScrollView {
                 contentStack
@@ -33,6 +38,7 @@ struct AchievementsView: View {
     }
 
 
+    /// Vertical stack with streak, unlocked horizontal scroller, and locked list.
     private var contentStack: some View {
         VStack(alignment: .leading) {
             StreakView(numberOfDays: StreakCalculator().calculateStreak(for: moments))
@@ -97,6 +103,7 @@ struct AchievementsView: View {
     }
 
 
+    /// Section header style used for both unlocked and locked sections.
     func header(_ text: String) -> some View {
         Text(text)
             .font(.headline)
@@ -106,6 +113,7 @@ struct AchievementsView: View {
     }
 
 
+    /// Unlocked badges sorted by timestamp then title.
     /// - precondition: `unlockedBadges` must have a timestamp
     private var sortedUnlockedBadges: [Badge] {
         unlockedBadges.sorted {
@@ -114,6 +122,7 @@ struct AchievementsView: View {
     }
 
 
+    /// Locked badges sorted by raw value (stable ordering).
     private var sortedLockedBadges: [Badge] {
         lockedBadges.sorted {
             $0.details.rawValue < $1.details.rawValue

@@ -9,14 +9,14 @@ import SwiftUI
 import PhotosUI
 import WidgetKit
 
-// MARK: - Shared UserDefaults
+/// Shared App Group `UserDefaults` used to persist notes and communicate with widgets.
 extension UserDefaults {
     static var appGroup: UserDefaults {
         UserDefaults(suiteName: "group.com.amadeusjackson.dailyjoy")!
     }
 }
 
-// MARK: - Note Model
+/// Simple note model persisted to shared `UserDefaults` and surfaced in the Notes UI.
 struct Note: Identifiable, Codable {
     let id: UUID
     var title: String
@@ -33,7 +33,7 @@ struct Note: Identifiable, Codable {
     }
 }
 
-// MARK: - Main Content View
+/// Main Notes screen showing a list of saved notes with an affordance to add new ones.
 struct NotesContentView: View {
     @State private var notes: [Note] = []
     @State private var showingAddNote = false
@@ -78,6 +78,7 @@ struct NotesContentView: View {
         }
     }
     
+    /// Empty state shown when no notes are available.
     private var emptyStateView: some View {
         VStack(spacing: 16) {
             Image(systemName: "note.text")
@@ -96,6 +97,7 @@ struct NotesContentView: View {
         }
     }
     
+    /// Scrollable list of note cards.
     private var notesList: some View {
         ScrollView {
             LazyVStack(spacing: 12) {
@@ -111,6 +113,7 @@ struct NotesContentView: View {
         }
     }
     
+    /// Loads notes from the shared App Group storage.
     private func loadNotes() {
         if let data = UserDefaults.appGroup.data(forKey: "savedNotes"),
            let decoded = try? JSONDecoder().decode([Note].self, from: data) {
@@ -119,7 +122,7 @@ struct NotesContentView: View {
     }
 }
 
-// MARK: - Note Card View
+/// Visual representation of a single note with optional image and metadata.
 struct NoteCard: View {
     let note: Note
     
@@ -157,7 +160,7 @@ struct NoteCard: View {
     }
 }
 
-// MARK: - Add Note View (Modal)
+/// Modal form for creating a new note with optional image selection.
 struct AddNoteView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var notes: [Note]
@@ -238,6 +241,7 @@ struct AddNoteView: View {
         }
     }
     
+    /// Persists the new note, updates shared storage for widgets, reloads timelines, and dismisses the sheet.
     private func saveNote() {
         let newNote = Note(
             title: title,
@@ -269,7 +273,7 @@ struct AddNoteView: View {
     }
 }
 
-// MARK: - Widget Note Data Model (for widget communication)
+/// Lightweight representation of a note shared with the widget.
 struct NoteData: Codable {
     let title: String
     let note: String

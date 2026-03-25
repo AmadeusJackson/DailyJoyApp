@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 
+/// Displays today's two daily challenges, their completion status, and guidance on how to complete them.
 struct DailyChallengesView: View {
 
     init() {}
@@ -17,6 +18,7 @@ struct DailyChallengesView: View {
     @State private var challengeManager: ChallengeManager?
 
     var body: some View {
+        // Main layout: header, two challenge cards, and instructions.
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
@@ -49,6 +51,7 @@ struct DailyChallengesView: View {
         }
     }
 
+    /// Header with icon and explanatory text.
     private var headerSection: some View {
         VStack(spacing: 12) {
             Image(systemName: "star.circle.fill")
@@ -73,6 +76,7 @@ struct DailyChallengesView: View {
         .padding(.top, 20)
     }
 
+    /// Card UI for a single challenge with title, prompt, and completion state.
     private func challengeCard(
         title: String,
         prompt: String,
@@ -116,6 +120,7 @@ struct DailyChallengesView: View {
         )
     }
 
+    /// Explains the flow for completing challenges and creating moments.
     private var instructionsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Label("How It Works", systemImage: "lightbulb.fill")
@@ -134,6 +139,7 @@ struct DailyChallengesView: View {
         .background(RoundedRectangle(cornerRadius: 16).fill(.ultraThinMaterial))
     }
 
+    /// Helper row for a numbered instruction item.
     private func instructionRow(number: String, text: String) -> some View {
         HStack(spacing: 12) {
             Text(number)
@@ -147,6 +153,7 @@ struct DailyChallengesView: View {
         }
     }
 
+    /// Ensures a `ChallengeManager` exists and loads today's challenge from storage.
     private func loadTodaysChallenge() {
         if challengeManager == nil {
             challengeManager = ChallengeManager(modelContext: modelContext)

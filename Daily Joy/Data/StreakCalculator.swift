@@ -8,11 +8,12 @@
 import Foundation
 import WidgetKit
 
+/// Calculates streak-related metrics and persists a compact value for widgets.
 struct StreakCalculator {
     let calendar = Calendar.current
 
-    /// Counts the number of days in a row a moment has been saved
-    ///
+    /// Computes the current streak length from a chronologically sorted list of moments and updates widgets.
+    /// 
     /// Days are measured from the end of the day, rather than whatever time of day it is currently
     /// - precondition: `moments` must be sorted by timestamp, from earliest to latest
     func calculateStreak(for moments: [Moment]) -> Int {
@@ -54,7 +55,7 @@ struct StreakCalculator {
         return streak
     }
 
-    /// Returns true if at least one moment was saved today
+    /// Returns true if at least one moment exists with a timestamp on the current day.
     func hasLoggedToday(moments: [Moment]) -> Bool {
         let startOfToday = calendar.startOfDay(for: .now)
         let endOfToday = calendar.date(byAdding: DateComponents(day: 1, second: -1), to: startOfToday)!
@@ -64,7 +65,7 @@ struct StreakCalculator {
         }
     }
 
-    /// Saves the current streak to shared UserDefaults so widgets can access it
+    /// Persists the streak in shared `UserDefaults` and reloads widget timelines.
     private func saveStreakForWidget(_ streak: Int) {
         guard let sharedDefaults = UserDefaults(suiteName: "group.dailyjoy.shared") else {
             return
@@ -73,3 +74,4 @@ struct StreakCalculator {
         WidgetCenter.shared.reloadAllTimelines()
     }
 }
+

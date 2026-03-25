@@ -10,6 +10,10 @@ import SwiftUI
 import WidgetKit
 import Foundation
 
+// MARK: - DataContainer
+// Coordinates app-wide persistence using SwiftData, optional iCloud sync, and App Group communication for widgets.
+// Also manages badge loading/unlocking, notifications, import/export, and widget snapshot updates.
+
 private let appGroupIdentifier = "group.com.amadeusjackson.dailyjoy"
 private let widgetAppGroupIdentifier = "group.dailyjoy.shared"
 private let iCloudContainerIdentifier = "iCloud.com.amadeusjackson.dailyjoy"
@@ -18,7 +22,7 @@ private let iCloudCapabilityAvailableDefault = false
 private let iCloudSyncEnabledKey = "icloud_sync_enabled"
 private let iCloudCapabilityAvailableKey = "icloud_capability_available"
 
-// Local copy of widget kind strings so app can reload specific timelines
+/// Widget kind identifiers used to target specific timeline reloads.
 struct DailyJoyWidgetKinds {
     static let streakSmall = "DailyJoyStreakSmallWidget"
     static let addSmall = "DailyJoyAddSmallWidget"
@@ -28,21 +32,32 @@ struct DailyJoyWidgetKinds {
     static let lock = "DailyJoyLockWidget"
 }
 
+/// Central application data coordinator.
+/// - Manages the SwiftData `ModelContainer` and main `ModelContext`.
+/// - Configures storage (in-memory, iCloud, or local) based on runtime flags.
+/// - Orchestrates badge loading/unlocking, notifications, and widget updates.
 @Observable
 @MainActor
 class DataContainer {
+    /// Backing SwiftData container for all models.
     let modelContainer: ModelContainer
+    /// Handles badge definitions and unlock logic.
     var badgeManager: BadgeManager
+    /// Schedules and cancels local notifications.
     var notificationManager: NotificationManager
 
+    /// Convenience accessor for the main model context.
     var context: ModelContext {
         modelContainer.mainContext
     }
 
+    /// Lazily creates a `ChallengeManager` bound to the main context.
     var challengeManager: ChallengeManager {
         ChallengeManager(modelContext: context)
     }
 
+    /// Initializes the data stack.
+    /// - Parameter includeSampleMoments: When true, uses an in-memory store and seeds sample data for previews and testing.
     init(includeSampleMoments: Bool = false) {
         if !Self.isICloudCapabilityAvailable {
             Self.isICloudSyncEnabled = false
@@ -93,6 +108,7 @@ class DataContainer {
         }
     }
 
+    /// Inserts sample `Moment` data and unlocks any resulting badges.
     private func loadSampleMoments() throws {
         for moment in Moment.sampleData {
             context.insert(moment)
@@ -100,7 +116,7 @@ class DataContainer {
         }
     }
 
-    // ✅ NEW: Function to save and refresh widgets
+    /// Inserts and persists a moment, unlocking badges and refreshing widget timelines.
     func saveMoment(_ moment: Moment) throws {
         context.insert(moment)
         try badgeManager.unlockBadges(newMoment: moment)
@@ -108,14 +124,14 @@ class DataContainer {
         updateWidgetSnapshot()
     }
 
-    // ✅ NEW: Function to delete and refresh widgets
+    /// Deletes a moment, persists changes, and refreshes widget timelines.
     func deleteMoment(_ moment: Moment) throws {
         context.delete(moment)
         try context.save()
         updateWidgetSnapshot()
     }
 
-    // ✅ NEW: Call this after any context save that affects moments
+    /// Reloads timelines for all known Daily Joy widget kinds.
     func refreshWidgets() {
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.streakSmall)
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.addSmall)
@@ -125,6 +141,8 @@ class DataContainer {
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.lock)
     }
 
+    /// Exports all data (moments, badges, challenges) as JSON and CSV files.
+    /// - Returns: URLs to the generated files in the temporary directory.
     func exportAllDataFiles() throws -> [URL] {
         let exportPayload = try buildExportPayload(includeBadges: true, includeChallenges: true)
         let jsonURL = try writeJSONExport(payload: exportPayload)
@@ -132,6 +150,7 @@ class DataContainer {
         return [jsonURL, csvURL]
     }
 
+    /// Exports only `Moment` data as JSON and CSV files.
     func exportMomentsOnlyFiles() throws -> [URL] {
         let exportPayload = try buildExportPayload(includeBadges: false, includeChallenges: false)
         let jsonURL = try writeJSONExport(payload: exportPayload)
@@ -139,6 +158,7 @@ class DataContainer {
         return [jsonURL, csvURL]
     }
 
+    /// Encodes the minimal state required by widgets to render timelines.
     private struct WidgetSnapshot: Codable {
         let lastUpdated: Date
         let streakCount: Int
@@ -152,6 +172,7 @@ class DataContainer {
         let hasLoggedToday: Bool
     }
 
+    /// Encodes the full export payload used for backup/restore.
     private struct ExportPayload: Codable {
         let exportedAt: Date
         let moments: [MomentExport]
@@ -159,6 +180,7 @@ class DataContainer {
         let challenges: [ChallengeExport]
     }
 
+    /// Serializable representation of a `Moment` for export.
     private struct MomentExport: Codable {
         let title: String
         let note: String
@@ -167,6 +189,7 @@ class DataContainer {
         let imageDataBase64: String?
     }
 
+    /// Serializable representation of a `Badge` for export.
     private struct BadgeExport: Codable {
         let detailsRawValue: Int
         let title: String
@@ -174,6 +197,7 @@ class DataContainer {
         let linkedMomentTitle: String?
     }
 
+    /// Serializable representation of a `DailyChallenge` for export.
     private struct ChallengeExport: Codable {
         let date: Date
         let challenge1: String
@@ -182,6 +206,7 @@ class DataContainer {
         let challenge2Completed: Bool
     }
 
+    /// Builds an `ExportPayload` by fetching current data from the model context.
     private func buildExportPayload(includeBadges: Bool, includeChallenges: Bool) throws -> ExportPayload {
         let moments = try context.fetch(FetchDescriptor<Moment>(sortBy: [SortDescriptor(\.timestamp)]))
         let badges: [Badge] = includeBadges ? (try context.fetch(FetchDescriptor<Badge>())) : []
@@ -224,6 +249,7 @@ class DataContainer {
         )
     }
 
+    /// Writes the export payload as a JSON file and returns its URL.
     private func writeJSONExport(payload: ExportPayload) throws -> URL {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
@@ -235,6 +261,7 @@ class DataContainer {
         return url
     }
 
+    /// Writes the export payload as a CSV file and returns its URL.
     private func writeCSVExport(payload: ExportPayload) throws -> URL {
         var lines: [String] = []
         lines.append("# Moments")
@@ -286,10 +313,12 @@ class DataContainer {
         return url
     }
 
+    /// Generates a timestamped file name for an export with the given extension.
     private func exportFileName(extension ext: String) -> String {
         "DailyJoyExport_\(Self.fileDateFormatter.string(from: Date())).\(ext)"
     }
 
+    /// Escapes values for safe inclusion in CSV output.
     private func csvEscape(_ value: String) -> String {
         let escaped = value.replacingOccurrences(of: "\"", with: "\"\"")
         if escaped.contains(",") || escaped.contains("\n") || escaped.contains("\"") {
@@ -298,6 +327,7 @@ class DataContainer {
         return escaped
     }
 
+    /// Date formatter used for CSV export rows.
     private static let csvDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -305,6 +335,7 @@ class DataContainer {
         return formatter
     }()
 
+    /// Date formatter used in generated export file names.
     private static let fileDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -312,6 +343,7 @@ class DataContainer {
         return formatter
     }()
 
+    /// Aggregates current app state and writes a compact snapshot for widgets, then reloads timelines.
     func updateWidgetSnapshot() {
         do {
             let moments = try context.fetch(FetchDescriptor<Moment>(sortBy: [SortDescriptor(\.timestamp)]))
@@ -347,6 +379,7 @@ class DataContainer {
         }
     }
 
+    /// Imports a full data export from disk, merging with existing records when possible.
     func importAllData(from url: URL) throws {
         let data = try Data(contentsOf: url)
         let decoder = JSONDecoder()
@@ -415,6 +448,7 @@ class DataContainer {
         updateWidgetSnapshot()
     }
 
+    /// Stores whether iCloud sync is enabled (user preference persisted in `UserDefaults`).
     static var isICloudSyncEnabled: Bool {
         get {
             UserDefaults.standard.bool(forKey: iCloudSyncEnabledKey)
@@ -424,6 +458,7 @@ class DataContainer {
         }
     }
 
+    /// Tracks whether the iCloud capability is available for this build (useful for QA and diagnostics).
     static var isICloudCapabilityAvailable: Bool {
         get {
             if UserDefaults.standard.object(forKey: iCloudCapabilityAvailableKey) == nil {
@@ -436,6 +471,7 @@ class DataContainer {
         }
     }
 
+    /// Irreversibly deletes all persisted data, clears app group state, cancels notifications, and refreshes widgets.
     @MainActor
     func deleteAllData() async {
         let context = modelContainer.mainContext
@@ -462,6 +498,7 @@ class DataContainer {
         updateWidgetSnapshot()
     }
 
+    /// Removes any values persisted to the shared App Group `UserDefaults` used by widgets and extensions.
     private func clearAppGroupData() {
         if let defaults = UserDefaults(suiteName: appGroupIdentifier) {
             defaults.removeObject(forKey: "savedNotes")
@@ -478,6 +515,7 @@ class DataContainer {
 
 private let sampleContainer = DataContainer(includeSampleMoments: true)  
 
+/// Injects a sample `DataContainer` and its `ModelContainer` into the environment for previews.
 extension View {
     func sampleDataContainer() -> some View {
         self
