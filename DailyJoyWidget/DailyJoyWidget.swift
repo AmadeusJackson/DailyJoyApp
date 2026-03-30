@@ -87,13 +87,23 @@ struct StreakSmallWidgetView: View {
     let entry: DailyJoyWidgetEntry
 
     var body: some View {
-        ZStack(alignment: .center) {
-            FlameBadge(number: entry.snapshot.streakCount, size: 90)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                .offset(y: 6)
+        VStack(spacing: 6) {
+            FlameBadge(number: entry.snapshot.streakCount, size: 72)
+                .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
+
+            Text("\(entry.snapshot.streakCount) \(entry.snapshot.streakCount == 1 ? "day" : "days")")
+                .font(.headline.weight(.bold))
+                .foregroundStyle(.white)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-        .containerBackground(emberColor, for: .widget)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .containerBackground(
+            LinearGradient(
+                colors: [emberColor, Color(red: 1.0, green: 0.33, blue: 0.18)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            ),
+            for: .widget
+        )
     }
 }
 
@@ -386,4 +396,3 @@ struct DailyJoyLockWidget: Widget {
 } timeline: {
     DailyJoyWidgetEntry(date: .now, snapshot: DailyJoyWidgetProvider.placeholderSnapshot)
 }
-
