@@ -26,7 +26,6 @@ private let iCloudCapabilityAvailableKey = "icloud_capability_available"
 struct DailyJoyWidgetKinds {
     static let streakSmall = "DailyJoyStreakSmallWidget"
     static let addSmall = "DailyJoyAddSmallWidget"
-    static let streakAddSmall = "DailyJoyStreakAddSmallWidget"
     static let streakAddMedium = "DailyJoyStreakAddMediumWidget"
     static let large = "DailyJoyLargeWidget"
     static let lock = "DailyJoyLockWidget"
@@ -135,7 +134,6 @@ class DataContainer {
     func refreshWidgets() {
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.streakSmall)
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.addSmall)
-        WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.streakAddSmall)
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.streakAddMedium)
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.large)
         WidgetCenter.shared.reloadTimelines(ofKind: DailyJoyWidgetKinds.lock)

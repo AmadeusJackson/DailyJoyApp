@@ -14,7 +14,7 @@ import Foundation
 // Reads compact snapshot data from the shared App Group and renders streaks, latest moment, and challenges.
 
 private let widgetAppGroupIdentifier = "group.dailyjoy.shared"
-private let emberColor = Color(red: 1.0, green: 0.42, blue: 0.21)
+private let emberColor = Color("WidgetBackground")
 private let addMomentURL = URL(string: "dailyjoy://add-moment")
 private let openChallengesURL = URL(string: "dailyjoy://challenges")
 
@@ -87,23 +87,24 @@ struct StreakSmallWidgetView: View {
     let entry: DailyJoyWidgetEntry
 
     var body: some View {
-        VStack(spacing: 6) {
-            FlameBadge(number: entry.snapshot.streakCount, size: 72)
-                .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
-
-            Text("\(entry.snapshot.streakCount) \(entry.snapshot.streakCount == 1 ? "day" : "days")")
-                .font(.headline.weight(.bold))
+        ZStack(alignment: .bottom) {
+            Image("FlameSolid")
+                .renderingMode(.template)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 148, height: 170)
                 .foregroundStyle(.white)
+                .padding(.bottom, -4)
+
+            Text("\(entry.snapshot.streakCount)")
+                .font(.system(size: 60, weight: .black, design: .rounded))
+                .minimumScaleFactor(0.6)
+                .lineLimit(1)
+                .offset(y: -32)
+                .foregroundStyle(emberColor)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .containerBackground(
-            LinearGradient(
-                colors: [emberColor, Color(red: 1.0, green: 0.33, blue: 0.18)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            ),
-            for: .widget
-        )
+        .containerBackground(emberColor, for: .widget)
     }
 }
 
@@ -124,41 +125,6 @@ struct AddMomentSmallWidgetView: View {
                 .foregroundStyle(.white.opacity(0.85))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .containerBackground(emberColor, for: .widget)
-        .widgetURL(addMomentURL)
-    }
-}
-
-/// Small widget combining streak display with a quick add affordance.
-struct StreakAddSmallWidgetView: View {
-    let entry: DailyJoyWidgetEntry
-
-    var body: some View {
-        VStack(spacing: 10) {
-            HStack(spacing: 8) {
-                FlameBadge(number: entry.snapshot.streakCount, size: 52)
-                Text("\(entry.snapshot.streakCount)-day")
-                    .font(.caption.bold())
-                    .foregroundStyle(.white)
-            }
-
-            Spacer(minLength: 0)
-
-            Text(entry.snapshot.latestMomentTitle)
-                .font(.headline)
-                .foregroundStyle(.white)
-                .lineLimit(1)
-
-            Spacer(minLength: 0)
-
-            Text("Add Moment")
-                .font(.caption.bold())
-                .padding(.horizontal, 10)
-                .padding(.vertical, 6)
-                .background(.white.opacity(0.2), in: Capsule())
-                .foregroundStyle(.white)
-        }
-        .padding()
         .containerBackground(emberColor, for: .widget)
         .widgetURL(addMomentURL)
     }
@@ -288,20 +254,6 @@ struct DailyJoyAddSmallWidget: Widget {
         .supportedFamilies([.systemSmall])
         .configurationDisplayName("Add Moment")
         .description("Quickly add a grateful moment.")
-    }
-}
-
-/// Configuration for the small streak + add widget.
-struct DailyJoyStreakAddSmallWidget: Widget {
-    let kind: String = "DailyJoyStreakAddSmallWidget"
-
-    var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: DailyJoyWidgetProvider()) { entry in
-            StreakAddSmallWidgetView(entry: entry)
-        }
-        .supportedFamilies([.systemSmall])
-        .configurationDisplayName("Streak + Add")
-        .description("Streak and quick add.")
     }
 }
 

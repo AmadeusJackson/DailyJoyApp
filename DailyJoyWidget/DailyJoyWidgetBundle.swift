@@ -13,7 +13,6 @@ struct DailyJoyWidgetBundle: WidgetBundle {
     var body: some Widget {
         DailyJoyStreakSmallWidget()
         DailyJoyAddSmallWidget()
-        DailyJoyStreakAddSmallWidget()
         DailyJoyStreakAddMediumWidget()
         DailyJoyLargeWidget()
         DailyJoyLockWidget()
