@@ -1,6 +1,17 @@
 # Daily Joy
 
-Daily Joy is an iOS app with a Widget extension, focused on streaks, challenges, moments, and achievements.
+Daily Joy is a personal wellbeing and reflection app for capturing small wins each day and turning them into long-term momentum.
+
+The app combines daily check-ins, challenge prompts, and memory logging into one place so users can build habits, track progress, and stay motivated over time. It also includes a widget extension so progress is visible at a glance from the Home Screen.
+
+## What This App Does
+
+- Lets users record daily moments (including notes, photos, and voice/audio-related entries).
+- Tracks consistency with streak logic and visual progress views such as heatmaps.
+- Encourages action through daily challenges.
+- Rewards progress with badges and celebration experiences.
+- Supports reminders/notification flows and optional biometric-related app logic.
+- Extends key info to WidgetKit widgets for lightweight daily interaction.
 
 ## Project Structure
 
