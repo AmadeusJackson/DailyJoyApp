@@ -1,7 +1,7 @@
-# GratefulMoments — App Overview
+# Daily Joy — App Overview
 
 ## Purpose
-GratefulMoments is a SwiftUI-based iOS application designed to help users cultivate gratitude by capturing and reflecting on moments, notes, and photos. The app encourages daily journaling of positive experiences, offering a rich, motivating interface with gamification features.
+Daily Joy is a SwiftUI-based iOS application designed to help users cultivate gratitude by capturing and reflecting on moments, notes, and photos. The app encourages daily journaling of positive experiences, offering a rich, motivating interface with gamification features.
 
 ## Key Features
 - **Moment Collection:** Users can add new 'moments' by writing notes and attaching photos. Each moment records a timestamp, title, optional note, and optional image.
